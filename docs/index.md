@@ -122,7 +122,7 @@ graph TB
 
 ## Licence
 
-Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/VOTRE_USERNAME/VOTRE_REPO/blob/main/LICENSE) pour plus de détails.
+Ce projet est sous licence MIT. Voir le fichier [LICENSE](https://github.com/essensys-hub/client-essensys-legacy/blob/main/LICENSE) pour plus de détails.
 
 ## Contribution
 
