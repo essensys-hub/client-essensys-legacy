@@ -1,6 +1,7 @@
 # client-essensys-legacy
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Documentation](https://img.shields.io/badge/docs-MkDocs-blue.svg)](https://VOTRE_USERNAME.github.io/VOTRE_REPO/)
 
 ## Description
 
@@ -205,7 +206,9 @@ export LOG_LEVEL=debug
 
 ## Documentation
 
-La documentation complète est organisée par thème dans le dossier `docs/`:
+📚 **[Documentation complète en ligne](https://VOTRE_USERNAME.github.io/VOTRE_REPO/)** - Site MkDocs avec recherche et navigation améliorée
+
+La documentation est également disponible dans le dossier `docs/` et organisée par thème:
 
 ### 📡 Protocole
 

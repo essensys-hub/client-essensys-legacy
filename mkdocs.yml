@@ -1,0 +1,86 @@
+site_name: Client Embarqué BP_MQX_ETH - ESSENSYS
+site_description: Documentation du système de contrôle domotique embarqué basé sur MQX RTOS
+site_author: Essensys
+repo_url: https://github.com/essensys-hub/client-essensys-legacy
+repo_name: GitHub
+
+theme:
+  name: material
+  language: fr
+  palette:
+    # Mode clair
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Passer en mode sombre
+    # Mode sombre
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Passer en mode clair
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.top
+    - navigation.tracking
+    - search.suggest
+    - search.highlight
+    - content.code.copy
+    - content.code.annotate
+
+plugins:
+  - search:
+      lang: fr
+  - mermaid2
+
+markdown_extensions:
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.snippets
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:mermaid2.fence_mermaid
+  - pymdownx.tabbed:
+      alternate_style: true
+  - admonition
+  - pymdownx.details
+  - pymdownx.emoji:
+      emoji_index: !!python/name:material.extensions.emoji.twemoji
+      emoji_generator: !!python/name:material.extensions.emoji.to_svg
+  - attr_list
+  - md_in_html
+  - tables
+  - toc:
+      permalink: true
+
+nav:
+  - Accueil: index.md
+  - Protocole:
+      - Vue d'ensemble: protocol/http-legacy-protocol.md
+      - Contrainte TCP Single-Packet: protocol/tcp-single-packet.md
+      - Table d'échange: protocol/exchange-table.md
+  - Client Embarqué:
+      - Architecture: embedded-client/architecture.md
+      - Référence des modules: embedded-client/modules-reference.md
+      - Communications: embedded-client/communications.md
+      - Matériel: embedded-client/hardware.md
+  - Serveur:
+      - Implémentation Go: server/go-implementation.md
+      - Points d'API: server/api-endpoints.md
+  - Diagrammes:
+      - Vue d'ensemble du système: diagrams/system-overview.md
+      - Diagrammes de séquence: diagrams/sequence-diagrams.md
+      - Flux de données: diagrams/data-flow.md
+  - Dépannage: troubleshooting/network-debugging.md
+
+extra:
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/essensys-hub/client-essensys-legacy
