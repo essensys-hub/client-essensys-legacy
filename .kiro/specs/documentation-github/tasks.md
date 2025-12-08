@@ -1,0 +1,208 @@
+# Implementation Plan
+
+- [x] 1. Create LICENSE file with MIT license
+  - Create LICENSE file at repository root
+  - Use standard MIT license text
+  - Set copyright year to 2025
+  - Determine copyright holder with user
+  - _Requirements: 8.1, 8.3, 8.4, 8.5_
+
+- [x] 2. Create basic README.md structure
+  - Create README.md at repository root
+  - Add project title and description
+  - Add license badge
+  - Add table of contents
+  - Add placeholder sections for content to be filled later
+  - _Requirements: 1.1, 1.2, 8.2_
+
+- [x] 3. Create docs directory structure
+  - Create docs/ folder
+  - Create docs/protocol/ subfolder
+  - Create docs/embedded-client/ subfolder
+  - Create docs/server/ subfolder
+  - Create docs/diagrams/ subfolder
+  - Create docs/troubleshooting/ subfolder
+  - _Requirements: 1.3_
+
+- [x] 4. Document TCP single-packet requirement
+  - Create docs/protocol/tcp-single-packet.md
+  - Document the critical discovery
+  - Explain symptoms with client blocking
+  - Show tcpdump analysis (before/after)
+  - Explain technical reasons (limited memory, simple parser)
+  - Provide Go code solution with legacyResponseWriter
+  - Include validation results
+  - Add diagnostic tools section
+  - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
+
+- [x] 5. Document HTTP legacy protocol
+  - Create docs/protocol/http-legacy-protocol.md
+  - Explain non-standard HTTP behavior
+  - Document malformed JSON with examples
+  - Show JSON normalization code
+  - List required HTTP headers with exact format
+  - Document all API endpoints
+  - Provide complete request/response examples
+  - Explain status codes (201 vs 200)
+  - _Requirements: 2.1, 2.2, 2.3, 2.4_
+
+- [x] 6. Document exchange table
+  - Create docs/protocol/exchange-table.md
+  - Explain exchange table concept
+  - List all indices 605-622 with descriptions
+  - Document special indices (590, 613, 607, 615)
+  - Explain why full table must be sent
+  - Show bitwise OR merge logic with code
+  - Document _de67f field requirement
+  - Provide complete action examples
+  - Explain value history (25 entries)
+  - _Requirements: 2.5, 5.1, 5.2, 5.3, 5.4, 5.5_
+
+- [x] 7. Document embedded client architecture
+  - Create docs/embedded-client/architecture.md
+  - Describe MQX RTOS overview
+  - Document MCF52259 microcontroller
+  - List all MQX tasks with priorities and stack sizes
+  - Explain Main_task responsibilities
+  - Explain Ecran_task (screen interface)
+  - Explain Boitiers_task (I2C communication)
+  - Explain TeleInfo_task (Linky meter)
+  - Explain Ethernet_task (network)
+  - Document synchronization primitives (mutex, semaphores)
+  - Show system startup flow diagram
+  - _Requirements: 3.1, 3.2, 3.5_
+
+- [x] 8. Document embedded client modules
+  - Create docs/embedded-client/modules-reference.md
+  - Explain file organization (C/, H/, Ethernet/)
+  - Document Alarme module (alarm system)
+  - Document Chauffage module (heating control)
+  - Document Ecran module (user interface)
+  - Document TableEchange module (shared data)
+  - Document TeleInfo module (Linky meter)
+  - Document Hard module (hardware init)
+  - Document Scenario module (automation)
+  - Document GestionSocket module (Ethernet)
+  - Document Json module (parsing)
+  - Document Cryptage module (security)
+  - Create module dependency matrix
+  - _Requirements: 3.4, 7.1, 7.2, 7.5_
+
+- [x] 9. Document embedded client communications
+  - Create docs/embedded-client/communications.md
+  - Document I2C bus for auxiliary boxes
+  - Show I2C configuration and protocol
+  - Document I2C error handling and timeouts
+  - Document SPI for EEPROM (MAC address, server key)
+  - Document UART for TeleInfo and debug
+  - Show TeleInfo frame format and parsing
+  - Document Ethernet TCP/IP stack (RTCS)
+  - Provide code examples for each communication type
+  - _Requirements: 3.3, 7.4_
+
+- [x] 10. Document embedded client hardware
+  - Create docs/embedded-client/hardware.md
+  - Document MCF52259 Coldfire processor
+  - List memory configuration (Flash, RAM, external MRAM)
+  - Document GPIO (inputs/outputs)
+  - Document ADC (leak detection)
+  - Document PWM (fil pilote heating control)
+  - Document timers
+  - Explain power supply and battery backup
+  - _Requirements: 7.4_
+
+- [x] 11. Document server Go implementation
+  - Create docs/server/go-implementation.md
+  - Explain server architecture
+  - Document legacyResponseWriter in detail
+  - Explain HTTP handlers
+  - Document store (system state)
+  - Document services layer
+  - Show configuration options
+  - Provide deployment instructions
+  - _Requirements: 4.3_
+
+- [x] 12. Document API endpoints
+  - Create docs/server/api-endpoints.md
+  - Document GET /api/serverinfos
+  - Document POST /api/mystatus with malformed JSON handling
+  - Document GET /api/myactions with full table
+  - Document POST /api/done/{guid}
+  - Document POST /api/admin/inject
+  - Show complete request/response examples for each
+  - List error codes and meanings
+  - Explain polling frequency (1-2 seconds)
+  - _Requirements: 2.3, 6.3_
+
+- [x] 13. Create system overview diagram
+  - Create docs/diagrams/system-overview.md
+  - Create Mermaid diagram showing embedded client
+  - Show server component
+  - Show web interface
+  - Show external components (Linky meter, I2C boxes)
+  - Show data flow between components
+  - Add legend explaining diagram elements
+  - _Requirements: 1.4, 6.2, 6.5_
+
+- [x] 14. Create sequence diagrams
+  - Create docs/diagrams/sequence-diagrams.md
+  - Create startup sequence diagram
+  - Create mystatus/myactions polling diagram
+  - Create action execution sequence
+  - Create action acknowledgment sequence
+  - Create admin command injection sequence
+  - Add explanations for each diagram
+  - _Requirements: 6.2, 6.5_
+
+- [x] 15. Create data flow diagrams
+  - Create docs/diagrams/data-flow.md
+  - Show exchange table data flow
+  - Show action lifecycle flow
+  - Show state update flow
+  - Add explanations for each flow
+  - _Requirements: 6.2, 6.5_
+
+- [x] 16. Document network debugging
+  - Create docs/troubleshooting/network-debugging.md
+  - Explain tcpdump usage for this project
+  - Show how to capture client packets
+  - Explain how to analyze TCP packet count
+  - Show how to verify single-packet requirement
+  - Show how to inspect HTTP headers
+  - Show how to debug JSON content
+  - Recommend tools (Wireshark, tshark)
+  - _Requirements: 4.4_
+
+- [ ] 17. Document common issues
+  - Create docs/troubleshooting/common-issues.md
+  - Document "client stops after first request" issue
+  - Document "actions not executed" issue
+  - Document JSON parsing errors
+  - Document network timeouts
+  - Document I2C communication problems
+  - Document synchronization errors
+  - Provide solutions for each issue
+  - _Requirements: 4.2_
+
+- [x] 18. Complete README.md with all content
+  - Add project context and motivation
+  - Add architecture diagram reference
+  - Add critical constraints summary
+  - Add Getting Started section with prerequisites
+  - Add links to all documentation files
+  - Add examples section
+  - Add contributing guidelines
+  - Add acknowledgments
+  - Verify all links work
+  - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.5_
+
+- [x] 19. Final review and validation
+  - Review all documentation for completeness
+  - Verify all requirements are addressed
+  - Check all internal links
+  - Validate all code examples
+  - Test all Mermaid diagrams render correctly
+  - Check markdown formatting consistency
+  - Verify LICENSE is properly referenced
+  - Ensure French language consistency
+  - _Requirements: All_

@@ -1,0 +1,31 @@
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Build artifacts
+*.o
+*.obj
+*.elf
+*.S19
+*.xMAP
+*.d
+*.args
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.bak
+*.cache
+
+# Project specific
+Project_Settings/Debugger/
+Project_Settings/Startup_Code/
