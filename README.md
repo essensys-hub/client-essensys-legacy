@@ -1,7 +1,7 @@
 # client-essensys-legacy
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Documentation](https://img.shields.io/badge/docs-MkDocs-blue.svg)](https://VOTRE_USERNAME.github.io/VOTRE_REPO/)
+[![Documentation](https://img.shields.io/badge/docs-MkDocs-blue.svg)](https://github.com/essensys-hub/client-essensys-legacy/)
 
 ## Description
 
