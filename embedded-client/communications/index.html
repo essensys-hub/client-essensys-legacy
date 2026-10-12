@@ -1,0 +1,2787 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation du système de contrôle domotique embarqué basé sur MQX RTOS">
+      
+      
+        <meta name="author" content="Essensys">
+      
+      
+      
+        <link rel="prev" href="../modules-reference/">
+      
+      
+        <link rel="next" href="../hardware/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Communications - Client Embarqué BP_MQX_ETH - ESSENSYS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#communications-du-client-embarque" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-header__button md-logo" aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Client Embarqué BP_MQX_ETH - ESSENSYS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Communications
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passer en mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer en mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passer en mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer en mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../protocol/http-legacy-protocol/" class="md-tabs__link">
+          
+  
+  
+  Protocole
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../architecture/" class="md-tabs__link">
+          
+  
+  
+  Client Embarqué
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../server/go-implementation/" class="md-tabs__link">
+          
+  
+  
+  Serveur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../diagrams/system-overview/" class="md-tabs__link">
+          
+  
+  
+  Diagrammes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../troubleshooting/network-debugging/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Dépannage
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-nav__button md-logo" aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Client Embarqué BP_MQX_ETH - ESSENSYS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protocole
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Protocole
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocol/http-legacy-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocol/tcp-single-packet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contrainte TCP Single-Packet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../protocol/exchange-table/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table d'échange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Embarqué
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Embarqué
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../modules-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence des modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communications
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'ensemble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#i2c-communication-avec-les-boitiers-auxiliaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I2C - Communication avec les Boîtiers Auxiliaires
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I2C - Communication avec les Boîtiers Auxiliaires">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocole-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocole I2C
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protocole I2C">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format-de-la-trame-emise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format de la trame émise
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-de-la-reponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format de la réponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-code-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de code I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestion-des-erreurs-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestion des erreurs I2C
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestion des erreurs I2C">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-derreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types d'erreurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recuperation-sur-blocage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Récupération sur blocage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeouts-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeouts I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spi-acces-aux-eeprom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPI - Accès aux EEPROM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SPI - Accès aux EEPROM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration SPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selection-du-chip-select" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sélection du Chip Select
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilisation-typique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation typique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parametres-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paramètres SPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uart-teleinfo-et-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART - TeleInfo et Debug
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UART - TeleInfo et Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-uart-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration UART TeleInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-des-trames-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format des trames TeleInfo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Format des trames TeleInfo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteres-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caractères de contrôle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calcul-du-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calcul du checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-des-trames-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing des trames TeleInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etiquettes-teleinfo-supportees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étiquettes TeleInfo supportées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-trame-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de trame complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestion-des-timeouts-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestion des timeouts TeleInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethernet-stack-tcpip-rtcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ethernet - Stack TCP/IP RTCS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet - Stack TCP/IP RTCS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-ethernet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Ethernet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-douverture-de-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple d'ouverture de socket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#envoi-et-reception-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Envoi et réception HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrainte-critique-single-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrainte critique : Single-Packet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fermeture-de-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fermeture de socket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestion-des-erreurs-reseau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestion des erreurs réseau
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synchronisation-multi-taches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synchronisation Multi-tâches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Synchronisation Multi-tâches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mutex-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutex I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temporisations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temporisations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resume-des-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résumé des Paramètres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matériel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serveur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Serveur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/go-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implémentation Go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/api-endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Points d'API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrammes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diagrammes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/system-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble du système
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrammes de séquence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flux de données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/network-debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dépannage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'ensemble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#i2c-communication-avec-les-boitiers-auxiliaires" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        I2C - Communication avec les Boîtiers Auxiliaires
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="I2C - Communication avec les Boîtiers Auxiliaires">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#protocole-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Protocole I2C
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Protocole I2C">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#format-de-la-trame-emise" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format de la trame émise
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-de-la-reponse" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format de la réponse
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-code-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de code I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestion-des-erreurs-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestion des erreurs I2C
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Gestion des erreurs I2C">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#types-derreurs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Types d'erreurs
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#recuperation-sur-blocage" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Récupération sur blocage
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#timeouts-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Timeouts I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#spi-acces-aux-eeprom" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        SPI - Accès aux EEPROM
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="SPI - Accès aux EEPROM">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description_1" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration SPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#selection-du-chip-select" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Sélection du Chip Select
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilisation-typique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation typique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parametres-spi" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Paramètres SPI
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#uart-teleinfo-et-debug" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        UART - TeleInfo et Debug
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="UART - TeleInfo et Debug">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description_2" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-uart-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration UART TeleInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#format-des-trames-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Format des trames TeleInfo
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Format des trames TeleInfo">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#caracteres-de-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Caractères de contrôle
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#calcul-du-checksum" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Calcul du checksum
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-des-trames-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing des trames TeleInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#etiquettes-teleinfo-supportees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Étiquettes TeleInfo supportées
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-trame-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de trame complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestion-des-timeouts-teleinfo" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestion des timeouts TeleInfo
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#ethernet-stack-tcpip-rtcs" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Ethernet - Stack TCP/IP RTCS
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Ethernet - Stack TCP/IP RTCS">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#description_3" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Description
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#configuration-ethernet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Configuration Ethernet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-douverture-de-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple d'ouverture de socket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#envoi-et-reception-http" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Envoi et réception HTTP
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#contrainte-critique-single-packet" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contrainte critique : Single-Packet
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#fermeture-de-socket" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Fermeture de socket
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#gestion-des-erreurs-reseau" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Gestion des erreurs réseau
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#synchronisation-multi-taches" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Synchronisation Multi-tâches
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Synchronisation Multi-tâches">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#mutex-i2c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Mutex I2C
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#temporisations" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Temporisations
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resume-des-parametres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résumé des Paramètres
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="communications-du-client-embarque">Communications du Client Embarqué<a class="headerlink" href="#communications-du-client-embarque" title="Permanent link">&para;</a></h1>
+<h2 id="vue-densemble">Vue d'ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
+<p>Le client embarqué BP_MQX_ETH utilise plusieurs protocoles de communication pour interagir avec différents périphériques et systèmes :</p>
+<ul>
+<li><strong>I2C</strong> : Communication avec les boîtiers auxiliaires (BA)</li>
+<li><strong>SPI</strong> : Accès aux EEPROM pour l'adresse MAC et la clé serveur</li>
+<li><strong>UART</strong> : Réception des données TeleInfo (compteur Linky) et debug</li>
+<li><strong>Ethernet</strong> : Communication TCP/IP avec le serveur via la stack RTCS</li>
+</ul>
+<p>Chaque protocole est configuré et géré par des modules dédiés dans le firmware MQX.</p>
+<hr />
+<h2 id="i2c-communication-avec-les-boitiers-auxiliaires">I2C - Communication avec les Boîtiers Auxiliaires<a class="headerlink" href="#i2c-communication-avec-les-boitiers-auxiliaires" title="Permanent link">&para;</a></h2>
+<h3 id="description">Description<a class="headerlink" href="#description" title="Permanent link">&para;</a></h3>
+<p>Le bus I2C est utilisé pour communiquer avec les boîtiers auxiliaires (BA) qui contrôlent les équipements de la maison (lumières, prises, etc.). Le boîtier principal (BP) agit comme maître I2C et interroge périodiquement les BA esclaves.</p>
+<h3 id="configuration-i2c">Configuration I2C<a class="headerlink" href="#configuration-i2c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="c1">// Configuration du bus I2C</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="cp">#define I2C_DEVICE_POLLED "i2c0:"</span>
+<a id="__codelineno-0-3" name="__codelineno-0-3" href="#__codelineno-0-3"></a><span class="cp">#define I2C_BUS_ADDRESS_BP 0x50        </span><span class="c1">// Adresse du boîtier principal</span>
+<a id="__codelineno-0-4" name="__codelineno-0-4" href="#__codelineno-0-4"></a><span class="cp">#define I2C_BUS_ADDRESS_BA 0x60        </span><span class="c1">// Adresse de base des BA</span>
+<a id="__codelineno-0-5" name="__codelineno-0-5" href="#__codelineno-0-5"></a>
+<a id="__codelineno-0-6" name="__codelineno-0-6" href="#__codelineno-0-6"></a><span class="c1">// Vitesse du bus</span>
+<a id="__codelineno-0-7" name="__codelineno-0-7" href="#__codelineno-0-7"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">baud_rate</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">50000</span><span class="p">;</span><span class="w">  </span><span class="c1">// 50 kHz</span>
+<a id="__codelineno-0-8" name="__codelineno-0-8" href="#__codelineno-0-8"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_BAUD</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">baud_rate</span><span class="p">);</span>
+<a id="__codelineno-0-9" name="__codelineno-0-9" href="#__codelineno-0-9"></a>
+<a id="__codelineno-0-10" name="__codelineno-0-10" href="#__codelineno-0-10"></a><span class="c1">// Configuration en mode maître</span>
+<a id="__codelineno-0-11" name="__codelineno-0-11" href="#__codelineno-0-11"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_MASTER_MODE</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-0-12" name="__codelineno-0-12" href="#__codelineno-0-12"></a>
+<a id="__codelineno-0-13" name="__codelineno-0-13" href="#__codelineno-0-13"></a><span class="c1">// Configuration de l'adresse station</span>
+<a id="__codelineno-0-14" name="__codelineno-0-14" href="#__codelineno-0-14"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">station_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2C_BUS_ADDRESS_BP</span><span class="p">;</span>
+<a id="__codelineno-0-15" name="__codelineno-0-15" href="#__codelineno-0-15"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_STATION_ADDRESS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">station_addr</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="protocole-i2c">Protocole I2C<a class="headerlink" href="#protocole-i2c" title="Permanent link">&para;</a></h3>
+<p>Le protocole de communication avec les BA suit cette séquence :</p>
+<ol>
+<li><strong>Écriture des données</strong> : Le BP envoie une commande au BA</li>
+<li><strong>Repeated Start</strong> : Génération d'un restart I2C</li>
+<li><strong>Lecture de la réponse</strong> : Le BP lit 5 octets de réponse du BA</li>
+</ol>
+<h4 id="format-de-la-trame-emise">Format de la trame émise<a class="headerlink" href="#format-de-la-trame-emise" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>[Code_Trame][Données...][CRC_LSB][CRC_MSB]
+</code></pre></div>
+<ul>
+<li><strong>Code_Trame</strong> : Identifiant du type de commande</li>
+<li><strong>Données</strong> : Payload de la commande</li>
+<li><strong>CRC</strong> : Checksum CRC-16 sur toute la trame</li>
+</ul>
+<h4 id="format-de-la-reponse">Format de la réponse<a class="headerlink" href="#format-de-la-reponse" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>[Code_Trame][CRC_Envoyé_LSB][CRC_Envoyé_MSB][CRC_Réponse_LSB][CRC_Réponse_MSB]
+</code></pre></div>
+<ul>
+<li><strong>Code_Trame</strong> : Doit correspondre au code émis</li>
+<li><strong>CRC_Envoyé</strong> : Le BA renvoie le CRC qu'il a reçu (vérification)</li>
+<li><strong>CRC_Réponse</strong> : CRC calculé sur les 3 premiers octets</li>
+</ul>
+<h3 id="exemple-de-code-i2c">Exemple de code I2C<a class="headerlink" href="#exemple-de-code-i2c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Fonction d'écriture/lecture I2C avec un BA</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="kt">signed</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">sl_fct_write_polled</span><span class="p">(</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="w">    </span><span class="n">MQX_FILE_PTR</span><span class="w"> </span><span class="n">fd</span><span class="p">,</span><span class="w">              </span><span class="c1">// File descriptor I2C</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">uc_BANumber</span><span class="p">,</span><span class="w">    </span><span class="c1">// Numéro du BA (0-15)</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p_uc_buffer</span><span class="p">,</span><span class="w">   </span><span class="c1">// Buffer de données à envoyer</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">us_n</span><span class="p">,</span><span class="w">          </span><span class="c1">// Nombre d'octets</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">p_uc_Answer</span><span class="w">    </span><span class="c1">// Réponse du BA</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">)</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a><span class="p">{</span>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="w">    </span><span class="kt">signed</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="n">dest_addr</span><span class="p">;</span>
+<a id="__codelineno-3-12" name="__codelineno-3-12" href="#__codelineno-3-12"></a>
+<a id="__codelineno-3-13" name="__codelineno-3-13" href="#__codelineno-3-13"></a><span class="w">    </span><span class="c1">// Protection mutex pour environnement multitâche</span>
+<a id="__codelineno-3-14" name="__codelineno-3-14" href="#__codelineno-3-14"></a><span class="w">    </span><span class="n">_lwsem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock_I2C</span><span class="p">);</span>
+<a id="__codelineno-3-15" name="__codelineno-3-15" href="#__codelineno-3-15"></a>
+<a id="__codelineno-3-16" name="__codelineno-3-16" href="#__codelineno-3-16"></a><span class="w">    </span><span class="c1">// Configuration de l'adresse destination</span>
+<a id="__codelineno-3-17" name="__codelineno-3-17" href="#__codelineno-3-17"></a><span class="w">    </span><span class="n">dest_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">I2C_BUS_ADDRESS_BA</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">uc_BANumber</span><span class="p">;</span>
+<a id="__codelineno-3-18" name="__codelineno-3-18" href="#__codelineno-3-18"></a><span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_DESTINATION_ADDRESS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">dest_addr</span><span class="p">);</span>
+<a id="__codelineno-3-19" name="__codelineno-3-19" href="#__codelineno-3-19"></a>
+<a id="__codelineno-3-20" name="__codelineno-3-20" href="#__codelineno-3-20"></a><span class="w">    </span><span class="c1">// Émission du START et de l'adresse</span>
+<a id="__codelineno-3-21" name="__codelineno-3-21" href="#__codelineno-3-21"></a><span class="w">    </span><span class="n">fwrite</span><span class="p">(</span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span><span class="w">  </span><span class="c1">// START condition</span>
+<a id="__codelineno-3-22" name="__codelineno-3-22" href="#__codelineno-3-22"></a><span class="w">    </span><span class="n">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_FLUSH_OUTPUT</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+<a id="__codelineno-3-23" name="__codelineno-3-23" href="#__codelineno-3-23"></a>
+<a id="__codelineno-3-24" name="__codelineno-3-24" href="#__codelineno-3-24"></a><span class="w">    </span><span class="c1">// Écriture des données</span>
+<a id="__codelineno-3-25" name="__codelineno-3-25" href="#__codelineno-3-25"></a><span class="w">    </span><span class="n">fwrite</span><span class="p">(</span><span class="n">p_uc_buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="n">us_n</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span>
+<a id="__codelineno-3-26" name="__codelineno-3-26" href="#__codelineno-3-26"></a><span class="w">    </span><span class="n">fflush</span><span class="p">(</span><span class="n">fd</span><span class="p">);</span><span class="w">  </span><span class="c1">// Attendre fin d'émission</span>
+<a id="__codelineno-3-27" name="__codelineno-3-27" href="#__codelineno-3-27"></a>
+<a id="__codelineno-3-28" name="__codelineno-3-28" href="#__codelineno-3-28"></a><span class="w">    </span><span class="c1">// Repeated START pour lecture</span>
+<a id="__codelineno-3-29" name="__codelineno-3-29" href="#__codelineno-3-29"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_REPEATED_START</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-3-30" name="__codelineno-3-30" href="#__codelineno-3-30"></a>
+<a id="__codelineno-3-31" name="__codelineno-3-31" href="#__codelineno-3-31"></a><span class="w">    </span><span class="c1">// Configuration de la lecture (5 octets)</span>
+<a id="__codelineno-3-32" name="__codelineno-3-32" href="#__codelineno-3-32"></a><span class="w">    </span><span class="n">uint_32</span><span class="w"> </span><span class="n">rx_request</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">5</span><span class="p">;</span>
+<a id="__codelineno-3-33" name="__codelineno-3-33" href="#__codelineno-3-33"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_RX_REQUEST</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">rx_request</span><span class="p">);</span>
+<a id="__codelineno-3-34" name="__codelineno-3-34" href="#__codelineno-3-34"></a>
+<a id="__codelineno-3-35" name="__codelineno-3-35" href="#__codelineno-3-35"></a><span class="w">    </span><span class="c1">// Lecture de la réponse</span>
+<a id="__codelineno-3-36" name="__codelineno-3-36" href="#__codelineno-3-36"></a><span class="w">    </span><span class="n">fread</span><span class="p">(</span><span class="n">p_uc_buffer</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span><span class="w"> </span><span class="n">fd</span><span class="p">);</span>
+<a id="__codelineno-3-37" name="__codelineno-3-37" href="#__codelineno-3-37"></a>
+<a id="__codelineno-3-38" name="__codelineno-3-38" href="#__codelineno-3-38"></a><span class="w">    </span><span class="c1">// Vérification du CRC</span>
+<a id="__codelineno-3-39" name="__codelineno-3-39" href="#__codelineno-3-39"></a><span class="w">    </span><span class="c1">// ...</span>
+<a id="__codelineno-3-40" name="__codelineno-3-40" href="#__codelineno-3-40"></a>
+<a id="__codelineno-3-41" name="__codelineno-3-41" href="#__codelineno-3-41"></a><span class="w">    </span><span class="c1">// STOP condition</span>
+<a id="__codelineno-3-42" name="__codelineno-3-42" href="#__codelineno-3-42"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_STOP</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-3-43" name="__codelineno-3-43" href="#__codelineno-3-43"></a>
+<a id="__codelineno-3-44" name="__codelineno-3-44" href="#__codelineno-3-44"></a><span class="w">    </span><span class="c1">// Libération du mutex</span>
+<a id="__codelineno-3-45" name="__codelineno-3-45" href="#__codelineno-3-45"></a><span class="w">    </span><span class="n">_lwsem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock_I2C</span><span class="p">);</span>
+<a id="__codelineno-3-46" name="__codelineno-3-46" href="#__codelineno-3-46"></a>
+<a id="__codelineno-3-47" name="__codelineno-3-47" href="#__codelineno-3-47"></a><span class="w">    </span><span class="c1">// Tempo pour laisser le BA traiter</span>
+<a id="__codelineno-3-48" name="__codelineno-3-48" href="#__codelineno-3-48"></a><span class="w">    </span><span class="n">_time_delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">// 100 ms</span>
+<a id="__codelineno-3-49" name="__codelineno-3-49" href="#__codelineno-3-49"></a>
+<a id="__codelineno-3-50" name="__codelineno-3-50" href="#__codelineno-3-50"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">result</span><span class="p">;</span>
+<a id="__codelineno-3-51" name="__codelineno-3-51" href="#__codelineno-3-51"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="gestion-des-erreurs-i2c">Gestion des erreurs I2C<a class="headerlink" href="#gestion-des-erreurs-i2c" title="Permanent link">&para;</a></h3>
+<p>Le système détecte et gère plusieurs types d'erreurs :</p>
+<h4 id="types-derreurs">Types d'erreurs<a class="headerlink" href="#types-derreurs" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Erreur d'adresse</strong> : Le BA ne répond pas au START</li>
+<li><strong>Erreur d'émission</strong> : Échec d'envoi des données</li>
+<li><strong>Erreur de CRC</strong> : Checksum invalide dans la réponse</li>
+<li><strong>Erreur de code</strong> : Le code de trame retourné ne correspond pas</li>
+<li><strong>Blocage I2C</strong> : Le bus I2C se bloque (détecté par timeout)</li>
+</ul>
+<h4 id="recuperation-sur-blocage">Récupération sur blocage<a class="headerlink" href="#recuperation-sur-blocage" title="Permanent link">&para;</a></h4>
+<p>En cas de blocage détecté, le système effectue une réinitialisation complète du bus I2C :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">if</span><span class="p">(</span><span class="n">uc_FlagReinitialiserI2C</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">    </span><span class="c1">// Fermeture du driver I2C</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="n">fclose</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">);</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="n">_time_delay</span><span class="p">(</span><span class="mi">10</span><span class="p">);</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="c1">// Réouverture</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="n">fd_BA_I2C</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">I2C_DEVICE_POLLED</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">    </span><span class="c1">// Reconfiguration complète</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_BAUD</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">baud_rate</span><span class="p">);</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_MASTER_MODE</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_BA_I2C</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_I2C_SET_STATION_ADDRESS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">station_addr</span><span class="p">);</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="p">}</span>
+</code></pre></div>
+<p>Le système tente jusqu'à <code>uc_NB_REINIT_MAX</code> réinitialisations avant d'abandonner.</p>
+<h3 id="timeouts-i2c">Timeouts I2C<a class="headerlink" href="#timeouts-i2c" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Timeout de communication</strong> : 100 ms entre chaque transaction</li>
+<li><strong>Tempo inter-trame</strong> : 100 ms après chaque échange pour laisser le BA traiter</li>
+<li><strong>Timeout de réinitialisation</strong> : 10 ms entre chaque tentative</li>
+</ul>
+<hr />
+<h2 id="spi-acces-aux-eeprom">SPI - Accès aux EEPROM<a class="headerlink" href="#spi-acces-aux-eeprom" title="Permanent link">&para;</a></h2>
+<h3 id="description_1">Description<a class="headerlink" href="#description_1" title="Permanent link">&para;</a></h3>
+<p>Le bus SPI est utilisé pour accéder à deux EEPROM externes :</p>
+<ol>
+<li><strong>EEPROM Adresse MAC</strong> (CS0) : Stocke l'adresse MAC Ethernet du boîtier</li>
+<li><strong>EEPROM Soft</strong> (CS2) : Stocke la clé de cryptage serveur et d'autres paramètres</li>
+</ol>
+<h3 id="configuration-spi">Configuration SPI<a class="headerlink" href="#configuration-spi" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// Ouverture du port SPI</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="n">MQX_FILE_PTR</span><span class="w"> </span><span class="n">fd_SPI_EEPROM</span><span class="p">;</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="n">fd_SPI_EEPROM</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="s">"spi0:"</span><span class="p">,</span><span class="w"> </span><span class="nb">NULL</span><span class="p">);</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="c1">// Configuration en mode maître</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPI_DEVICE_MASTER_MODE</span><span class="p">;</span>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_SPI_EEPROM</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SPI_SET_TRANSFER_MODE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="c1">// Configuration du mode clock (CPOL=0, CPHA=0)</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPI_CLK_POL_PHA_MODE0</span><span class="p">;</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_SPI_EEPROM</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SPI_SET_MODE</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="c1">// Configuration Big Endian (MSB first)</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">SPI_DEVICE_BIG_ENDIAN</span><span class="p">;</span>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_SPI_EEPROM</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SPI_SET_ENDIAN</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a><span class="c1">// Configuration de la vitesse (500 kHz)</span>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="n">param</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">500000</span><span class="p">;</span>
+<a id="__codelineno-5-19" name="__codelineno-5-19" href="#__codelineno-5-19"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_SPI_EEPROM</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SPI_SET_BAUD</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">param</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="selection-du-chip-select">Sélection du Chip Select<a class="headerlink" href="#selection-du-chip-select" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="c1">// Sélection EEPROM Adresse MAC (CS0)</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">vd_SpiSelectEEPROMAdresseMac</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="n">uint_32</span><span class="w"> </span><span class="n">cs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MCF5XXX_QSPI_QDR_QSPI_CS0</span><span class="p">;</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_SPI_EEPROM</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SPI_SET_CS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cs</span><span class="p">);</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="p">}</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="c1">// Sélection EEPROM Soft (CS2)</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="kt">void</span><span class="w"> </span><span class="nf">vd_SpiSelectEEPROMSoft</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="p">{</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">    </span><span class="n">uint_32</span><span class="w"> </span><span class="n">cs</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">MCF5XXX_QSPI_QDR_QSPI_CS2</span><span class="p">;</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">    </span><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_SPI_EEPROM</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SPI_SET_CS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">cs</span><span class="p">);</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="utilisation-typique">Utilisation typique<a class="headerlink" href="#utilisation-typique" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="c1">// Ouverture du SPI (une seule fois au démarrage)</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="n">vd_SpiOpen</span><span class="p">();</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="c1">// Lecture de l'adresse MAC</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="n">vd_SpiSelectEEPROMAdresseMac</span><span class="p">();</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="c1">// ... opérations de lecture SPI ...</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="c1">// Lecture de la clé serveur</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="n">vd_SpiSelectEEPROMSoft</span><span class="p">();</span>
+<a id="__codelineno-7-10" name="__codelineno-7-10" href="#__codelineno-7-10"></a><span class="c1">// ... opérations de lecture SPI ...</span>
+</code></pre></div>
+<h3 id="parametres-spi">Paramètres SPI<a class="headerlink" href="#parametres-spi" title="Permanent link">&para;</a></h3>
+<ul>
+<li><strong>Vitesse</strong> : 500 kHz</li>
+<li><strong>Mode</strong> : Mode 0 (CPOL=0, CPHA=0)</li>
+<li><strong>Ordre des bits</strong> : MSB first (Big Endian)</li>
+<li><strong>Chip Select</strong> : CS0 pour MAC, CS2 pour clé serveur</li>
+</ul>
+<hr />
+<h2 id="uart-teleinfo-et-debug">UART - TeleInfo et Debug<a class="headerlink" href="#uart-teleinfo-et-debug" title="Permanent link">&para;</a></h2>
+<h3 id="description_2">Description<a class="headerlink" href="#description_2" title="Permanent link">&para;</a></h3>
+<p>Le système utilise deux liaisons UART :</p>
+<ol>
+<li><strong>UART TeleInfo</strong> : Réception des données du compteur Linky (ERDF)</li>
+<li><strong>UART Debug</strong> : Sortie de debug pour le développement</li>
+</ol>
+<h3 id="configuration-uart-teleinfo">Configuration UART TeleInfo<a class="headerlink" href="#configuration-uart-teleinfo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="c1">// Ouverture du port série TeleInfo</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="cp">#define TELEINFO_DEVICE_INTERRUPT "ttya:"</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="cp">#define TELEINFO_BAUD_RATE 1200</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="n">MQX_FILE_PTR</span><span class="w"> </span><span class="n">fd_teleinfo</span><span class="p">;</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="n">fd_teleinfo</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">fopen</span><span class="p">(</span><span class="n">TELEINFO_DEVICE_INTERRUPT</span><span class="p">,</span><span class="w"> </span><span class="n">IO_SERIAL_NON_BLOCKING</span><span class="p">);</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="c1">// Configuration du baud rate (1200 bps)</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">baud</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">TELEINFO_BAUD_RATE</span><span class="p">;</span>
+<a id="__codelineno-8-10" name="__codelineno-8-10" href="#__codelineno-8-10"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_teleinfo</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SERIAL_SET_BAUD</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">baud</span><span class="p">);</span>
+<a id="__codelineno-8-11" name="__codelineno-8-11" href="#__codelineno-8-11"></a>
+<a id="__codelineno-8-12" name="__codelineno-8-12" href="#__codelineno-8-12"></a><span class="c1">// Configuration de la parité (paire)</span>
+<a id="__codelineno-8-13" name="__codelineno-8-13" href="#__codelineno-8-13"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">parity</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IO_SERIAL_PARITY_EVEN</span><span class="p">;</span>
+<a id="__codelineno-8-14" name="__codelineno-8-14" href="#__codelineno-8-14"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_teleinfo</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SERIAL_SET_PARITY</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">parity</span><span class="p">);</span>
+<a id="__codelineno-8-15" name="__codelineno-8-15" href="#__codelineno-8-15"></a>
+<a id="__codelineno-8-16" name="__codelineno-8-16" href="#__codelineno-8-16"></a><span class="c1">// Configuration 7 bits de données</span>
+<a id="__codelineno-8-17" name="__codelineno-8-17" href="#__codelineno-8-17"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">data_bits</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">7</span><span class="p">;</span>
+<a id="__codelineno-8-18" name="__codelineno-8-18" href="#__codelineno-8-18"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_teleinfo</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SERIAL_SET_DATA_BITS</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">data_bits</span><span class="p">);</span>
+<a id="__codelineno-8-19" name="__codelineno-8-19" href="#__codelineno-8-19"></a>
+<a id="__codelineno-8-20" name="__codelineno-8-20" href="#__codelineno-8-20"></a><span class="c1">// Activation de la réception</span>
+<a id="__codelineno-8-21" name="__codelineno-8-21" href="#__codelineno-8-21"></a><span class="n">boolean</span><span class="w"> </span><span class="n">disable_rx</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">FALSE</span><span class="p">;</span>
+<a id="__codelineno-8-22" name="__codelineno-8-22" href="#__codelineno-8-22"></a><span class="n">ioctl</span><span class="p">(</span><span class="n">fd_teleinfo</span><span class="p">,</span><span class="w"> </span><span class="n">IO_IOCTL_SERIAL_DISABLE_RX</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">disable_rx</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="format-des-trames-teleinfo">Format des trames TeleInfo<a class="headerlink" href="#format-des-trames-teleinfo" title="Permanent link">&para;</a></h3>
+<p>Le compteur Linky envoie des trames au format suivant :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a>&lt;STX&gt;
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a>&lt;LF&gt; ETIQUETTE &lt;SP&gt; DONNEE &lt;SP&gt; CHECKSUM &lt;CR&gt;
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a>&lt;LF&gt; ETIQUETTE &lt;SP&gt; DONNEE &lt;SP&gt; CHECKSUM &lt;CR&gt;
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a>...
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a>&lt;ETX&gt;
+</code></pre></div>
+<h4 id="caracteres-de-controle">Caractères de contrôle<a class="headerlink" href="#caracteres-de-controle" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>STX</strong> (0x02) : Début de trame</li>
+<li><strong>ETX</strong> (0x03) : Fin de trame</li>
+<li><strong>LF</strong> (0x0A) : Début de groupe d'information</li>
+<li><strong>CR</strong> (0x0D) : Fin de groupe d'information</li>
+<li><strong>SP</strong> (0x20) : Séparateur</li>
+<li><strong>EOT</strong> (0x04) : Pause émission (le compteur va réémettre)</li>
+</ul>
+<h4 id="calcul-du-checksum">Calcul du checksum<a class="headerlink" href="#calcul-du-checksum" title="Permanent link">&para;</a></h4>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="c1">// Calcul du checksum TeleInfo</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="nf">uc_fct_Calcul_CheckSum_Tele</span><span class="p">(</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">puc_buffer</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="n">uint_16</span><span class="w"> </span><span class="n">us_Nb_Octets</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="p">)</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="p">{</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="n">uint_16</span><span class="w"> </span><span class="n">i</span><span class="p">;</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">checksum</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">    </span><span class="c1">// Somme de tous les caractères</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="k">for</span><span class="p">(</span><span class="n">i</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">us_Nb_Octets</span><span class="p">;</span><span class="w"> </span><span class="n">i</span><span class="o">++</span><span class="p">)</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-10-13" name="__codelineno-10-13" href="#__codelineno-10-13"></a><span class="w">        </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="n">puc_buffer</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+<a id="__codelineno-10-14" name="__codelineno-10-14" href="#__codelineno-10-14"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-10-15" name="__codelineno-10-15" href="#__codelineno-10-15"></a>
+<a id="__codelineno-10-16" name="__codelineno-10-16" href="#__codelineno-10-16"></a><span class="w">    </span><span class="c1">// Garder seulement les 6 bits de poids faible</span>
+<a id="__codelineno-10-17" name="__codelineno-10-17" href="#__codelineno-10-17"></a><span class="w">    </span><span class="n">checksum</span><span class="w"> </span><span class="o">&amp;=</span><span class="w"> </span><span class="mh">0x3F</span><span class="p">;</span>
+<a id="__codelineno-10-18" name="__codelineno-10-18" href="#__codelineno-10-18"></a>
+<a id="__codelineno-10-19" name="__codelineno-10-19" href="#__codelineno-10-19"></a><span class="w">    </span><span class="c1">// Ajouter 0x20 pour obtenir un caractère imprimable</span>
+<a id="__codelineno-10-20" name="__codelineno-10-20" href="#__codelineno-10-20"></a><span class="w">    </span><span class="n">checksum</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="mh">0x20</span><span class="p">;</span>
+<a id="__codelineno-10-21" name="__codelineno-10-21" href="#__codelineno-10-21"></a>
+<a id="__codelineno-10-22" name="__codelineno-10-22" href="#__codelineno-10-22"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">checksum</span><span class="p">;</span>
+<a id="__codelineno-10-23" name="__codelineno-10-23" href="#__codelineno-10-23"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="parsing-des-trames-teleinfo">Parsing des trames TeleInfo<a class="headerlink" href="#parsing-des-trames-teleinfo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="c1">// Lecture non-bloquante du port série</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="kt">void</span><span class="w"> </span><span class="nf">vd_RSTeleinfoRead</span><span class="p">(</span><span class="n">MQX_FILE_PTR</span><span class="w"> </span><span class="n">fd</span><span class="p">)</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="p">{</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">caractere</span><span class="p">;</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="c1">// Lecture du buffer de réception MQX</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="k">while</span><span class="p">(</span><span class="n">read</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">caractere</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">          </span><span class="n">us_TeleinfoNbOctetsRecus</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">us_TAILLE_BUFFER_RX_TELEINFO</span><span class="p">)</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">        </span><span class="c1">// Filtrage des caractères de contrôle</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">caractere</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x02</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w">  </span><span class="c1">// STX</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">           </span><span class="n">caractere</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x03</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w">  </span><span class="c1">// ETX</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="w">           </span><span class="n">caractere</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mh">0x04</span><span class="p">)</span><span class="w">    </span><span class="c1">// EOT</span>
+<a id="__codelineno-11-14" name="__codelineno-11-14" href="#__codelineno-11-14"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-11-15" name="__codelineno-11-15" href="#__codelineno-11-15"></a><span class="w">            </span><span class="n">uc_TeleinfoBufferRx</span><span class="p">[</span><span class="n">us_TeleinfoNbOctetsRecus</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">caractere</span><span class="p">;</span>
+<a id="__codelineno-11-16" name="__codelineno-11-16" href="#__codelineno-11-16"></a><span class="w">            </span><span class="n">us_TeleinfoNbOctetsRecus</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-11-17" name="__codelineno-11-17" href="#__codelineno-11-17"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-11-18" name="__codelineno-11-18" href="#__codelineno-11-18"></a>
+<a id="__codelineno-11-19" name="__codelineno-11-19" href="#__codelineno-11-19"></a><span class="w">        </span><span class="c1">// Si pause émission, vider le buffer</span>
+<a id="__codelineno-11-20" name="__codelineno-11-20" href="#__codelineno-11-20"></a><span class="w">        </span><span class="k">if</span><span class="p">(</span><span class="n">caractere</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="mh">0x04</span><span class="p">)</span>
+<a id="__codelineno-11-21" name="__codelineno-11-21" href="#__codelineno-11-21"></a><span class="w">        </span><span class="p">{</span>
+<a id="__codelineno-11-22" name="__codelineno-11-22" href="#__codelineno-11-22"></a><span class="w">            </span><span class="n">us_TeleinfoNbOctetsRecus</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-11-23" name="__codelineno-11-23" href="#__codelineno-11-23"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-11-24" name="__codelineno-11-24" href="#__codelineno-11-24"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-11-25" name="__codelineno-11-25" href="#__codelineno-11-25"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="etiquettes-teleinfo-supportees">Étiquettes TeleInfo supportées<a class="headerlink" href="#etiquettes-teleinfo-supportees" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Étiquette</th>
+<th>Description</th>
+<th>Exemple</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>ADCO</td>
+<td>Adresse du compteur</td>
+<td>031228232024</td>
+</tr>
+<tr>
+<td>OPTARIF</td>
+<td>Option tarifaire</td>
+<td>HC.. (Heures Creuses)</td>
+</tr>
+<tr>
+<td>PTEC</td>
+<td>Période tarifaire en cours</td>
+<td>HP.. (Heures Pleines)</td>
+</tr>
+<tr>
+<td>ISOUSC</td>
+<td>Intensité souscrite</td>
+<td>60 (ampères)</td>
+</tr>
+<tr>
+<td>HCHC</td>
+<td>Index Heures Creuses</td>
+<td>003309966 (Wh)</td>
+</tr>
+<tr>
+<td>HCHP</td>
+<td>Index Heures Pleines</td>
+<td>007772110 (Wh)</td>
+</tr>
+<tr>
+<td>BASE</td>
+<td>Index Base (si tarif base)</td>
+<td>012345678 (Wh)</td>
+</tr>
+<tr>
+<td>IINST</td>
+<td>Intensité instantanée</td>
+<td>013 (ampères)</td>
+</tr>
+<tr>
+<td>IMAX</td>
+<td>Intensité maximale</td>
+<td>045 (ampères)</td>
+</tr>
+<tr>
+<td>PAPP</td>
+<td>Puissance apparente</td>
+<td>02980 (VA)</td>
+</tr>
+<tr>
+<td>ADPS</td>
+<td>Avertissement dépassement</td>
+<td>255 (si présent)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="exemple-de-trame-complete">Exemple de trame complète<a class="headerlink" href="#exemple-de-trame-complete" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a>&lt;STX&gt;
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a>&lt;LF&gt;ADCO 031228232024 4&lt;CR&gt;
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>&lt;LF&gt;OPTARIF HC.. &lt;&lt;CR&gt;
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a>&lt;LF&gt;ISOUSC 60 &lt;&lt;CR&gt;
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a>&lt;LF&gt;HCHC 003309966 *&lt;CR&gt;
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a>&lt;LF&gt;HCHP 007772110 ,&lt;CR&gt;
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a>&lt;LF&gt;PTEC HP..  &lt;CR&gt;
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a>&lt;LF&gt;IINST 013 [&lt;CR&gt;
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a>&lt;LF&gt;IMAX 045 H&lt;CR&gt;
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a>&lt;LF&gt;PAPP 02980 4&lt;CR&gt;
+<a id="__codelineno-12-11" name="__codelineno-12-11" href="#__codelineno-12-11"></a>&lt;LF&gt;MOTDETAT 000000 B&lt;CR&gt;
+<a id="__codelineno-12-12" name="__codelineno-12-12" href="#__codelineno-12-12"></a>&lt;ETX&gt;
+</code></pre></div>
+<h3 id="gestion-des-timeouts-teleinfo">Gestion des timeouts TeleInfo<a class="headerlink" href="#gestion-des-timeouts-teleinfo" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="c1">// Timeouts pour chaque type d'information</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="cp">#define us_TELEINFO_TIME_OUT                    50   </span><span class="c1">// 5 secondes</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="cp">#define us_TELEINFO_OPTION_TARIFAIRE_TIME_OUT   600  </span><span class="c1">// 60 secondes</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="cp">#define us_TELEINFO_PERIODE_TARIFAIRE_TIME_OUT  600  </span><span class="c1">// 60 secondes</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="cp">#define us_TELEINFO_PUISSANCE_APP_TIME_OUT      50   </span><span class="c1">// 5 secondes</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="cp">#define us_TELEINFO_HCHC_APP_TIME_OUT           600  </span><span class="c1">// 60 secondes</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="cp">#define us_TELEINFO_HCHP_OU_BASE_APP_TIME_OUT   600  </span><span class="c1">// 60 secondes</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="c1">// Timer 100 ms pour incrémenter les compteurs de timeout</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="kt">void</span><span class="w"> </span><span class="nf">vd_TeleinfoTimer</span><span class="p">(</span><span class="n">_timer_id</span><span class="w"> </span><span class="n">id</span><span class="p">,</span><span class="w"> </span><span class="n">pointer</span><span class="w"> </span><span class="n">data_ptr</span><span class="p">,</span><span class="w"> </span><span class="n">MQX_TICK_STRUCT_PTR</span><span class="w"> </span><span class="n">tick_ptr</span><span class="p">)</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="p">{</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">us_TeleinfoTimeOUT</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">us_TELEINFO_TIME_OUT</span><span class="p">)</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">        </span><span class="n">us_TeleinfoTimeOUT</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">us_TeleinfoTimeOUTPuissanceApp</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">us_TELEINFO_PUISSANCE_APP_TIME_OUT</span><span class="p">)</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="w">        </span><span class="n">us_TeleinfoTimeOUTPuissanceApp</span><span class="o">++</span><span class="p">;</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">    </span><span class="c1">// ... autres timeouts</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="p">}</span>
+</code></pre></div>
+<p>Si un timeout est atteint, le système positionne un flag de défaut TeleInfo dans la table d'échange.</p>
+<hr />
+<h2 id="ethernet-stack-tcpip-rtcs">Ethernet - Stack TCP/IP RTCS<a class="headerlink" href="#ethernet-stack-tcpip-rtcs" title="Permanent link">&para;</a></h2>
+<h3 id="description_3">Description<a class="headerlink" href="#description_3" title="Permanent link">&para;</a></h3>
+<p>Le client embarqué utilise la stack TCP/IP RTCS (Real-Time Communication Stack) de Freescale pour communiquer avec le serveur via Ethernet.</p>
+<h3 id="configuration-ethernet">Configuration Ethernet<a class="headerlink" href="#configuration-ethernet" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="c1">// Installation du driver socket</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="n">_io_socket_install</span><span class="p">(</span><span class="s">"socket:"</span><span class="p">);</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="c1">// Création d'une socket TCP</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">socket_handle</span><span class="p">;</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="n">socket_handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">PF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="c1">// Configuration du timeout de connexion (10 secondes)</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">timeout</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">SOL_TCP</span><span class="p">,</span><span class="w"> </span><span class="n">OPT_CONNECT_TIMEOUT</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">           </span><span class="o">&amp;</span><span class="n">timeout</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">uint_32</span><span class="p">));</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="c1">// Bind sur n'importe quelle interface locale</span>
+<a id="__codelineno-14-14" name="__codelineno-14-14" href="#__codelineno-14-14"></a><span class="n">sockaddr_in</span><span class="w"> </span><span class="n">local_addr</span><span class="p">;</span>
+<a id="__codelineno-14-15" name="__codelineno-14-15" href="#__codelineno-14-15"></a><span class="n">local_addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span>
+<a id="__codelineno-14-16" name="__codelineno-14-16" href="#__codelineno-14-16"></a><span class="n">local_addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Port automatique</span>
+<a id="__codelineno-14-17" name="__codelineno-14-17" href="#__codelineno-14-17"></a><span class="n">local_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INADDR_ANY</span><span class="p">;</span>
+<a id="__codelineno-14-18" name="__codelineno-14-18" href="#__codelineno-14-18"></a><span class="n">bind</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">local_addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">local_addr</span><span class="p">));</span>
+<a id="__codelineno-14-19" name="__codelineno-14-19" href="#__codelineno-14-19"></a>
+<a id="__codelineno-14-20" name="__codelineno-14-20" href="#__codelineno-14-20"></a><span class="c1">// Connexion au serveur</span>
+<a id="__codelineno-14-21" name="__codelineno-14-21" href="#__codelineno-14-21"></a><span class="n">sockaddr_in</span><span class="w"> </span><span class="n">server_addr</span><span class="p">;</span>
+<a id="__codelineno-14-22" name="__codelineno-14-22" href="#__codelineno-14-22"></a><span class="n">server_addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span>
+<a id="__codelineno-14-23" name="__codelineno-14-23" href="#__codelineno-14-23"></a><span class="n">server_addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPPORT_HTTP</span><span class="p">;</span><span class="w">  </span><span class="c1">// Port 80</span>
+<a id="__codelineno-14-24" name="__codelineno-14-24" href="#__codelineno-14-24"></a><span class="n">server_addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">server_ip</span><span class="p">;</span>
+<a id="__codelineno-14-25" name="__codelineno-14-25" href="#__codelineno-14-25"></a><span class="n">connect</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">server_addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">server_addr</span><span class="p">));</span>
+</code></pre></div>
+<h3 id="exemple-douverture-de-socket">Exemple d'ouverture de socket<a class="headerlink" href="#exemple-douverture-de-socket" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="kt">signed</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="nf">sc_SocketOpen</span><span class="p">(</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="n">_ip_address</span><span class="w"> </span><span class="n">AdresseIP</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="p">,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">long</span><span class="w"> </span><span class="o">*</span><span class="n">ul_Socket</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="p">)</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="p">{</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="n">uint_32</span><span class="w"> </span><span class="n">socket_handle</span><span class="p">;</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="n">uint_32</span><span class="w"> </span><span class="n">timeout_value</span><span class="p">;</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="w">    </span><span class="n">sockaddr_in</span><span class="w"> </span><span class="n">addr</span><span class="p">;</span>
+<a id="__codelineno-15-10" name="__codelineno-15-10" href="#__codelineno-15-10"></a>
+<a id="__codelineno-15-11" name="__codelineno-15-11" href="#__codelineno-15-11"></a><span class="w">    </span><span class="c1">// Installation du driver</span>
+<a id="__codelineno-15-12" name="__codelineno-15-12" href="#__codelineno-15-12"></a><span class="w">    </span><span class="n">_io_socket_install</span><span class="p">(</span><span class="s">"socket:"</span><span class="p">);</span>
+<a id="__codelineno-15-13" name="__codelineno-15-13" href="#__codelineno-15-13"></a>
+<a id="__codelineno-15-14" name="__codelineno-15-14" href="#__codelineno-15-14"></a><span class="w">    </span><span class="c1">// Création de la socket</span>
+<a id="__codelineno-15-15" name="__codelineno-15-15" href="#__codelineno-15-15"></a><span class="w">    </span><span class="n">socket_handle</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket</span><span class="p">(</span><span class="n">PF_INET</span><span class="p">,</span><span class="w"> </span><span class="n">SOCK_STREAM</span><span class="p">,</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-15-16" name="__codelineno-15-16" href="#__codelineno-15-16"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="n">socket_handle</span><span class="w"> </span><span class="o">==</span><span class="w"> </span><span class="n">RTCS_SOCKET_ERROR</span><span class="p">)</span>
+<a id="__codelineno-15-17" name="__codelineno-15-17" href="#__codelineno-15-17"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-15-18" name="__codelineno-15-18" href="#__codelineno-15-18"></a><span class="w">        </span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTCS_geterror</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">);</span>
+<a id="__codelineno-15-19" name="__codelineno-15-19" href="#__codelineno-15-19"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sc_SOCKET_OPEN_ERREUR_CREATION_SOCKET</span><span class="p">;</span>
+<a id="__codelineno-15-20" name="__codelineno-15-20" href="#__codelineno-15-20"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-15-21" name="__codelineno-15-21" href="#__codelineno-15-21"></a>
+<a id="__codelineno-15-22" name="__codelineno-15-22" href="#__codelineno-15-22"></a><span class="w">    </span><span class="c1">// Configuration timeout (10 secondes)</span>
+<a id="__codelineno-15-23" name="__codelineno-15-23" href="#__codelineno-15-23"></a><span class="w">    </span><span class="n">timeout_value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">10000</span><span class="p">;</span>
+<a id="__codelineno-15-24" name="__codelineno-15-24" href="#__codelineno-15-24"></a><span class="w">    </span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">setsockopt</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">SOL_TCP</span><span class="p">,</span><span class="w"> </span>
+<a id="__codelineno-15-25" name="__codelineno-15-25" href="#__codelineno-15-25"></a><span class="w">                                  </span><span class="n">OPT_CONNECT_TIMEOUT</span><span class="p">,</span>
+<a id="__codelineno-15-26" name="__codelineno-15-26" href="#__codelineno-15-26"></a><span class="w">                                  </span><span class="o">&amp;</span><span class="n">timeout_value</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">uint_32</span><span class="p">));</span>
+<a id="__codelineno-15-27" name="__codelineno-15-27" href="#__codelineno-15-27"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">RTCS_OK</span><span class="p">)</span>
+<a id="__codelineno-15-28" name="__codelineno-15-28" href="#__codelineno-15-28"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-15-29" name="__codelineno-15-29" href="#__codelineno-15-29"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sc_SOCKET_OPEN_ERREUR_CONFIG_TIME_OUT</span><span class="p">;</span>
+<a id="__codelineno-15-30" name="__codelineno-15-30" href="#__codelineno-15-30"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-15-31" name="__codelineno-15-31" href="#__codelineno-15-31"></a>
+<a id="__codelineno-15-32" name="__codelineno-15-32" href="#__codelineno-15-32"></a><span class="w">    </span><span class="c1">// Bind local</span>
+<a id="__codelineno-15-33" name="__codelineno-15-33" href="#__codelineno-15-33"></a><span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_family</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AF_INET</span><span class="p">;</span>
+<a id="__codelineno-15-34" name="__codelineno-15-34" href="#__codelineno-15-34"></a><span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-15-35" name="__codelineno-15-35" href="#__codelineno-15-35"></a><span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">INADDR_ANY</span><span class="p">;</span>
+<a id="__codelineno-15-36" name="__codelineno-15-36" href="#__codelineno-15-36"></a><span class="w">    </span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">bind</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+<a id="__codelineno-15-37" name="__codelineno-15-37" href="#__codelineno-15-37"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">RTCS_OK</span><span class="p">)</span>
+<a id="__codelineno-15-38" name="__codelineno-15-38" href="#__codelineno-15-38"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-15-39" name="__codelineno-15-39" href="#__codelineno-15-39"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sc_SOCKET_OPEN_ERREUR_BIND</span><span class="p">;</span>
+<a id="__codelineno-15-40" name="__codelineno-15-40" href="#__codelineno-15-40"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-15-41" name="__codelineno-15-41" href="#__codelineno-15-41"></a>
+<a id="__codelineno-15-42" name="__codelineno-15-42" href="#__codelineno-15-42"></a><span class="w">    </span><span class="c1">// Connexion au serveur</span>
+<a id="__codelineno-15-43" name="__codelineno-15-43" href="#__codelineno-15-43"></a><span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_port</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">IPPORT_HTTP</span><span class="p">;</span>
+<a id="__codelineno-15-44" name="__codelineno-15-44" href="#__codelineno-15-44"></a><span class="w">    </span><span class="n">addr</span><span class="p">.</span><span class="n">sin_addr</span><span class="p">.</span><span class="n">s_addr</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">AdresseIP</span><span class="p">;</span>
+<a id="__codelineno-15-45" name="__codelineno-15-45" href="#__codelineno-15-45"></a><span class="w">    </span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">connect</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="o">&amp;</span><span class="n">addr</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">addr</span><span class="p">));</span>
+<a id="__codelineno-15-46" name="__codelineno-15-46" href="#__codelineno-15-46"></a><span class="w">    </span><span class="k">if</span><span class="p">(</span><span class="o">*</span><span class="n">ul_DetailErreur</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="n">RTCS_OK</span><span class="p">)</span>
+<a id="__codelineno-15-47" name="__codelineno-15-47" href="#__codelineno-15-47"></a><span class="w">    </span><span class="p">{</span>
+<a id="__codelineno-15-48" name="__codelineno-15-48" href="#__codelineno-15-48"></a><span class="w">        </span><span class="n">shutdown</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">FLAG_ABORT_CONNECTION</span><span class="p">);</span>
+<a id="__codelineno-15-49" name="__codelineno-15-49" href="#__codelineno-15-49"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="n">sc_SOCKET_OPEN_ERREUR_OPEN_SOCKET</span><span class="p">;</span>
+<a id="__codelineno-15-50" name="__codelineno-15-50" href="#__codelineno-15-50"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-15-51" name="__codelineno-15-51" href="#__codelineno-15-51"></a>
+<a id="__codelineno-15-52" name="__codelineno-15-52" href="#__codelineno-15-52"></a><span class="w">    </span><span class="o">*</span><span class="n">ul_Socket</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">socket_handle</span><span class="p">;</span>
+<a id="__codelineno-15-53" name="__codelineno-15-53" href="#__codelineno-15-53"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w">  </span><span class="c1">// Succès</span>
+<a id="__codelineno-15-54" name="__codelineno-15-54" href="#__codelineno-15-54"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="envoi-et-reception-http">Envoi et réception HTTP<a class="headerlink" href="#envoi-et-reception-http" title="Permanent link">&para;</a></h3>
+<p>Une fois la socket ouverte, le client utilise <code>send()</code> et <code>recv()</code> pour échanger des données HTTP :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="c1">// Envoi d'une requête HTTP</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="kt">char</span><span class="w"> </span><span class="n">request</span><span class="p">[]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s">"GET /api/serverinfos HTTP/1.1</span><span class="se">\r\n</span><span class="s">"</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">                 </span><span class="s">"Host: server</span><span class="se">\r\n</span><span class="s">"</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">                 </span><span class="s">"Connection: close</span><span class="se">\r\n</span><span class="s">"</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">                 </span><span class="s">"</span><span class="se">\r\n</span><span class="s">"</span><span class="p">;</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="n">send</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">request</span><span class="p">,</span><span class="w"> </span><span class="n">strlen</span><span class="p">(</span><span class="n">request</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="c1">// Réception de la réponse</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="kt">char</span><span class="w"> </span><span class="n">buffer</span><span class="p">[</span><span class="mi">1024</span><span class="p">];</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="kt">int</span><span class="w"> </span><span class="n">bytes_received</span><span class="p">;</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="n">bytes_received</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">recv</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">buffer</span><span class="p">,</span><span class="w"> </span><span class="k">sizeof</span><span class="p">(</span><span class="n">buffer</span><span class="p">),</span><span class="w"> </span><span class="mi">0</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="contrainte-critique-single-packet">Contrainte critique : Single-Packet<a class="headerlink" href="#contrainte-critique-single-packet" title="Permanent link">&para;</a></h3>
+<p><strong>IMPORTANT</strong> : Le parser HTTP du client embarqué ne supporte qu'un seul paquet TCP par réponse. Toute la réponse HTTP (headers + body) doit arriver dans un seul <code>recv()</code>.</p>
+<p>Cette contrainte est due à :
+- La mémoire limitée du microcontrôleur
+- Un parser HTTP simplifié qui ne gère pas la fragmentation</p>
+<p>Le serveur doit donc bufferiser toute la réponse avant de l'envoyer. Voir <a href="../../protocol/tcp-single-packet/">tcp-single-packet.md</a> pour plus de détails.</p>
+<h3 id="fermeture-de-socket">Fermeture de socket<a class="headerlink" href="#fermeture-de-socket" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="c1">// Fermeture propre</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="n">shutdown</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">FLAG_CLOSE_TX</span><span class="p">);</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="c1">// Ou fermeture brutale en cas d'erreur</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="n">shutdown</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">,</span><span class="w"> </span><span class="n">FLAG_ABORT_CONNECTION</span><span class="p">);</span>
+</code></pre></div>
+<h3 id="gestion-des-erreurs-reseau">Gestion des erreurs réseau<a class="headerlink" href="#gestion-des-erreurs-reseau" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="c1">// Récupération du code d'erreur RTCS</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="n">uint_32</span><span class="w"> </span><span class="n">error_code</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">RTCS_geterror</span><span class="p">(</span><span class="n">socket_handle</span><span class="p">);</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="c1">// Codes d'erreur courants</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="c1">// RTCSERR_SOCK_NOT_CONNECTED : Socket non connectée</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="c1">// RTCSERR_SOCK_CLOSED : Socket fermée</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="c1">// RTCSERR_TCP_CONN_TIMEOUT : Timeout de connexion</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="c1">// RTCSERR_TCP_CONN_RESET : Connexion réinitialisée</span>
+</code></pre></div>
+<hr />
+<h2 id="synchronisation-multi-taches">Synchronisation Multi-tâches<a class="headerlink" href="#synchronisation-multi-taches" title="Permanent link">&para;</a></h2>
+<p>Toutes les communications utilisent des primitives de synchronisation MQX pour éviter les conflits d'accès :</p>
+<h3 id="mutex-i2c">Mutex I2C<a class="headerlink" href="#mutex-i2c" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="c1">// Déclaration du sémaphore</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="n">LWSEM_STRUCT</span><span class="w"> </span><span class="n">lock_I2C</span><span class="p">;</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="c1">// Initialisation</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="n">_lwsem_create</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock_I2C</span><span class="p">,</span><span class="w"> </span><span class="mi">1</span><span class="p">);</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="c1">// Utilisation</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="n">_lwsem_wait</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock_I2C</span><span class="p">);</span><span class="w">    </span><span class="c1">// Acquérir le verrou</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="c1">// ... opérations I2C ...</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="n">_lwsem_post</span><span class="p">(</span><span class="o">&amp;</span><span class="n">lock_I2C</span><span class="p">);</span><span class="w">    </span><span class="c1">// Libérer le verrou</span>
+</code></pre></div>
+<h3 id="temporisations">Temporisations<a class="headerlink" href="#temporisations" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="c1">// Délai bloquant (en millisecondes)</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="n">_time_delay</span><span class="p">(</span><span class="mi">100</span><span class="p">);</span><span class="w">  </span><span class="c1">// Attendre 100 ms</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="c1">// Céder la main aux autres tâches</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="n">_sched_yield</span><span class="p">();</span>
+</code></pre></div>
+<hr />
+<h2 id="resume-des-parametres">Résumé des Paramètres<a class="headerlink" href="#resume-des-parametres" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>Bus</th>
+<th>Vitesse</th>
+<th>Configuration</th>
+<th>Usage</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>I2C</td>
+<td>50 kHz</td>
+<td>Maître, 7-bit addr</td>
+<td>Boîtiers auxiliaires</td>
+</tr>
+<tr>
+<td>SPI</td>
+<td>500 kHz</td>
+<td>Mode 0, MSB first</td>
+<td>EEPROM MAC et clé</td>
+</tr>
+<tr>
+<td>UART TeleInfo</td>
+<td>1200 bps</td>
+<td>7E1 (7 bits, parité paire)</td>
+<td>Compteur Linky</td>
+</tr>
+<tr>
+<td>Ethernet</td>
+<td>100 Mbps</td>
+<td>TCP/IP (RTCS)</td>
+<td>Serveur HTTP</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="references">Références<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Modules source</strong> : <code>C/ba_i2c.c</code>, <code>C/Eepromspi.c</code>, <code>C/TeleInfo.c</code>, <code>Ethernet/GestionSocket.c</code></li>
+<li><strong>Headers</strong> : <code>H/ba_i2c.h</code>, <code>H/eepromspi.h</code>, <code>H/TeleInfo.h</code>, <code>Ethernet/GestionSocket.h</code></li>
+<li><strong>Documentation ERDF</strong> : "Sorties de télé-information client des appareils de comptage électroniques" (erdf_noi_cpt_02e.pdf)</li>
+<li><strong>MQX RTCS</strong> : Freescale Real-Time Communication Stack documentation</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/essensys-hub/client-essensys-legacy" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

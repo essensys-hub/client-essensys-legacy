@@ -1,0 +1,2778 @@
+
+<!doctype html>
+<html lang="fr" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Documentation du système de contrôle domotique embarqué basé sur MQX RTOS">
+      
+      
+        <meta name="author" content="Essensys">
+      
+      
+      
+        <link rel="prev" href="../tcp-single-packet/">
+      
+      
+        <link rel="next" href="../../embedded-client/architecture/">
+      
+      
+        
+      
+      
+      <link rel="icon" href="../../assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.7.7">
+    
+    
+      
+        <title>Table d'échange - Client Embarqué BP_MQX_ETH - ESSENSYS</title>
+      
+    
+    
+      <link rel="stylesheet" href="../../assets/stylesheets/main.ec1eaa64.min.css">
+      
+        
+        <link rel="stylesheet" href="../../assets/stylesheets/palette.ab4e12ef.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#table-dechange-documentation-complete" class="md-skip">
+          Aller au contenu
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="En-tête">
+    <a href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-header__button md-logo" aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Client Embarqué BP_MQX_ETH - ESSENSYS
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Table d'échange
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="default" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passer en mode sombre"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Passer en mode sombre" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="" data-md-color-scheme="slate" data-md-color-primary="indigo" data-md-color-accent="indigo"  aria-label="Passer en mode clair"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Passer en mode clair" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      
+      
+        <label class="md-header__button md-icon" for="__search">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        </label>
+        <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Rechercher" placeholder="Rechercher" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Recherche">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Effacer" aria-label="Effacer" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+      
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+            
+<nav class="md-tabs" aria-label="Onglets" data-md-component="tabs">
+  <div class="md-grid">
+    <ul class="md-tabs__list">
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../.." class="md-tabs__link">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+    </li>
+  
+
+      
+        
+  
+  
+  
+    
+  
+  
+    
+    
+      <li class="md-tabs__item md-tabs__item--active">
+        <a href="../http-legacy-protocol/" class="md-tabs__link">
+          
+  
+  
+  Protocole
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../embedded-client/architecture/" class="md-tabs__link">
+          
+  
+  
+  Client Embarqué
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../server/go-implementation/" class="md-tabs__link">
+          
+  
+  
+  Serveur
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    
+    
+      <li class="md-tabs__item">
+        <a href="../../diagrams/system-overview/" class="md-tabs__link">
+          
+  
+  
+  Diagrammes
+
+        </a>
+      </li>
+    
+  
+
+      
+        
+  
+  
+  
+  
+    <li class="md-tabs__item">
+      <a href="../../troubleshooting/network-debugging/" class="md-tabs__link">
+        
+  
+  
+    
+  
+  Dépannage
+
+      </a>
+    </li>
+  
+
+      
+    </ul>
+  </div>
+</nav>
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+  
+
+
+<nav class="md-nav md-nav--primary md-nav--lifted" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-nav__button md-logo" aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Client Embarqué BP_MQX_ETH - ESSENSYS
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"/></svg>
+  </div>
+  <div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../.." class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+    
+    
+      
+        
+        
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Protocole
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Protocole
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../http-legacy-protocol/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../tcp-single-packet/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Contrainte TCP Single-Packet
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table d'échange
+  
+
+    
+  </span>
+  
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="./" class="md-nav__link md-nav__link--active">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Table d'échange
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'Ensemble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concept-de-la-table-dechange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept de la Table d'Échange
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concept de la Table d&#39;Échange">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principe-de-fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principe de Fonctionnement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure-des-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure des Données
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indices-605-622-scenarios-et-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices 605-622 : Scénarios et Contrôle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Indices 605-622 : Scénarios et Contrôle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tableau-complet-des-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tableau Complet des Indices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indices-suivants-623-639" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices Suivants (623-639)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indices-speciaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices Spéciaux
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Indices Spéciaux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-590-trigger-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 590 : Trigger Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-613-eteindre-lumieres-pdv-lsb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 613 : Éteindre Lumières PDV (LSB)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-607-configuration-alarme-detecteur-douverture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 607 : Configuration Alarme (Détecteur d'Ouverture)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-615-eteindre-lumieres-chb-lsb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 615 : Éteindre Lumières CHB (LSB)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pourquoi-envoyer-la-table-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi Envoyer la Table Complète ?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pourquoi Envoyer la Table Complète ?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comportement-critique-du-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comportement Critique du Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-table-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution : Table Complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logique-de-merge-bitwise-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logique de Merge (Bitwise OR)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logique de Merge (Bitwise OR)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algorithme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithme
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de Merge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pourquoi-or-et-pas-autre-chose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi OR et pas autre chose ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#champ-_de67f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champ _de67f
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Champ _de67f">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-dans-le-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Position dans le JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valeurs-possibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valeurs Possibles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-complets-dactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples Complets d'Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples Complets d&#39;Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-1-allumer-la-lumiere-de-lescalier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 1 : Allumer la Lumière de l'Escalier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-2-eteindre-toutes-les-lumieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 2 : Éteindre Toutes les Lumières
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-3-allumer-plusieurs-lumieres-simultanement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 3 : Allumer Plusieurs Lumières Simultanément
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-4-scenario-je-sors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 4 : Scénario "Je Sors"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historique-des-valeurs-25-entrees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historique des Valeurs (25 Entrées)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historique des Valeurs (25 Entrées)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implémentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-dhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple d'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codes-sources-pertinents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codes Sources Pertinents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Codes Sources Pertinents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definition-des-indices-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définition des Indices (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acces-a-la-table-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accès à la Table (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-json-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing JSON (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resume-des-regles-importantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résumé des Règles Importantes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Client Embarqué
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Embarqué
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-client/architecture/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-client/modules-reference/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Référence des modules
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-client/communications/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Communications
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../embedded-client/hardware/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Matériel
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_4" >
+        
+          
+          <label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Serveur
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_4_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_4">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Serveur
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/go-implementation/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Implémentation Go
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../server/api-endpoints/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Points d'API
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+    
+    
+      
+      
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_5" >
+        
+          
+          <label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="0">
+            
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrammes
+  
+
+    
+  </span>
+  
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_5_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_5">
+            <span class="md-nav__icon md-icon"></span>
+            
+  
+    Diagrammes
+  
+
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/system-overview/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Vue d'ensemble du système
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/sequence-diagrams/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Diagrammes de séquence
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../diagrams/data-flow/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Flux de données
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../../troubleshooting/network-debugging/" class="md-nav__link">
+        
+  
+  
+  <span class="md-ellipsis">
+    
+  
+    Dépannage
+  
+
+    
+  </span>
+  
+  
+
+      </a>
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table des matières">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#vue-densemble" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Vue d'Ensemble
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concept-de-la-table-dechange" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept de la Table d'Échange
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Concept de la Table d&#39;Échange">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#principe-de-fonctionnement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Principe de Fonctionnement
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#structure-des-donnees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Structure des Données
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indices-605-622-scenarios-et-controle" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices 605-622 : Scénarios et Contrôle
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Indices 605-622 : Scénarios et Contrôle">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#tableau-complet-des-indices" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Tableau Complet des Indices
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#indices-suivants-623-639" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices Suivants (623-639)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#indices-speciaux" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Indices Spéciaux
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Indices Spéciaux">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#index-590-trigger-scenario" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 590 : Trigger Scenario
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-613-eteindre-lumieres-pdv-lsb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 613 : Éteindre Lumières PDV (LSB)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-607-configuration-alarme-detecteur-douverture" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 607 : Configuration Alarme (Détecteur d'Ouverture)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#index-615-eteindre-lumieres-chb-lsb" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Index 615 : Éteindre Lumières CHB (LSB)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#pourquoi-envoyer-la-table-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi Envoyer la Table Complète ?
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Pourquoi Envoyer la Table Complète ?">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#comportement-critique-du-client" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Comportement Critique du Client
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#probleme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Problème
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#solution-table-complete" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Solution : Table Complète
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#logique-de-merge-bitwise-or" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Logique de Merge (Bitwise OR)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Logique de Merge (Bitwise OR)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#contexte" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Contexte
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#algorithme" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Algorithme
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-de-merge" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple de Merge
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#pourquoi-or-et-pas-autre-chose" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Pourquoi OR et pas autre chose ?
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#champ-_de67f" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Champ _de67f
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Champ _de67f">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#position-dans-le-json" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Position dans le JSON
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#raison" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Raison
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#valeurs-possibles" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Valeurs Possibles
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#exemples-complets-dactions" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemples Complets d'Actions
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Exemples Complets d&#39;Actions">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#exemple-1-allumer-la-lumiere-de-lescalier" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 1 : Allumer la Lumière de l'Escalier
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-2-eteindre-toutes-les-lumieres" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 2 : Éteindre Toutes les Lumières
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-3-allumer-plusieurs-lumieres-simultanement" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 3 : Allumer Plusieurs Lumières Simultanément
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-4-scenario-je-sors" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple 4 : Scénario "Je Sors"
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#historique-des-valeurs-25-entrees" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Historique des Valeurs (25 Entrées)
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Historique des Valeurs (25 Entrées)">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#concept" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Concept
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#implementation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Implémentation
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#exemple-dhistorique" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Exemple d'Historique
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#utilisation" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Utilisation
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#codes-sources-pertinents" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Codes Sources Pertinents
+      
+    </span>
+  </a>
+  
+    <nav class="md-nav" aria-label="Codes Sources Pertinents">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#definition-des-indices-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Définition des Indices (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#acces-a-la-table-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Accès à la Table (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+          <li class="md-nav__item">
+  <a href="#parsing-json-c" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Parsing JSON (C)
+      
+    </span>
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#resume-des-regles-importantes" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Résumé des Règles Importantes
+      
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#references" class="md-nav__link">
+    <span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  
+  
+
+
+<h1 id="table-dechange-documentation-complete">Table d'Échange - Documentation Complète<a class="headerlink" href="#table-dechange-documentation-complete" title="Permanent link">&para;</a></h1>
+<h2 id="vue-densemble">Vue d'Ensemble<a class="headerlink" href="#vue-densemble" title="Permanent link">&para;</a></h2>
+<p>La <strong>table d'échange</strong> est une structure de données centrale qui permet la communication entre le client embarqué BP_MQX_ETH et le serveur. Elle contient environ 600 indices (0 à ~600) qui représentent l'état complet du système domotique : configuration, état des équipements, commandes, historiques, etc.</p>
+<p>Cette documentation se concentre sur les <strong>indices 605-622</strong> qui sont utilisés pour les <strong>scénarios</strong> et le <strong>contrôle des équipements</strong> (lumières, volets, chauffage).</p>
+<h2 id="concept-de-la-table-dechange">Concept de la Table d'Échange<a class="headerlink" href="#concept-de-la-table-dechange" title="Permanent link">&para;</a></h2>
+<h3 id="principe-de-fonctionnement">Principe de Fonctionnement<a class="headerlink" href="#principe-de-fonctionnement" title="Permanent link">&para;</a></h3>
+<ol>
+<li><strong>Client → Serveur</strong> : Le client envoie périodiquement (toutes les 1-2 secondes) l'état de certains indices via <code>POST /api/mystatus</code></li>
+<li><strong>Serveur → Client</strong> : Le serveur répond avec des actions à exécuter via <code>GET /api/myactions</code></li>
+<li><strong>Exécution</strong> : Le client exécute les actions et acquitte via <code>POST /api/done/{guid}</code></li>
+</ol>
+<h3 id="structure-des-donnees">Structure des Données<a class="headerlink" href="#structure-des-donnees" title="Permanent link">&para;</a></h3>
+<p>Chaque indice de la table d'échange contient un octet (0-255) qui représente :
+- Un état (0/1 pour OFF/ON)
+- Une valeur numérique (température, durée, etc.)
+- Un masque de bits (pour contrôler plusieurs équipements simultanément)</p>
+<h2 id="indices-605-622-scenarios-et-controle">Indices 605-622 : Scénarios et Contrôle<a class="headerlink" href="#indices-605-622-scenarios-et-controle" title="Permanent link">&para;</a></h2>
+<p>Ces indices sont définis dans l'enum <code>enumScenario</code> du fichier <code>H/TableEchange.h</code> et commencent à l'indice 600 dans la table d'échange.</p>
+<h3 id="tableau-complet-des-indices">Tableau Complet des Indices<a class="headerlink" href="#tableau-complet-des-indices" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Indice</th>
+<th>Nom</th>
+<th>Description</th>
+<th>Valeurs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>600</td>
+<td>Scenario_Confirme_Scenario</td>
+<td>Demander confirmation avant exécution</td>
+<td>0=non, 1=oui</td>
+</tr>
+<tr>
+<td>601</td>
+<td>Scenario_Alarme_ON</td>
+<td>Contrôle de l'alarme</td>
+<td>0=rien, 1=activer, 2=désactiver</td>
+</tr>
+<tr>
+<td>602-612</td>
+<td>Scenario_AlarmeConfig</td>
+<td>Configuration alarme (11 paramètres)</td>
+<td>Voir enumAlarmeConfig</td>
+</tr>
+<tr>
+<td>613</td>
+<td>Scenario_Eteindre_PDV_LSB</td>
+<td>Éteindre lumières Pièces De Vie (LSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>614</td>
+<td>Scenario_Eteindre_PDV_MSB</td>
+<td>Éteindre lumières Pièces De Vie (MSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>615</td>
+<td>Scenario_Eteindre_CHB_LSB</td>
+<td>Éteindre lumières Chambres (LSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>616</td>
+<td>Scenario_Eteindre_CHB_MSB</td>
+<td>Éteindre lumières Chambres (MSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>617</td>
+<td>Scenario_Eteindre_PDE_LSB</td>
+<td>Éteindre lumières Pièces D'Eau (LSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>618</td>
+<td>Scenario_Eteindre_PDE_MSB</td>
+<td>Éteindre lumières Pièces D'Eau (MSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>619</td>
+<td>Scenario_Allumer_PDV_LSB</td>
+<td>Allumer lumières Pièces De Vie (LSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>620</td>
+<td>Scenario_Allumer_PDV_MSB</td>
+<td>Allumer lumières Pièces De Vie (MSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>621</td>
+<td>Scenario_Allumer_CHB_LSB</td>
+<td>Allumer lumières Chambres (LSB)</td>
+<td>Masque de bits</td>
+</tr>
+<tr>
+<td>622</td>
+<td>Scenario_Allumer_CHB_MSB</td>
+<td>Allumer lumières Chambres (MSB)</td>
+<td>Masque de bits</td>
+</tr>
+</tbody>
+</table>
+<h3 id="indices-suivants-623-639">Indices Suivants (623-639)<a class="headerlink" href="#indices-suivants-623-639" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Indice</th>
+<th>Nom</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>623</td>
+<td>Scenario_Allumer_PDE_LSB</td>
+<td>Allumer lumières Pièces D'Eau (LSB)</td>
+</tr>
+<tr>
+<td>624</td>
+<td>Scenario_Allumer_PDE_MSB</td>
+<td>Allumer lumières Pièces D'Eau (MSB)</td>
+</tr>
+<tr>
+<td>625</td>
+<td>Scenario_OuvrirVolets_PDV</td>
+<td>Ouvrir volets Pièces De Vie</td>
+</tr>
+<tr>
+<td>626</td>
+<td>Scenario_OuvrirVolets_CHB</td>
+<td>Ouvrir volets Chambres</td>
+</tr>
+<tr>
+<td>627</td>
+<td>Scenario_OuvrirVolets_PDE</td>
+<td>Ouvrir volets Pièces D'Eau</td>
+</tr>
+<tr>
+<td>628</td>
+<td>Scenario_FermerVolets_PDV</td>
+<td>Fermer volets Pièces De Vie</td>
+</tr>
+<tr>
+<td>629</td>
+<td>Scenario_FermerVolets_CHB</td>
+<td>Fermer volets Chambres</td>
+</tr>
+<tr>
+<td>630</td>
+<td>Scenario_FermerVolets_PDE</td>
+<td>Fermer volets Pièces D'Eau</td>
+</tr>
+<tr>
+<td>631</td>
+<td>Scenario_Securite</td>
+<td>Contrôle prises de sécurité</td>
+</tr>
+<tr>
+<td>632</td>
+<td>Scenario_Machines</td>
+<td>Contrôle machines à laver</td>
+</tr>
+<tr>
+<td>633-636</td>
+<td>Scenario_Chauf_*</td>
+<td>Consignes chauffage (zj, zn, zsb1, zsb2)</td>
+</tr>
+<tr>
+<td>637</td>
+<td>Scenario_Cumulus</td>
+<td>Contrôle cumulus</td>
+</tr>
+<tr>
+<td>638</td>
+<td>Scenario_Reveil_Reglage</td>
+<td>Réglage des réveils</td>
+</tr>
+<tr>
+<td>639</td>
+<td>Scenario_Reveil_ON</td>
+<td>Activation fonction réveil</td>
+</tr>
+</tbody>
+</table>
+<h2 id="indices-speciaux">Indices Spéciaux<a class="headerlink" href="#indices-speciaux" title="Permanent link">&para;</a></h2>
+<h3 id="index-590-trigger-scenario">Index 590 : Trigger Scenario<a class="headerlink" href="#index-590-trigger-scenario" title="Permanent link">&para;</a></h3>
+<p><strong>Valeur</strong> : Doit toujours être "1" dans chaque action</p>
+<p><strong>Rôle</strong> : Cet index déclenche l'exécution du scénario. Sans lui, les autres indices sont ignorés.</p>
+<p><strong>Exemple</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">590</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="index-613-eteindre-lumieres-pdv-lsb">Index 613 : Éteindre Lumières PDV (LSB)<a class="headerlink" href="#index-613-eteindre-lumieres-pdv-lsb" title="Permanent link">&para;</a></h3>
+<p><strong>Valeur</strong> : Masque de bits (0-255)</p>
+<p><strong>Mapping des bits</strong> :
+- Bit 0 (valeur 1) : Lampe de l'entrée
+- Bit 1 (valeur 2) : Lampe 1 du salon
+- Bit 2 (valeur 4) : Lampe 2 du salon
+- Bit 3 (valeur 8) : Lampe du dressing 1
+- Bit 4 (valeur 16) : Lampe du dressing 2
+- Bit 5 (valeur 32) : Variateur du bureau
+- Bit 6 (valeur 64) : Variateur de la salle à manger
+- Bit 7 (valeur 128) : Variateur du salon</p>
+<p><strong>Exemple</strong> : Pour éteindre la lampe de l'entrée ET la lampe 1 du salon :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>Valeur = 1 + 2 = 3
+</code></pre></div></p>
+<h3 id="index-607-configuration-alarme-detecteur-douverture">Index 607 : Configuration Alarme (Détecteur d'Ouverture)<a class="headerlink" href="#index-607-configuration-alarme-detecteur-douverture" title="Permanent link">&para;</a></h3>
+<p><strong>Position</strong> : 602 + 5 = 607 (AlarmeConfig_DetectOuvSurVoieAcces)</p>
+<p><strong>Valeur</strong> :
+- 0 : Détecteur d'ouverture pas sur voie d'accès
+- 1 : Détecteur d'ouverture sur voie d'accès</p>
+<h3 id="index-615-eteindre-lumieres-chb-lsb">Index 615 : Éteindre Lumières CHB (LSB)<a class="headerlink" href="#index-615-eteindre-lumieres-chb-lsb" title="Permanent link">&para;</a></h3>
+<p><strong>Valeur</strong> : Masque de bits (0-255)</p>
+<p><strong>Mapping des bits</strong> :
+- Bit 0 (valeur 1) : Lampe de l'escalier
+- Bit 1 (valeur 2) : Lampe 1 de la grande chambre
+- Bit 2 (valeur 4) : Lampe 2 de la grande chambre
+- Bit 3 (valeur 8) : Lampe 1 de la petite chambre 1
+- Bit 4 (valeur 16) : Lampe 2 de la petite chambre 1
+- Bit 5 (valeur 32) : Lampe de la petite chambre 2
+- Bit 6 (valeur 64) : Lampe de la petite chambre 3
+- Bit 7 (valeur 128) : (Non utilisé dans LSB)</p>
+<p><strong>Exemple</strong> : Pour éteindre la lampe de l'escalier :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a>Valeur = 1
+</code></pre></div></p>
+<h2 id="pourquoi-envoyer-la-table-complete">Pourquoi Envoyer la Table Complète ?<a class="headerlink" href="#pourquoi-envoyer-la-table-complete" title="Permanent link">&para;</a></h2>
+<h3 id="comportement-critique-du-client">Comportement Critique du Client<a class="headerlink" href="#comportement-critique-du-client" title="Permanent link">&para;</a></h3>
+<p>Le client embarqué interprète l'<strong>absence d'un index</strong> comme "<strong>garder l'état actuel</strong>". Cela signifie que si vous envoyez seulement :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">613</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">}</span><span class="w">  </span><span class="c1">// Éteindre lampe entrée</span>
+</code></pre></div>
+<p>Le client va :
+1. Éteindre la lampe de l'entrée
+2. <strong>Conserver l'état de toutes les autres lumières</strong></p>
+<h3 id="probleme">Problème<a class="headerlink" href="#probleme" title="Permanent link">&para;</a></h3>
+<p>Si une autre lumière était allumée, elle restera allumée. Pour garantir qu'<strong>une seule lumière</strong> s'allume ou s'éteigne, il faut <strong>explicitement définir l'état de toutes les autres</strong>.</p>
+<h3 id="solution-table-complete">Solution : Table Complète<a class="headerlink" href="#solution-table-complete" title="Permanent link">&para;</a></h3>
+<p>Pour allumer <strong>uniquement</strong> la lampe de l'escalier (index 615, bit 0) :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">  </span><span class="nt">"_de67f"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">  </span><span class="nt">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">    </span><span class="nt">"guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"abc-123-def-456"</span><span class="p">,</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">590</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Trigger</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">605</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">606</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">607</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">608</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">609</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">610</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">611</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">612</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Rien</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">613</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Éteindre PDV LSB</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">614</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Éteindre PDV MSB</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">615</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Éteindre CHB LSB (toutes)</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">616</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Éteindre CHB MSB</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">617</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Éteindre PDE LSB</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">618</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Éteindre PDE MSB</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">619</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Allumer PDV LSB</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">620</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Allumer PDV MSB</span>
+<a id="__codelineno-4-23" name="__codelineno-4-23" href="#__codelineno-4-23"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">621</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Allumer CHB LSB (escalier = bit 0)</span>
+<a id="__codelineno-4-24" name="__codelineno-4-24" href="#__codelineno-4-24"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">622</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">}</span><span class="w">    </span><span class="c1">// Allumer CHB MSB</span>
+<a id="__codelineno-4-25" name="__codelineno-4-25" href="#__codelineno-4-25"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-4-26" name="__codelineno-4-26" href="#__codelineno-4-26"></a><span class="w">  </span><span class="p">}]</span>
+<a id="__codelineno-4-27" name="__codelineno-4-27" href="#__codelineno-4-27"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="logique-de-merge-bitwise-or">Logique de Merge (Bitwise OR)<a class="headerlink" href="#logique-de-merge-bitwise-or" title="Permanent link">&para;</a></h2>
+<h3 id="contexte">Contexte<a class="headerlink" href="#contexte" title="Permanent link">&para;</a></h3>
+<p>Quand plusieurs commandes arrivent via <code>/api/admin/inject</code>, le serveur doit les combiner intelligemment avant de les envoyer au client.</p>
+<h3 id="algorithme">Algorithme<a class="headerlink" href="#algorithme" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="c1">// 1. Initialiser tous les indices 605-622 à 0</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="nx">mergedValues</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nb">make</span><span class="p">(</span><span class="kt">map</span><span class="p">[</span><span class="kt">int</span><span class="p">]</span><span class="kt">int</span><span class="p">)</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="k">for</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="mi">605</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mi">622</span><span class="p">;</span><span class="w"> </span><span class="nx">i</span><span class="o">++</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="nx">mergedValues</span><span class="p">[</span><span class="nx">i</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">0</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="p">}</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a>
+<a id="__codelineno-5-7" name="__codelineno-5-7" href="#__codelineno-5-7"></a><span class="c1">// 2. Pour chaque paramètre reçu, appliquer un OR bitwise</span>
+<a id="__codelineno-5-8" name="__codelineno-5-8" href="#__codelineno-5-8"></a><span class="k">for</span><span class="w"> </span><span class="nx">_</span><span class="p">,</span><span class="w"> </span><span class="nx">param</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="k">range</span><span class="w"> </span><span class="nx">allParams</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-9" name="__codelineno-5-9" href="#__codelineno-5-9"></a><span class="w">    </span><span class="nx">k</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">param</span><span class="p">.</span><span class="nx">K</span><span class="w">  </span><span class="c1">// Index</span>
+<a id="__codelineno-5-10" name="__codelineno-5-10" href="#__codelineno-5-10"></a><span class="w">    </span><span class="nx">v</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">parseIntFromString</span><span class="p">(</span><span class="nx">param</span><span class="p">.</span><span class="nx">V</span><span class="p">)</span><span class="w">  </span><span class="c1">// Valeur</span>
+<a id="__codelineno-5-11" name="__codelineno-5-11" href="#__codelineno-5-11"></a>
+<a id="__codelineno-5-12" name="__codelineno-5-12" href="#__codelineno-5-12"></a><span class="w">    </span><span class="nx">mergedValues</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">mergedValues</span><span class="p">[</span><span class="nx">k</span><span class="p">]</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="nx">v</span>
+<a id="__codelineno-5-13" name="__codelineno-5-13" href="#__codelineno-5-13"></a><span class="p">}</span>
+<a id="__codelineno-5-14" name="__codelineno-5-14" href="#__codelineno-5-14"></a>
+<a id="__codelineno-5-15" name="__codelineno-5-15" href="#__codelineno-5-15"></a><span class="c1">// 3. Ajouter l'index 590 (trigger)</span>
+<a id="__codelineno-5-16" name="__codelineno-5-16" href="#__codelineno-5-16"></a><span class="nx">mergedValues</span><span class="p">[</span><span class="mi">590</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mi">1</span>
+<a id="__codelineno-5-17" name="__codelineno-5-17" href="#__codelineno-5-17"></a>
+<a id="__codelineno-5-18" name="__codelineno-5-18" href="#__codelineno-5-18"></a><span class="c1">// 4. Envoyer la table complète au client</span>
+</code></pre></div>
+<h3 id="exemple-de-merge">Exemple de Merge<a class="headerlink" href="#exemple-de-merge" title="Permanent link">&para;</a></h3>
+<p><strong>Commande 1</strong> : Allumer lampe entrée (index 619, bit 0)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">619</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Commande 2</strong> : Allumer lampe salon (index 619, bit 1)
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">619</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2"</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Résultat après merge</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a>mergedValues[619] = 1 | 2 = 3
+</code></pre></div></p>
+<p><strong>Effet</strong> : Les deux lampes s'allument (bits 0 et 1 activés)</p>
+<h3 id="pourquoi-or-et-pas-autre-chose">Pourquoi OR et pas autre chose ?<a class="headerlink" href="#pourquoi-or-et-pas-autre-chose" title="Permanent link">&para;</a></h3>
+<p>Le <strong>OR bitwise</strong> permet de :
+- Combiner plusieurs commandes sur le même index
+- Activer plusieurs bits simultanément
+- Ne jamais "perdre" une commande</p>
+<p><strong>Attention</strong> : Le OR ne permet pas d'éteindre. Pour éteindre, il faut utiliser les indices "Eteindre" (613-618).</p>
+<h2 id="champ-_de67f">Champ <code>_de67f</code><a class="headerlink" href="#champ-_de67f" title="Permanent link">&para;</a></h2>
+<h3 id="position-dans-le-json">Position dans le JSON<a class="headerlink" href="#position-dans-le-json" title="Permanent link">&para;</a></h3>
+<p>Le champ <code>_de67f</code> <strong>doit être le premier</strong> dans la réponse JSON de <code>/api/myactions</code> :</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">  </span><span class="nt">"_de67f"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w">  </span><span class="c1">// ← DOIT être en premier</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">  </span><span class="nt">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="err">...</span><span class="p">]</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="raison">Raison<a class="headerlink" href="#raison" title="Permanent link">&para;</a></h3>
+<p>Le parser HTTP du client embarqué est <strong>séquentiel</strong> et <strong>simple</strong>. Il lit le JSON caractère par caractère et s'attend à trouver <code>_de67f</code> en premier. Si ce champ n'est pas en première position, le parser peut :
+- Ignorer les actions
+- Planter
+- Avoir un comportement imprévisible</p>
+<h3 id="valeurs-possibles">Valeurs Possibles<a class="headerlink" href="#valeurs-possibles" title="Permanent link">&para;</a></h3>
+<p><strong><code>null</code></strong> : Pas d'action alarme spéciale
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span><span class="nt">"_de67f"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Objet avec guid et obl</strong> : Action alarme avec données cryptées
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">  </span><span class="nt">"_de67f"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nt">"guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2a1a9ea2-941d-456f-9b0a-7e179cf3e864"</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nt">"obl"</span><span class="p">:</span><span class="w"> </span><span class="s2">"124;183;53;98;127;22;30;199;214;125"</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">  </span><span class="p">}</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="p">}</span>
+</code></pre></div></p>
+<p>Le champ <code>obl</code> contient des données cryptées pour des commandes d'alarme avancées.</p>
+<h2 id="exemples-complets-dactions">Exemples Complets d'Actions<a class="headerlink" href="#exemples-complets-dactions" title="Permanent link">&para;</a></h2>
+<h3 id="exemple-1-allumer-la-lumiere-de-lescalier">Exemple 1 : Allumer la Lumière de l'Escalier<a class="headerlink" href="#exemple-1-allumer-la-lumiere-de-lescalier" title="Permanent link">&para;</a></h3>
+<p><strong>Objectif</strong> : Allumer uniquement la lampe de l'escalier (index 621, bit 0)</p>
+<p><strong>Requête</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="err">POST</span><span class="w"> </span><span class="err">/api/admi</span><span class="kc">n</span><span class="err">/i</span><span class="kc">n</span><span class="err">jec</span><span class="kc">t</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="err">Co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="p">{</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">  </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">621</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">}</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Réponse du serveur au client</strong> (via <code>/api/myactions</code>) :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">  </span><span class="nt">"_de67f"</span><span class="p">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">  </span><span class="nt">"actions"</span><span class="p">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nt">"guid"</span><span class="p">:</span><span class="w"> </span><span class="s2">"550e8400-e29b-41d4-a716-446655440000"</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">590</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">},</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">605</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">606</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">607</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-10" name="__codelineno-13-10" href="#__codelineno-13-10"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">608</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-11" name="__codelineno-13-11" href="#__codelineno-13-11"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">609</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-12" name="__codelineno-13-12" href="#__codelineno-13-12"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">610</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-13" name="__codelineno-13-13" href="#__codelineno-13-13"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">611</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-14" name="__codelineno-13-14" href="#__codelineno-13-14"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">612</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-15" name="__codelineno-13-15" href="#__codelineno-13-15"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">613</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-16" name="__codelineno-13-16" href="#__codelineno-13-16"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">614</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-17" name="__codelineno-13-17" href="#__codelineno-13-17"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">615</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-18" name="__codelineno-13-18" href="#__codelineno-13-18"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">616</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-19" name="__codelineno-13-19" href="#__codelineno-13-19"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">617</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-20" name="__codelineno-13-20" href="#__codelineno-13-20"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">618</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-21" name="__codelineno-13-21" href="#__codelineno-13-21"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">619</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-22" name="__codelineno-13-22" href="#__codelineno-13-22"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">620</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">},</span>
+<a id="__codelineno-13-23" name="__codelineno-13-23" href="#__codelineno-13-23"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">621</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">},</span>
+<a id="__codelineno-13-24" name="__codelineno-13-24" href="#__codelineno-13-24"></a><span class="w">      </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">622</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"0"</span><span class="p">}</span>
+<a id="__codelineno-13-25" name="__codelineno-13-25" href="#__codelineno-13-25"></a><span class="w">    </span><span class="p">]</span>
+<a id="__codelineno-13-26" name="__codelineno-13-26" href="#__codelineno-13-26"></a><span class="w">  </span><span class="p">}]</span>
+<a id="__codelineno-13-27" name="__codelineno-13-27" href="#__codelineno-13-27"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="exemple-2-eteindre-toutes-les-lumieres">Exemple 2 : Éteindre Toutes les Lumières<a class="headerlink" href="#exemple-2-eteindre-toutes-les-lumieres" title="Permanent link">&para;</a></h3>
+<p><strong>Objectif</strong> : Éteindre toutes les lumières de la maison</p>
+<p><strong>Requête</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="err">POST</span><span class="w"> </span><span class="err">/api/admi</span><span class="kc">n</span><span class="err">/i</span><span class="kc">n</span><span class="err">jec</span><span class="kc">t</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="err">Co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="p">{</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">  </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">613</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDV LSB (tous les bits)</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">614</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDV MSB (tous les bits)</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">615</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre CHB LSB (tous les bits)</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">616</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre CHB MSB (tous les bits)</span>
+<a id="__codelineno-14-10" name="__codelineno-14-10" href="#__codelineno-14-10"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">617</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDE LSB (tous les bits)</span>
+<a id="__codelineno-14-11" name="__codelineno-14-11" href="#__codelineno-14-11"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">618</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">}</span><span class="w">   </span><span class="c1">// Éteindre PDE MSB (tous les bits)</span>
+<a id="__codelineno-14-12" name="__codelineno-14-12" href="#__codelineno-14-12"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-14-13" name="__codelineno-14-13" href="#__codelineno-14-13"></a><span class="p">}</span>
+</code></pre></div></p>
+<p><strong>Réponse</strong> : Table complète avec indices 613-618 à "255" et tous les autres à "0"</p>
+<h3 id="exemple-3-allumer-plusieurs-lumieres-simultanement">Exemple 3 : Allumer Plusieurs Lumières Simultanément<a class="headerlink" href="#exemple-3-allumer-plusieurs-lumieres-simultanement" title="Permanent link">&para;</a></h3>
+<p><strong>Objectif</strong> : Allumer lampe entrée (bit 0) + lampe salon 1 (bit 1) + lampe salon 2 (bit 2)</p>
+<p><strong>Calcul</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a>Valeur = 2^0 + 2^1 + 2^2 = 1 + 2 + 4 = 7
+</code></pre></div></p>
+<p><strong>Requête</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="err">POST</span><span class="w"> </span><span class="err">/api/admi</span><span class="kc">n</span><span class="err">/i</span><span class="kc">n</span><span class="err">jec</span><span class="kc">t</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="err">Co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="p">{</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">  </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">619</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">}</span><span class="w">  </span><span class="c1">// Allumer PDV LSB (bits 0, 1, 2)</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="p">}</span>
+</code></pre></div></p>
+<h3 id="exemple-4-scenario-je-sors">Exemple 4 : Scénario "Je Sors"<a class="headerlink" href="#exemple-4-scenario-je-sors" title="Permanent link">&para;</a></h3>
+<p><strong>Objectif</strong> : Éteindre toutes les lumières, fermer tous les volets, activer l'alarme</p>
+<p><strong>Requête</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="err">POST</span><span class="w"> </span><span class="err">/api/admi</span><span class="kc">n</span><span class="err">/i</span><span class="kc">n</span><span class="err">jec</span><span class="kc">t</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="err">Co</span><span class="kc">ntent</span><span class="mi">-</span><span class="err">Type</span><span class="p">:</span><span class="w"> </span><span class="err">applica</span><span class="kc">t</span><span class="err">io</span><span class="kc">n</span><span class="err">/jso</span><span class="kc">n</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="p">{</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">  </span><span class="nt">"params"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">601</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">},</span><span class="w">    </span><span class="c1">// Activer alarme</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">613</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDV LSB</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">614</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDV MSB</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">615</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre CHB LSB</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">616</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre CHB MSB</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">617</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDE LSB</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">618</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"255"</span><span class="p">},</span><span class="w">  </span><span class="c1">// Éteindre PDE MSB</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">628</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"63"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Fermer volets PDV (0x3F)</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">629</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"31"</span><span class="p">},</span><span class="w">   </span><span class="c1">// Fermer volets CHB (0x1F)</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">630</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"7"</span><span class="p">},</span><span class="w">    </span><span class="c1">// Fermer volets PDE (0x07)</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">    </span><span class="p">{</span><span class="nt">"k"</span><span class="p">:</span><span class="w"> </span><span class="mi">631</span><span class="p">,</span><span class="w"> </span><span class="nt">"v"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1"</span><span class="p">}</span><span class="w">     </span><span class="c1">// Couper prises sécurité</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-17-18" name="__codelineno-17-18" href="#__codelineno-17-18"></a><span class="p">}</span>
+</code></pre></div></p>
+<h2 id="historique-des-valeurs-25-entrees">Historique des Valeurs (25 Entrées)<a class="headerlink" href="#historique-des-valeurs-25-entrees" title="Permanent link">&para;</a></h2>
+<h3 id="concept">Concept<a class="headerlink" href="#concept" title="Permanent link">&para;</a></h3>
+<p>Le serveur conserve les <strong>25 dernières valeurs</strong> de chaque index pour :
+- <strong>Debugging</strong> : Comprendre ce qui s'est passé en cas de problème
+- <strong>Monitoring</strong> : Afficher l'historique dans l'interface web
+- <strong>Détection de patterns</strong> : Identifier des comportements anormaux</p>
+<h3 id="implementation">Implémentation<a class="headerlink" href="#implementation" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="kd">type</span><span class="w"> </span><span class="nx">IndexHistory</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="nx">Index</span><span class="w">     </span><span class="kt">int</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="nx">Values</span><span class="w">    </span><span class="p">[]</span><span class="nx">ValueEntry</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nx">MaxSize</span><span class="w">   </span><span class="kt">int</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="p">}</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="kd">type</span><span class="w"> </span><span class="nx">ValueEntry</span><span class="w"> </span><span class="kd">struct</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nx">Value</span><span class="w">     </span><span class="kt">int</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="w">    </span><span class="nx">Timestamp</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Time</span>
+<a id="__codelineno-18-10" name="__codelineno-18-10" href="#__codelineno-18-10"></a><span class="w">    </span><span class="nx">Source</span><span class="w">    </span><span class="kt">string</span><span class="w">  </span><span class="c1">// "client", "server", "admin"</span>
+<a id="__codelineno-18-11" name="__codelineno-18-11" href="#__codelineno-18-11"></a><span class="p">}</span>
+<a id="__codelineno-18-12" name="__codelineno-18-12" href="#__codelineno-18-12"></a>
+<a id="__codelineno-18-13" name="__codelineno-18-13" href="#__codelineno-18-13"></a><span class="kd">func</span><span class="w"> </span><span class="p">(</span><span class="nx">h</span><span class="w"> </span><span class="o">*</span><span class="nx">IndexHistory</span><span class="p">)</span><span class="w"> </span><span class="nx">Add</span><span class="p">(</span><span class="nx">value</span><span class="w"> </span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="nx">source</span><span class="w"> </span><span class="kt">string</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-14" name="__codelineno-18-14" href="#__codelineno-18-14"></a><span class="w">    </span><span class="nx">entry</span><span class="w"> </span><span class="o">:=</span><span class="w"> </span><span class="nx">ValueEntry</span><span class="p">{</span>
+<a id="__codelineno-18-15" name="__codelineno-18-15" href="#__codelineno-18-15"></a><span class="w">        </span><span class="nx">Value</span><span class="p">:</span><span class="w">     </span><span class="nx">value</span><span class="p">,</span>
+<a id="__codelineno-18-16" name="__codelineno-18-16" href="#__codelineno-18-16"></a><span class="w">        </span><span class="nx">Timestamp</span><span class="p">:</span><span class="w"> </span><span class="nx">time</span><span class="p">.</span><span class="nx">Now</span><span class="p">(),</span>
+<a id="__codelineno-18-17" name="__codelineno-18-17" href="#__codelineno-18-17"></a><span class="w">        </span><span class="nx">Source</span><span class="p">:</span><span class="w">    </span><span class="nx">source</span><span class="p">,</span>
+<a id="__codelineno-18-18" name="__codelineno-18-18" href="#__codelineno-18-18"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-18-19" name="__codelineno-18-19" href="#__codelineno-18-19"></a>
+<a id="__codelineno-18-20" name="__codelineno-18-20" href="#__codelineno-18-20"></a><span class="w">    </span><span class="nx">h</span><span class="p">.</span><span class="nx">Values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">append</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">Values</span><span class="p">,</span><span class="w"> </span><span class="nx">entry</span><span class="p">)</span>
+<a id="__codelineno-18-21" name="__codelineno-18-21" href="#__codelineno-18-21"></a>
+<a id="__codelineno-18-22" name="__codelineno-18-22" href="#__codelineno-18-22"></a><span class="w">    </span><span class="c1">// Garder seulement les 25 dernières</span>
+<a id="__codelineno-18-23" name="__codelineno-18-23" href="#__codelineno-18-23"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="nb">len</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">Values</span><span class="p">)</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="mi">25</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-18-24" name="__codelineno-18-24" href="#__codelineno-18-24"></a><span class="w">        </span><span class="nx">h</span><span class="p">.</span><span class="nx">Values</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">h</span><span class="p">.</span><span class="nx">Values</span><span class="p">[</span><span class="nb">len</span><span class="p">(</span><span class="nx">h</span><span class="p">.</span><span class="nx">Values</span><span class="p">)</span><span class="o">-</span><span class="mi">25</span><span class="p">:]</span>
+<a id="__codelineno-18-25" name="__codelineno-18-25" href="#__codelineno-18-25"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-18-26" name="__codelineno-18-26" href="#__codelineno-18-26"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="exemple-dhistorique">Exemple d'Historique<a class="headerlink" href="#exemple-dhistorique" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">  </span><span class="nt">"index"</span><span class="p">:</span><span class="w"> </span><span class="mi">621</span><span class="p">,</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Scenario_Allumer_CHB_LSB"</span><span class="p">,</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">  </span><span class="nt">"history"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="p">{</span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-01-08T10:00:00Z"</span><span class="p">,</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server"</span><span class="p">},</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="p">{</span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-01-08T10:05:00Z"</span><span class="p">,</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"admin"</span><span class="p">},</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="p">{</span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">,</span><span class="w"> </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-01-08T10:10:00Z"</span><span class="p">,</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"server"</span><span class="p">},</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="w">    </span><span class="p">{</span><span class="nt">"value"</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">,</span><span class="w"> </span><span class="nt">"timestamp"</span><span class="p">:</span><span class="w"> </span><span class="s2">"2025-01-08T10:15:00Z"</span><span class="p">,</span><span class="w"> </span><span class="nt">"source"</span><span class="p">:</span><span class="w"> </span><span class="s2">"client"</span><span class="p">}</span>
+<a id="__codelineno-19-9" name="__codelineno-19-9" href="#__codelineno-19-9"></a><span class="w">  </span><span class="p">]</span>
+<a id="__codelineno-19-10" name="__codelineno-19-10" href="#__codelineno-19-10"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="utilisation">Utilisation<a class="headerlink" href="#utilisation" title="Permanent link">&para;</a></h3>
+<p><strong>Interface Web</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a>Index 621 (Allumer CHB LSB) - Historique
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a>━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a>10:15:00  [CLIENT]  1  ← Lampe escalier allumée
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a>10:10:00  [SERVER]  0  ← Toutes éteintes
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a>10:05:00  [ADMIN]   1  ← Commande manuelle
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a>10:00:00  [SERVER]  0  ← État initial
+</code></pre></div></p>
+<p><strong>Debugging</strong> :
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="c1"># Voir l'historique d'un index</span>
+<a id="__codelineno-21-2" name="__codelineno-21-2" href="#__codelineno-21-2"></a>curl<span class="w"> </span>http://server/api/history/621
+<a id="__codelineno-21-3" name="__codelineno-21-3" href="#__codelineno-21-3"></a>
+<a id="__codelineno-21-4" name="__codelineno-21-4" href="#__codelineno-21-4"></a><span class="c1"># Voir tous les changements dans les dernières 24h</span>
+<a id="__codelineno-21-5" name="__codelineno-21-5" href="#__codelineno-21-5"></a>curl<span class="w"> </span>http://server/api/history?since<span class="o">=</span>24h
+</code></pre></div></p>
+<h2 id="codes-sources-pertinents">Codes Sources Pertinents<a class="headerlink" href="#codes-sources-pertinents" title="Permanent link">&para;</a></h2>
+<h3 id="definition-des-indices-c">Définition des Indices (C)<a class="headerlink" href="#definition-des-indices-c" title="Permanent link">&para;</a></h3>
+<p><strong>Fichier</strong> : <code>H/TableEchange.h</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="k">enum</span><span class="w"> </span><span class="n">enumScenario</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="p">{</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a><span class="w">    </span><span class="n">Scenario_Confirme_Scenario</span><span class="p">,</span><span class="w">     </span><span class="c1">// 0 -&gt; indice 600</span>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="w">    </span><span class="n">Scenario_Alarme_ON</span><span class="p">,</span><span class="w">             </span><span class="c1">// 1 -&gt; indice 601</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="w">    </span><span class="n">Scenario_AlarmeConfig</span><span class="p">,</span><span class="w">          </span><span class="c1">// 2 -&gt; indice 602</span>
+<a id="__codelineno-22-6" name="__codelineno-22-6" href="#__codelineno-22-6"></a>
+<a id="__codelineno-22-7" name="__codelineno-22-7" href="#__codelineno-22-7"></a><span class="w">    </span><span class="n">Scenario_Eteindre_PDV_LSB</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">Scenario_AlarmeConfig</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="n">AlarmeConfig_NB_VALEURS</span><span class="p">,</span><span class="w"> </span><span class="c1">// 13 -&gt; indice 613</span>
+<a id="__codelineno-22-8" name="__codelineno-22-8" href="#__codelineno-22-8"></a><span class="w">    </span><span class="n">Scenario_Eteindre_PDV_MSB</span><span class="p">,</span><span class="w">      </span><span class="c1">// 14 -&gt; indice 614</span>
+<a id="__codelineno-22-9" name="__codelineno-22-9" href="#__codelineno-22-9"></a><span class="w">    </span><span class="n">Scenario_Eteindre_CHB_LSB</span><span class="p">,</span><span class="w">      </span><span class="c1">// 15 -&gt; indice 615</span>
+<a id="__codelineno-22-10" name="__codelineno-22-10" href="#__codelineno-22-10"></a><span class="w">    </span><span class="n">Scenario_Eteindre_CHB_MSB</span><span class="p">,</span><span class="w">      </span><span class="c1">// 16 -&gt; indice 616</span>
+<a id="__codelineno-22-11" name="__codelineno-22-11" href="#__codelineno-22-11"></a><span class="w">    </span><span class="n">Scenario_Eteindre_PDE_LSB</span><span class="p">,</span><span class="w">      </span><span class="c1">// 17 -&gt; indice 617</span>
+<a id="__codelineno-22-12" name="__codelineno-22-12" href="#__codelineno-22-12"></a><span class="w">    </span><span class="n">Scenario_Eteindre_PDE_MSB</span><span class="p">,</span><span class="w">      </span><span class="c1">// 18 -&gt; indice 618</span>
+<a id="__codelineno-22-13" name="__codelineno-22-13" href="#__codelineno-22-13"></a>
+<a id="__codelineno-22-14" name="__codelineno-22-14" href="#__codelineno-22-14"></a><span class="w">    </span><span class="n">Scenario_Allumer_PDV_LSB</span><span class="p">,</span><span class="w">       </span><span class="c1">// 19 -&gt; indice 619</span>
+<a id="__codelineno-22-15" name="__codelineno-22-15" href="#__codelineno-22-15"></a><span class="w">    </span><span class="n">Scenario_Allumer_PDV_MSB</span><span class="p">,</span><span class="w">       </span><span class="c1">// 20 -&gt; indice 620</span>
+<a id="__codelineno-22-16" name="__codelineno-22-16" href="#__codelineno-22-16"></a><span class="w">    </span><span class="n">Scenario_Allumer_CHB_LSB</span><span class="p">,</span><span class="w">       </span><span class="c1">// 21 -&gt; indice 621</span>
+<a id="__codelineno-22-17" name="__codelineno-22-17" href="#__codelineno-22-17"></a><span class="w">    </span><span class="n">Scenario_Allumer_CHB_MSB</span><span class="p">,</span><span class="w">       </span><span class="c1">// 22 -&gt; indice 622</span>
+<a id="__codelineno-22-18" name="__codelineno-22-18" href="#__codelineno-22-18"></a><span class="w">    </span><span class="c1">// ...</span>
+<a id="__codelineno-22-19" name="__codelineno-22-19" href="#__codelineno-22-19"></a><span class="p">};</span>
+</code></pre></div>
+<h3 id="acces-a-la-table-c">Accès à la Table (C)<a class="headerlink" href="#acces-a-la-table-c" title="Permanent link">&para;</a></h3>
+<p><strong>Fichier</strong> : <code>C/TableEchangeAcces.c</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="c1">// Écrire une donnée dans la table d'échange</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="nf">uc_TableEchange_Ecrit_Data</span><span class="p">(</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">us_Numero</span><span class="p">,</span><span class="w">      </span><span class="c1">// Index</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">uc_Donnee</span><span class="p">,</span><span class="w">       </span><span class="c1">// Valeur</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="n">uc_OrdreServeur</span><span class="w">  </span><span class="c1">// 0=local, 1=serveur</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-7" name="__codelineno-23-7" href="#__codelineno-23-7"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">us_Numero</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Nb_Tbb_Donnees</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-8" name="__codelineno-23-8" href="#__codelineno-23-8"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">Tb_Echange_Droits</span><span class="p">[</span><span class="n">us_Numero</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ACCES_ECRITURE</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-9" name="__codelineno-23-9" href="#__codelineno-23-9"></a><span class="w">            </span><span class="n">Tb_Echange</span><span class="p">[</span><span class="n">us_Numero</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="n">uc_Donnee</span><span class="p">;</span>
+<a id="__codelineno-23-10" name="__codelineno-23-10" href="#__codelineno-23-10"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">uc_BP_OK</span><span class="p">;</span>
+<a id="__codelineno-23-11" name="__codelineno-23-11" href="#__codelineno-23-11"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-23-12" name="__codelineno-23-12" href="#__codelineno-23-12"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-23-13" name="__codelineno-23-13" href="#__codelineno-23-13"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="n">uc_BP_PB_ACCES</span><span class="p">;</span>
+<a id="__codelineno-23-14" name="__codelineno-23-14" href="#__codelineno-23-14"></a><span class="p">}</span>
+<a id="__codelineno-23-15" name="__codelineno-23-15" href="#__codelineno-23-15"></a>
+<a id="__codelineno-23-16" name="__codelineno-23-16" href="#__codelineno-23-16"></a><span class="c1">// Lire une donnée de la table d'échange</span>
+<a id="__codelineno-23-17" name="__codelineno-23-17" href="#__codelineno-23-17"></a><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="nf">uc_TableEchange_Lit_Data</span><span class="p">(</span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">short</span><span class="w"> </span><span class="n">us_Numero</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-18" name="__codelineno-23-18" href="#__codelineno-23-18"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="n">us_Numero</span><span class="w"> </span><span class="o">&lt;</span><span class="w"> </span><span class="n">Nb_Tbb_Donnees</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-19" name="__codelineno-23-19" href="#__codelineno-23-19"></a><span class="w">        </span><span class="k">if</span><span class="w"> </span><span class="p">((</span><span class="n">Tb_Echange_Droits</span><span class="p">[</span><span class="n">us_Numero</span><span class="p">]</span><span class="w"> </span><span class="o">&amp;</span><span class="w"> </span><span class="n">ACCES_LECTURE</span><span class="p">)</span><span class="w"> </span><span class="o">!=</span><span class="w"> </span><span class="mi">0</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-23-20" name="__codelineno-23-20" href="#__codelineno-23-20"></a><span class="w">            </span><span class="k">return</span><span class="w"> </span><span class="n">Tb_Echange</span><span class="p">[</span><span class="n">us_Numero</span><span class="p">];</span>
+<a id="__codelineno-23-21" name="__codelineno-23-21" href="#__codelineno-23-21"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-23-22" name="__codelineno-23-22" href="#__codelineno-23-22"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-23-23" name="__codelineno-23-23" href="#__codelineno-23-23"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<a id="__codelineno-23-24" name="__codelineno-23-24" href="#__codelineno-23-24"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="parsing-json-c">Parsing JSON (C)<a class="headerlink" href="#parsing-json-c" title="Permanent link">&para;</a></h3>
+<p><strong>Fichier</strong> : <code>Ethernet/Json.c</code></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="c1">// Extraire les paramètres d'une action</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kt">signed</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="nf">sc_JsonGetServerUpdateInformation</span><span class="p">(</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">pc_Params</span><span class="p">,</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="k">struct</span><span class="w"> </span><span class="nc">StructServerUpdateInformation</span><span class="w"> </span><span class="n">st_InfosDemandees</span><span class="p">[],</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">    </span><span class="kt">unsigned</span><span class="w"> </span><span class="kt">char</span><span class="w"> </span><span class="o">*</span><span class="n">uc_NbInfosDemandees</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-24-7" name="__codelineno-24-7" href="#__codelineno-24-7"></a><span class="w">    </span><span class="c1">// Parse: {"k":621,"v":"1"},{"k":622,"v":"0"}</span>
+<a id="__codelineno-24-8" name="__codelineno-24-8" href="#__codelineno-24-8"></a><span class="w">    </span><span class="c1">// Extrait les paires (index, valeur)</span>
+<a id="__codelineno-24-9" name="__codelineno-24-9" href="#__codelineno-24-9"></a><span class="w">    </span><span class="c1">// ...</span>
+<a id="__codelineno-24-10" name="__codelineno-24-10" href="#__codelineno-24-10"></a><span class="p">}</span>
+</code></pre></div>
+<h2 id="resume-des-regles-importantes">Résumé des Règles Importantes<a class="headerlink" href="#resume-des-regles-importantes" title="Permanent link">&para;</a></h2>
+<ol>
+<li>✅ <strong>Toujours envoyer la table complète</strong> (indices 605-622) pour garantir l'état désiré</li>
+<li>✅ <strong>Initialiser les indices non-mentionnés à "0"</strong> pour éviter les états résiduels</li>
+<li>✅ <strong>Inclure l'index 590 = "1"</strong> dans chaque action (trigger scenario)</li>
+<li>✅ <strong>Champ <code>_de67f</code> en premier</strong> dans la réponse <code>/api/myactions</code></li>
+<li>✅ <strong>Utiliser OR bitwise</strong> pour combiner plusieurs commandes sur le même index</li>
+<li>✅ <strong>Conserver 25 valeurs d'historique</strong> par index pour debugging</li>
+<li>✅ <strong>Masques de bits</strong> : Chaque bit représente un équipement (lampe, volet, etc.)</li>
+<li>✅ <strong>Indices "Allumer" vs "Éteindre"</strong> : Utiliser les bons indices selon l'action voulue</li>
+</ol>
+<h2 id="references">Références<a class="headerlink" href="#references" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Fichier header</strong> : <code>H/TableEchange.h</code> - Définitions complètes des indices</li>
+<li><strong>Accès table</strong> : <code>C/TableEchangeAcces.c</code> - Fonctions de lecture/écriture</li>
+<li><strong>Scénarios</strong> : <code>C/Scenario.c</code> - Logique d'exécution des scénarios</li>
+<li><strong>JSON parsing</strong> : <code>Ethernet/Json.c</code> - Parsing des commandes serveur</li>
+<li><strong>Protocol HTTP</strong> : <code>docs/protocol/http-legacy-protocol.md</code> - Contraintes HTTP</li>
+<li><strong>TCP single-packet</strong> : <code>docs/protocol/tcp-single-packet.md</code> - Contrainte critique TCP</li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Retour en haut de la page
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+        
+<div class="md-social">
+  
+    
+    
+    
+    
+      
+      
+    
+    <a href="https://github.com/essensys-hub/client-essensys-legacy" target="_blank" rel="noopener" title="github.com" class="md-social__link">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    
+      
+      
+      <script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+    
+    
+      <script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+      
+    
+  </body>
+</html>

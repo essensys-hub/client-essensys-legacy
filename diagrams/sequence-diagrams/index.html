@@ -1,0 +1,1233 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Documentation du système de contrôle domotique embarqué basé sur MQX RTOS" name="description"/>
+<meta content="Essensys" name="author"/>
+<link href="../system-overview/" rel="prev"/>
+<link href="../data-flow/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>Diagrammes de séquence - Client Embarqué BP_MQX_ETH - ESSENSYS</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#diagrammes-de-sequence">
+          Aller au contenu
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="En-tête" class="md-header__inner md-grid">
+<a aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Client Embarqué BP_MQX_ETH - ESSENSYS
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Diagrammes de séquence
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Passer en mode sombre" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Passer en mode sombre">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Passer en mode clair" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Passer en mode clair">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Rechercher" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Rechercher" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Recherche" class="md-search__options">
+<button aria-label="Effacer" class="md-search__icon md-icon" tabindex="-1" title="Effacer" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="Onglets" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../protocol/http-legacy-protocol/">
+          
+  
+  
+  Protocole
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../embedded-client/architecture/">
+          
+  
+  
+  Client Embarqué
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../server/go-implementation/">
+          
+  
+  
+  Serveur
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../system-overview/">
+          
+  
+  
+  Diagrammes
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../troubleshooting/network-debugging/">
+        
+  
+  
+    
+  
+  Dépannage
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Client Embarqué BP_MQX_ETH - ESSENSYS
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Protocole
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Protocole
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../protocol/http-legacy-protocol/">
+<span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../protocol/tcp-single-packet/">
+<span class="md-ellipsis">
+    
+  
+    Contrainte TCP Single-Packet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../protocol/exchange-table/">
+<span class="md-ellipsis">
+    
+  
+    Table d'échange
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Client Embarqué
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Embarqué
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/architecture/">
+<span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/modules-reference/">
+<span class="md-ellipsis">
+    
+  
+    Référence des modules
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/communications/">
+<span class="md-ellipsis">
+    
+  
+    Communications
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/hardware/">
+<span class="md-ellipsis">
+    
+  
+    Matériel
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Serveur
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Serveur
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../server/go-implementation/">
+<span class="md-ellipsis">
+    
+  
+    Implémentation Go
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../server/api-endpoints/">
+<span class="md-ellipsis">
+    
+  
+    Points d'API
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Diagrammes
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Diagrammes
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../system-overview/">
+<span class="md-ellipsis">
+    
+  
+    Vue d'ensemble du système
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Diagrammes de séquence
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Diagrammes de séquence
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table des matières" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table-des-matieres">
+<span class="md-ellipsis">
+      
+        Table des Matières
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequence-de-demarrage">
+<span class="md-ellipsis">
+      
+        Séquence de Démarrage
+      
+    </span>
+</a>
+<nav aria-label="Séquence de Démarrage" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-mystatusmyactions">
+<span class="md-ellipsis">
+      
+        Polling mystatus/myactions
+      
+    </span>
+</a>
+<nav aria-label="Polling mystatus/myactions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_1">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#execution-dune-action">
+<span class="md-ellipsis">
+      
+        Exécution d'une Action
+      
+    </span>
+</a>
+<nav aria-label="Exécution d'une Action" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_2">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#acknowledgment-daction">
+<span class="md-ellipsis">
+      
+        Acknowledgment d'Action
+      
+    </span>
+</a>
+<nav aria-label="Acknowledgment d'Action" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_3">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#injection-de-commande-admin">
+<span class="md-ellipsis">
+      
+        Injection de Commande Admin
+      
+    </span>
+</a>
+<nav aria-label="Injection de Commande Admin" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_4">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#notes-generales">
+<span class="md-ellipsis">
+      
+        Notes Générales
+      
+    </span>
+</a>
+<nav aria-label="Notes Générales" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contraintes-critiques">
+<span class="md-ellipsis">
+      
+        Contraintes Critiques
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#outils-de-diagnostic">
+<span class="md-ellipsis">
+      
+        Outils de Diagnostic
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#references">
+<span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../data-flow/">
+<span class="md-ellipsis">
+    
+  
+    Flux de données
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../troubleshooting/network-debugging/">
+<span class="md-ellipsis">
+    
+  
+    Dépannage
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table des matières" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table-des-matieres">
+<span class="md-ellipsis">
+      
+        Table des Matières
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#sequence-de-demarrage">
+<span class="md-ellipsis">
+      
+        Séquence de Démarrage
+      
+    </span>
+</a>
+<nav aria-label="Séquence de Démarrage" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#polling-mystatusmyactions">
+<span class="md-ellipsis">
+      
+        Polling mystatus/myactions
+      
+    </span>
+</a>
+<nav aria-label="Polling mystatus/myactions" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_1">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#execution-dune-action">
+<span class="md-ellipsis">
+      
+        Exécution d'une Action
+      
+    </span>
+</a>
+<nav aria-label="Exécution d'une Action" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_2">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#acknowledgment-daction">
+<span class="md-ellipsis">
+      
+        Acknowledgment d'Action
+      
+    </span>
+</a>
+<nav aria-label="Acknowledgment d'Action" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_3">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#injection-de-commande-admin">
+<span class="md-ellipsis">
+      
+        Injection de Commande Admin
+      
+    </span>
+</a>
+<nav aria-label="Injection de Commande Admin" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication_4">
+<span class="md-ellipsis">
+      
+        Explication
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#notes-generales">
+<span class="md-ellipsis">
+      
+        Notes Générales
+      
+    </span>
+</a>
+<nav aria-label="Notes Générales" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contraintes-critiques">
+<span class="md-ellipsis">
+      
+        Contraintes Critiques
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#outils-de-diagnostic">
+<span class="md-ellipsis">
+      
+        Outils de Diagnostic
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#references">
+<span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="diagrammes-de-sequence">Diagrammes de Séquence<a class="headerlink" href="#diagrammes-de-sequence" title="Permanent link">¶</a></h1>
+<p>Ce document présente les diagrammes de séquence pour les principaux flux d'interaction du système client-essensys-legacy. Ces diagrammes illustrent comment le client embarqué, le serveur, et les autres composants communiquent au fil du temps.</p>
+<h2 id="table-des-matieres">Table des Matières<a class="headerlink" href="#table-des-matieres" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="#séquence-de-démarrage">Séquence de Démarrage</a></li>
+<li><a href="#polling-statusmyactions">Polling mystatus/myactions</a></li>
+<li><a href="#exécution-dune-action">Exécution d'une Action</a></li>
+<li><a href="#acknowledgment-daction">Acknowledgment d'Action</a></li>
+<li><a href="#injection-de-commande-admin">Injection de Commande Admin</a></li>
+</ul>
+<hr/>
+<h2 id="sequence-de-demarrage">Séquence de Démarrage<a class="headerlink" href="#sequence-de-demarrage" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre le processus de démarrage du client embarqué et son initialisation avec le serveur.</p>
+<div class="mermaid">sequenceDiagram
+    participant HW as Hardware
+    participant MQX as MQX RTOS
+    participant Main as Main_task
+    participant Eth as Ethernet_task
+    participant Server as Serveur Legacy
+
+    HW-&gt;&gt;MQX: Power On / Reset
+    MQX-&gt;&gt;MQX: Initialiser RTOS
+    MQX-&gt;&gt;Main: Créer Main_task (priorité 8)
+
+    Main-&gt;&gt;Main: Initialiser hardware (Hard_Init)
+    Main-&gt;&gt;Main: Charger config EEPROM
+    Main-&gt;&gt;Main: Initialiser table d'échange
+
+    Main-&gt;&gt;MQX: Créer Ecran_task (priorité 9)
+    Main-&gt;&gt;MQX: Créer Boitiers_task (priorité 10)
+    Main-&gt;&gt;MQX: Créer TeleInfo_task (priorité 11)
+    Main-&gt;&gt;MQX: Créer Ethernet_task (priorité 12)
+
+    MQX-&gt;&gt;Eth: Démarrer Ethernet_task
+    Eth-&gt;&gt;Eth: Initialiser stack TCP/IP (RTCS)
+    Eth-&gt;&gt;Eth: Configurer adresse IP
+    Eth-&gt;&gt;Eth: Ouvrir socket TCP
+
+    Eth-&gt;&gt;Server: GET /api/serverinfos
+    Server--&gt;&gt;Eth: 200 OK + infos serveur
+
+    Eth-&gt;&gt;Eth: Démarrer polling loop
+
+    Note over Main,Server: Système prêt - polling actif
+</div>
+<h3 id="explication">Explication<a class="headerlink" href="#explication" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Power On</strong>: Le microcontrôleur MCF52259 démarre suite à une mise sous tension ou un reset</li>
+<li><strong>Initialisation MQX</strong>: Le RTOS MQX s'initialise et configure le scheduler</li>
+<li><strong>Main_task</strong>: La tâche principale démarre et initialise le hardware (GPIO, ADC, PWM, timers)</li>
+<li><strong>Configuration</strong>: Lecture de la configuration depuis l'EEPROM SPI (adresse MAC, clé serveur)</li>
+<li><strong>Création des tâches</strong>: Main_task crée toutes les autres tâches avec leurs priorités respectives</li>
+<li><strong>Stack réseau</strong>: Ethernet_task initialise la stack TCP/IP RTCS et configure l'interface réseau</li>
+<li><strong>Premier contact</strong>: Le client contacte le serveur via GET /api/serverinfos pour vérifier la connectivité</li>
+<li><strong>Polling actif</strong>: Le système entre dans sa boucle principale de polling</li>
+</ol>
+<p><strong>Points critiques:</strong>
+- L'ordre de création des tâches est important pour les dépendances
+- La stack TCP/IP doit être complètement initialisée avant toute communication
+- Le premier appel à /api/serverinfos valide la configuration réseau</p>
+<hr/>
+<h2 id="polling-mystatusmyactions">Polling mystatus/myactions<a class="headerlink" href="#polling-mystatusmyactions" title="Permanent link">¶</a></h2>
+<p>Ce diagramme illustre la boucle de polling continue entre le client et le serveur, qui constitue le cœur du protocole de communication.</p>
+<div class="mermaid">sequenceDiagram
+    participant Eth as Ethernet_task
+    participant Server as Serveur Legacy
+    participant Store as Store (État)
+    participant TE as Table d'Échange
+
+    loop Toutes les 1-2 secondes
+        Note over Eth: Préparer mystatus
+        Eth-&gt;&gt;TE: Lire état actuel
+        TE--&gt;&gt;Eth: Valeurs indices 605-622
+
+        Eth-&gt;&gt;Eth: Construire JSON mystatus
+        Note over Eth: JSON avec clés non-quotées
+
+        Eth-&gt;&gt;Server: POST /api/mystatus
+        Note over Eth,Server: Body: {_de67f:1, i605:val, ...}
+
+        Server-&gt;&gt;Server: Normaliser JSON
+        Server-&gt;&gt;Store: Mettre à jour état client
+
+        Server-&gt;&gt;Server: Vérifier actions pendantes
+
+        alt Actions disponibles
+            Server-&gt;&gt;Server: Construire myactions
+            Server-&gt;&gt;Server: Bufferiser réponse complète
+            Note over Server: legacyResponseWriter
+            Server--&gt;&gt;Eth: 201 Created + myactions JSON
+            Note over Server,Eth: UN SEUL paquet TCP!
+
+            Eth-&gt;&gt;Eth: Parser réponse HTTP
+            Eth-&gt;&gt;Eth: Parser JSON myactions
+            Eth-&gt;&gt;TE: Merger actions (bitwise OR)
+
+            Note over Eth: Actions prêtes pour exécution
+        else Pas d'actions
+            Server-&gt;&gt;Server: Bufferiser réponse vide
+            Server--&gt;&gt;Eth: 200 OK (pas d'actions)
+            Note over Server,Eth: UN SEUL paquet TCP!
+
+            Eth-&gt;&gt;Eth: Parser réponse HTTP
+            Note over Eth: Continuer polling
+        end
+
+        Eth-&gt;&gt;Eth: Attendre 1-2 secondes
+    end
+</div>
+<h3 id="explication_1">Explication<a class="headerlink" href="#explication_1" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Fréquence</strong>: Le client envoie une requête mystatus toutes les 1-2 secondes</li>
+<li><strong>Préparation mystatus</strong>: </li>
+<li>Lecture de l'état actuel de la table d'échange (indices 605-622)</li>
+<li>Construction du JSON avec clés non-quotées (format legacy)</li>
+<li>Le champ <code>_de67f</code> doit toujours être en premier et valoir 1</li>
+<li><strong>Envoi au serveur</strong>: POST /api/mystatus avec le JSON malformé</li>
+<li><strong>Traitement serveur</strong>:</li>
+<li>Normalisation du JSON (ajout des quotes aux clés)</li>
+<li>Mise à jour de l'état du client dans le store</li>
+<li>Vérification des actions pendantes pour ce client</li>
+<li><strong>Réponse avec actions</strong> (201 Created):</li>
+<li>Le serveur construit le JSON myactions avec toutes les actions</li>
+<li><strong>CRITIQUE</strong>: Utilisation du legacyResponseWriter pour bufferiser la réponse complète</li>
+<li>Envoi en UN SEUL paquet TCP (contrainte hardware du client)</li>
+<li><strong>Réponse sans actions</strong> (200 OK):</li>
+<li>Réponse vide mais toujours en un seul paquet TCP</li>
+<li><strong>Traitement client</strong>:</li>
+<li>Parsing HTTP simple (attend tout en un paquet)</li>
+<li>Parsing JSON des actions</li>
+<li>Merge des actions dans la table d'échange avec bitwise OR</li>
+<li><strong>Attente</strong>: Délai de 1-2 secondes avant le prochain cycle</li>
+</ol>
+<p><strong>Points critiques:</strong>
+- La contrainte single-packet TCP est ESSENTIELLE - sans elle, le client se bloque
+- Le merge bitwise OR permet d'accumuler plusieurs commandes
+- Le code 201 signale des actions disponibles, 200 signale aucune action
+- Le polling continu assure une latence faible pour les commandes</p>
+<hr/>
+<h2 id="execution-dune-action">Exécution d'une Action<a class="headerlink" href="#execution-dune-action" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre comment une action reçue du serveur est exécutée par le client embarqué.</p>
+<div class="mermaid">sequenceDiagram
+    participant Eth as Ethernet_task
+    participant TE as Table d'Échange
+    participant Main as Main_task
+    participant Module as Module Concerné
+    participant HW as Hardware
+
+    Note over Eth: Actions reçues via myactions
+
+    Eth-&gt;&gt;TE: Merger actions (bitwise OR)
+    Note over TE: Indices 605-622 mis à jour
+
+    Main-&gt;&gt;TE: Lire table d'échange
+    TE--&gt;&gt;Main: Nouvelles valeurs
+
+    Main-&gt;&gt;Main: Détecter changements
+
+    alt Action sur lumière (index 607)
+        Main-&gt;&gt;Module: Appeler module concerné
+        Note over Main,Module: Ex: Chauffage, Alarme, etc.
+
+        Module-&gt;&gt;HW: Commander GPIO/I2C
+        HW--&gt;&gt;Module: Confirmation
+
+        Module--&gt;&gt;Main: Action exécutée
+        Main-&gt;&gt;TE: Mettre à jour état (index 605)
+
+    else Action sur chauffage (index 613)
+        Main-&gt;&gt;Module: Chauffage_SetMode()
+        Module-&gt;&gt;HW: Commander fil pilote (PWM)
+        HW--&gt;&gt;Module: Confirmation
+        Module--&gt;&gt;Main: Action exécutée
+        Main-&gt;&gt;TE: Mettre à jour état
+
+    else Action sur scénario (index 615)
+        Main-&gt;&gt;Module: Scenario_Execute()
+        Module-&gt;&gt;Module: Exécuter séquence
+        Module-&gt;&gt;HW: Multiples commandes
+        HW--&gt;&gt;Module: Confirmations
+        Module--&gt;&gt;Main: Scénario terminé
+        Main-&gt;&gt;TE: Mettre à jour état
+    end
+
+    Note over Main,TE: État mis à jour pour prochain mystatus
+</div>
+<h3 id="explication_2">Explication<a class="headerlink" href="#explication_2" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Réception</strong>: Les actions arrivent via le polling myactions et sont mergées dans la table d'échange</li>
+<li><strong>Détection</strong>: Main_task lit périodiquement la table d'échange et détecte les changements</li>
+<li><strong>Dispatch</strong>: Selon l'index modifié, Main_task appelle le module approprié:</li>
+<li><strong>Index 607</strong>: Contrôle des lumières (via I2C vers boîtiers auxiliaires)</li>
+<li><strong>Index 613</strong>: Contrôle du chauffage (fil pilote via PWM)</li>
+<li><strong>Index 615</strong>: Exécution de scénarios (séquences d'actions)</li>
+<li><strong>Index 590</strong>: Toujours à 1 (validation)</li>
+<li><strong>Exécution hardware</strong>: Le module concerné commande le hardware:</li>
+<li>GPIO pour sorties directes</li>
+<li>I2C pour boîtiers auxiliaires</li>
+<li>PWM pour fil pilote</li>
+<li>ADC pour lectures de capteurs</li>
+<li><strong>Mise à jour état</strong>: Une fois l'action exécutée, l'état est mis à jour dans la table d'échange</li>
+<li><strong>Feedback</strong>: Le prochain mystatus enverra l'état mis à jour au serveur</li>
+</ol>
+<p><strong>Points critiques:</strong>
+- Le merge bitwise OR permet d'accumuler plusieurs commandes sans perte
+- Main_task orchestre l'exécution mais délègue aux modules spécialisés
+- La mise à jour de l'état dans la table d'échange assure le feedback au serveur
+- Les actions peuvent être simples (une lumière) ou complexes (scénario complet)</p>
+<hr/>
+<h2 id="acknowledgment-daction">Acknowledgment d'Action<a class="headerlink" href="#acknowledgment-daction" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre comment le client acknowledge l'exécution d'une action au serveur.</p>
+<div class="mermaid">sequenceDiagram
+    participant Eth as Ethernet_task
+    participant Server as Serveur Legacy
+    participant Store as Store (État)
+
+    Note over Eth: Action exécutée, état mis à jour
+
+    Eth-&gt;&gt;Eth: Préparer mystatus avec nouvel état
+    Eth-&gt;&gt;Server: POST /api/mystatus
+    Note over Eth,Server: Contient état mis à jour (ex: lumière ON)
+
+    Server-&gt;&gt;Server: Normaliser JSON
+    Server-&gt;&gt;Store: Mettre à jour état client
+    Server-&gt;&gt;Store: Comparer avec état attendu
+
+    alt État correspond à l'action
+        Server-&gt;&gt;Server: Marquer action comme exécutée
+        Server-&gt;&gt;Server: Générer GUID pour done
+        Server--&gt;&gt;Eth: 200 OK
+
+        Note over Server: Action confirmée implicitement
+
+    else Action avait un GUID explicite
+        Server-&gt;&gt;Server: Préparer done dans myactions
+        Server--&gt;&gt;Eth: 201 Created + done command
+
+        Eth-&gt;&gt;Eth: Parser done command
+        Eth-&gt;&gt;Server: POST /api/done/{guid}
+        Note over Eth,Server: Acknowledge explicite
+
+        Server-&gt;&gt;Store: Supprimer action de la queue
+        Server--&gt;&gt;Eth: 200 OK
+    end
+
+    Note over Server,Store: Action complètement traitée
+</div>
+<h3 id="explication_3">Explication<a class="headerlink" href="#explication_3" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Exécution complète</strong>: Une fois l'action exécutée, l'état du client est mis à jour dans la table d'échange</li>
+<li><strong>Mystatus avec nouvel état</strong>: Le prochain mystatus contient l'état mis à jour</li>
+<li><strong>Vérification serveur</strong>: Le serveur compare l'état reçu avec l'état attendu après l'action</li>
+<li><strong>Acknowledgment implicite</strong>:</li>
+<li>Si l'état correspond, l'action est considérée comme exécutée</li>
+<li>Le serveur marque l'action comme complète dans sa queue</li>
+<li>Pas de communication supplémentaire nécessaire</li>
+<li><strong>Acknowledgment explicite</strong> (optionnel):</li>
+<li>Pour certaines actions critiques, le serveur peut demander un acknowledge explicite</li>
+<li>Il envoie une commande "done" avec un GUID dans myactions</li>
+<li>Le client répond avec POST /api/done/{guid}</li>
+<li>Le serveur supprime définitivement l'action de sa queue</li>
+<li><strong>Nettoyage</strong>: L'action est retirée de la queue et ne sera plus renvoyée</li>
+</ol>
+<p><strong>Points critiques:</strong>
+- L'acknowledgment implicite via mystatus est le mécanisme principal
+- L'acknowledgment explicite via /api/done est utilisé pour les actions critiques
+- Le serveur maintient un historique des 25 dernières valeurs pour chaque index
+- Si une action n'est pas acknowledgée, elle peut être renvoyée (retry)</p>
+<hr/>
+<h2 id="injection-de-commande-admin">Injection de Commande Admin<a class="headerlink" href="#injection-de-commande-admin" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre comment un administrateur peut injecter une commande directement via l'interface web.</p>
+<div class="mermaid">sequenceDiagram
+    participant Admin as Administrateur
+    participant Web as Interface Web
+    participant Server as Serveur Legacy
+    participant Store as Store (État)
+    participant Eth as Client (Ethernet_task)
+    participant TE as Table d'Échange
+
+    Admin-&gt;&gt;Web: Saisir commande
+    Note over Admin,Web: Ex: Allumer lumière salon
+
+    Web-&gt;&gt;Web: Construire action JSON
+    Note over Web: {i607: 1, i613: 0, ...}
+
+    Web-&gt;&gt;Server: POST /api/admin/inject
+    Note over Web,Server: Body: action JSON + client ID
+
+    Server-&gt;&gt;Server: Valider action
+    Server-&gt;&gt;Store: Ajouter action à la queue client
+    Server--&gt;&gt;Web: 200 OK
+
+    Web--&gt;&gt;Admin: Confirmation
+
+    Note over Store: Action en attente
+
+    Eth-&gt;&gt;Server: POST /api/mystatus (polling normal)
+    Server-&gt;&gt;Store: Vérifier queue client
+    Store--&gt;&gt;Server: Action pendante trouvée
+
+    Server-&gt;&gt;Server: Construire myactions avec action
+    Server-&gt;&gt;Server: Bufferiser réponse (legacyResponseWriter)
+    Server--&gt;&gt;Eth: 201 Created + myactions
+    Note over Server,Eth: UN SEUL paquet TCP!
+
+    Eth-&gt;&gt;Eth: Parser myactions
+    Eth-&gt;&gt;TE: Merger action (bitwise OR)
+
+    Note over Eth,TE: Action sera exécutée par Main_task
+
+    Eth-&gt;&gt;Server: POST /api/mystatus (avec nouvel état)
+    Server-&gt;&gt;Store: Vérifier exécution
+    Server--&gt;&gt;Eth: 200 OK
+
+    Server-&gt;&gt;Store: Marquer action comme exécutée
+    Server-&gt;&gt;Web: Notification (WebSocket/SSE)
+    Web--&gt;&gt;Admin: Action exécutée ✓
+</div>
+<h3 id="explication_4">Explication<a class="headerlink" href="#explication_4" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Saisie admin</strong>: L'administrateur utilise l'interface web pour créer une commande</li>
+<li><strong>Construction action</strong>: L'interface web construit le JSON d'action avec les bons indices</li>
+<li><strong>Injection</strong>: POST /api/admin/inject envoie l'action au serveur avec l'ID du client cible</li>
+<li><strong>Validation</strong>: Le serveur valide l'action (indices corrects, valeurs valides)</li>
+<li><strong>Queue</strong>: L'action est ajoutée à la queue des actions pendantes pour ce client</li>
+<li><strong>Confirmation web</strong>: L'interface web confirme que l'action a été enregistrée</li>
+<li><strong>Polling normal</strong>: Le client continue son polling mystatus normal</li>
+<li><strong>Détection action</strong>: Le serveur détecte l'action pendante lors du prochain mystatus</li>
+<li><strong>Envoi myactions</strong>: L'action est envoyée au client via myactions (201 Created)</li>
+<li><strong>Exécution</strong>: Le client merge l'action et l'exécute normalement</li>
+<li><strong>Feedback</strong>: Le mystatus suivant contient l'état mis à jour</li>
+<li><strong>Notification</strong>: Le serveur peut notifier l'interface web que l'action a été exécutée</li>
+</ol>
+<p><strong>Points critiques:</strong>
+- L'injection admin utilise la même queue que les actions automatiques
+- Le délai d'exécution dépend de la fréquence de polling (1-2 secondes)
+- L'interface web peut utiliser WebSocket ou SSE pour recevoir les notifications en temps réel
+- La validation côté serveur empêche les actions invalides
+- Le mécanisme est identique pour les actions automatiques (scénarios, programmations)</p>
+<hr/>
+<h2 id="notes-generales">Notes Générales<a class="headerlink" href="#notes-generales" title="Permanent link">¶</a></h2>
+<h3 id="contraintes-critiques">Contraintes Critiques<a class="headerlink" href="#contraintes-critiques" title="Permanent link">¶</a></h3>
+<p>Tous ces diagrammes doivent respecter les contraintes suivantes:</p>
+<ol>
+<li><strong>Single-Packet TCP</strong>: Toutes les réponses HTTP doivent être envoyées en UN SEUL paquet TCP</li>
+<li><strong>JSON malformé</strong>: Le client envoie du JSON avec clés non-quotées, le serveur doit normaliser</li>
+<li><strong>Headers HTTP</strong>: Format exact requis, notamment <code>Content-Type: application/json; charset=utf-8</code> (avec espace)</li>
+<li><strong>Polling continu</strong>: Le client poll toutes les 1-2 secondes, c'est le cœur du protocole</li>
+<li><strong>Bitwise OR merge</strong>: Les actions sont mergées avec OR, pas écrasées</li>
+<li><strong>Champ _de67f</strong>: Doit toujours être en premier dans le JSON et valoir 1</li>
+</ol>
+<h3 id="outils-de-diagnostic">Outils de Diagnostic<a class="headerlink" href="#outils-de-diagnostic" title="Permanent link">¶</a></h3>
+<p>Pour observer ces séquences en pratique:</p>
+<ul>
+<li><strong>tcpdump</strong>: Capturer les paquets TCP et vérifier le single-packet</li>
+<li><strong>Wireshark</strong>: Analyser les séquences complètes avec timeline</li>
+<li><strong>Logs serveur</strong>: Tracer les requêtes mystatus/myactions</li>
+<li><strong>Debug UART</strong>: Observer les logs du client embarqué</li>
+</ul>
+<h3 id="references">Références<a class="headerlink" href="#references" title="Permanent link">¶</a></h3>
+<ul>
+<li><a href="../../protocol/http-legacy-protocol/">Protocole HTTP Legacy</a></li>
+<li><a href="../../protocol/tcp-single-packet/">Contrainte TCP Single-Packet</a></li>
+<li><a href="../../protocol/exchange-table/">Table d'Échange</a></li>
+<li><a href="../../embedded-client/architecture/">Architecture Client</a></li>
+<li><a href="../../server/api-endpoints/">API Endpoints</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Retour en haut de la page
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/essensys-hub/client-essensys-legacy" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>

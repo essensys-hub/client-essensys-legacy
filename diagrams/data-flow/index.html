@@ -1,0 +1,2127 @@
+
+<!DOCTYPE html>
+
+<html class="no-js" lang="fr">
+<head>
+<meta charset="utf-8"/>
+<meta content="width=device-width,initial-scale=1" name="viewport"/>
+<meta content="Documentation du système de contrôle domotique embarqué basé sur MQX RTOS" name="description"/>
+<meta content="Essensys" name="author"/>
+<link href="../sequence-diagrams/" rel="prev"/>
+<link href="../../troubleshooting/network-debugging/" rel="next"/>
+<link href="../../assets/images/favicon.png" rel="icon"/>
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator"/>
+<title>Flux de données - Client Embarqué BP_MQX_ETH - ESSENSYS</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet"/>
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&amp;display=fallback" rel="stylesheet"/>
+<style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+</head>
+<body data-md-color-accent="indigo" data-md-color-primary="indigo" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox"/>
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox"/>
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#diagrammes-de-flux-de-donnees">
+          Aller au contenu
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<header class="md-header" data-md-component="header">
+<nav aria-label="En-tête" class="md-header__inner md-grid">
+<a aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-header__button md-logo" data-md-component="logo" href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic">
+<span class="md-ellipsis">
+            Client Embarqué BP_MQX_ETH - ESSENSYS
+          </span>
+</div>
+<div class="md-header__topic" data-md-component="header-topic">
+<span class="md-ellipsis">
+            
+              Flux de données
+            
+          </span>
+</div>
+</div>
+</div>
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Passer en mode sombre" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Passer en mode sombre">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a4 4 0 0 0-4 4 4 4 0 0 0 4 4 4 4 0 0 0 4-4 4 4 0 0 0-4-4m0 10a6 6 0 0 1-6-6 6 6 0 0 1 6-6 6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+<input aria-label="Passer en mode clair" class="md-option" data-md-color-accent="indigo" data-md-color-media="" data-md-color-primary="indigo" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio"/>
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Passer en mode clair">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 18c-.89 0-1.74-.2-2.5-.55C11.56 16.5 13 14.42 13 12s-1.44-4.5-3.5-5.45C10.26 6.2 11.11 6 12 6a6 6 0 0 1 6 6 6 6 0 0 1-6 6m8-9.31V4h-4.69L12 .69 8.69 4H4v4.69L.69 12 4 15.31V20h4.69L12 23.31 15.31 20H20v-4.69L23.31 12z"></path></svg>
+</label>
+</form>
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<label class="md-header__button md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+</label>
+<div class="md-search" data-md-component="search" role="dialog">
+<label class="md-search__overlay" for="__search"></label>
+<div class="md-search__inner" role="search">
+<form class="md-search__form" name="search">
+<input aria-label="Rechercher" autocapitalize="off" autocomplete="off" autocorrect="off" class="md-search__input" data-md-component="search-query" name="query" placeholder="Rechercher" required="" spellcheck="false" type="text"/>
+<label class="md-search__icon md-icon" for="__search">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"></path></svg>
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"></path></svg>
+</label>
+<nav aria-label="Recherche" class="md-search__options">
+<button aria-label="Effacer" class="md-search__icon md-icon" tabindex="-1" title="Effacer" type="reset">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"></path></svg>
+</button>
+</nav>
+<div class="md-search__suggest" data-md-component="search-suggest"></div>
+</form>
+<div class="md-search__output">
+<div class="md-search__scrollwrap" data-md-scrollfix="" tabindex="0">
+<div class="md-search-result" data-md-component="search-result">
+<div class="md-search-result__meta">
+            Initialisation de la recherche
+          </div>
+<ol class="md-search-result__list" role="presentation"></ol>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="md-header__source">
+<a class="md-source" data-md-component="source" href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<nav aria-label="Onglets" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../..">
+        
+  
+  
+    
+  
+  Accueil
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../protocol/http-legacy-protocol/">
+          
+  
+  
+  Protocole
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../embedded-client/architecture/">
+          
+  
+  
+  Client Embarqué
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../server/go-implementation/">
+          
+  
+  
+  Serveur
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../system-overview/">
+          
+  
+  
+  Diagrammes
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../troubleshooting/network-debugging/">
+        
+  
+  
+    
+  
+  Dépannage
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted" data-md-level="0">
+<label class="md-nav__title" for="__drawer">
+<a aria-label="Client Embarqué BP_MQX_ETH - ESSENSYS" class="md-nav__button md-logo" data-md-component="logo" href="../.." title="Client Embarqué BP_MQX_ETH - ESSENSYS">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"></path></svg>
+</a>
+    Client Embarqué BP_MQX_ETH - ESSENSYS
+  </label>
+<div class="md-nav__source">
+<a class="md-source" data-md-component="source" href="https://github.com/essensys-hub/client-essensys-legacy" title="Aller au dépôt">
+<div class="md-source__icon md-icon">
+<svg viewbox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M439.6 236.1 244 40.5c-5.4-5.5-12.8-8.5-20.4-8.5s-15 3-20.4 8.4L162.5 81l51.5 51.5c27.1-9.1 52.7 16.8 43.4 43.7l49.7 49.7c34.2-11.8 61.2 31 35.5 56.7-26.5 26.5-70.2-2.9-56-37.3L240.3 199v121.9c25.3 12.5 22.3 41.8 9.1 55-6.4 6.4-15.2 10.1-24.3 10.1s-17.8-3.6-24.3-10.1c-17.6-17.6-11.1-46.9 11.2-56v-123c-20.8-8.5-24.6-30.7-18.6-45L142.6 101 8.5 235.1C3 240.6 0 247.9 0 255.5s3 15 8.5 20.4l195.6 195.7c5.4 5.4 12.7 8.4 20.4 8.4s15-3 20.4-8.4l194.7-194.7c5.4-5.4 8.4-12.8 8.4-20.4s-3-15-8.4-20.4"></path></svg>
+</div>
+<div class="md-source__repository">
+    GitHub
+  </div>
+</a>
+</div>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../..">
+<span class="md-ellipsis">
+    
+  
+    Accueil
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_2" type="checkbox"/>
+<label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Protocole
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_2_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_2">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Protocole
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../protocol/http-legacy-protocol/">
+<span class="md-ellipsis">
+    
+  
+    Vue d'ensemble
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../protocol/tcp-single-packet/">
+<span class="md-ellipsis">
+    
+  
+    Contrainte TCP Single-Packet
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../protocol/exchange-table/">
+<span class="md-ellipsis">
+    
+  
+    Table d'échange
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox"/>
+<label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Client Embarqué
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Client Embarqué
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/architecture/">
+<span class="md-ellipsis">
+    
+  
+    Architecture
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/modules-reference/">
+<span class="md-ellipsis">
+    
+  
+    Référence des modules
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/communications/">
+<span class="md-ellipsis">
+    
+  
+    Communications
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../embedded-client/hardware/">
+<span class="md-ellipsis">
+    
+  
+    Matériel
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox"/>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="0">
+<span class="md-ellipsis">
+    
+  
+    Serveur
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="false" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Serveur
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../server/go-implementation/">
+<span class="md-ellipsis">
+    
+  
+    Implémentation Go
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../server/api-endpoints/">
+<span class="md-ellipsis">
+    
+  
+    Points d'API
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_5" type="checkbox"/>
+<label class="md-nav__link" for="__nav_5" id="__nav_5_label" tabindex="">
+<span class="md-ellipsis">
+    
+  
+    Diagrammes
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<nav aria-expanded="true" aria-labelledby="__nav_5_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_5">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Diagrammes
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../system-overview/">
+<span class="md-ellipsis">
+    
+  
+    Vue d'ensemble du système
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../sequence-diagrams/">
+<span class="md-ellipsis">
+    
+  
+    Diagrammes de séquence
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox"/>
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    Flux de données
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="./">
+<span class="md-ellipsis">
+    
+  
+    Flux de données
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table des matières" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table-des-matieres">
+<span class="md-ellipsis">
+      
+        Table des Matières
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-de-la-table-dechange">
+<span class="md-ellipsis">
+      
+        Flux de la Table d'Échange
+      
+    </span>
+</a>
+<nav aria-label="Flux de la Table d'Échange" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication-du-flux">
+<span class="md-ellipsis">
+      
+        Explication du Flux
+      
+    </span>
+</a>
+<nav aria-label="Explication du Flux" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-montant-client-serveur">
+<span class="md-ellipsis">
+      
+        Flux Montant (Client → Serveur)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-descendant-serveur-client">
+<span class="md-ellipsis">
+      
+        Flux Descendant (Serveur → Client)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#boucle-de-feedback">
+<span class="md-ellipsis">
+      
+        Boucle de Feedback
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#points-critiques">
+<span class="md-ellipsis">
+      
+        Points Critiques
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cycle-de-vie-dune-action">
+<span class="md-ellipsis">
+      
+        Cycle de Vie d'une Action
+      
+    </span>
+</a>
+<nav aria-label="Cycle de Vie d'une Action" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication-des-etats">
+<span class="md-ellipsis">
+      
+        Explication des États
+      
+    </span>
+</a>
+<nav aria-label="Explication des États" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-created-creation">
+<span class="md-ellipsis">
+      
+        1. Created (Création)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-queued-en-queue">
+<span class="md-ellipsis">
+      
+        2. Queued (En Queue)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-merging-fusion">
+<span class="md-ellipsis">
+      
+        3. Merging (Fusion)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-buffering-bufferisation">
+<span class="md-ellipsis">
+      
+        4. Buffering (Bufferisation)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-sent-envoyee">
+<span class="md-ellipsis">
+      
+        5. Sent (Envoyée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-received-recue">
+<span class="md-ellipsis">
+      
+        6. Received (Reçue)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-parsed-parsee">
+<span class="md-ellipsis">
+      
+        7. Parsed (Parsée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-merged-fusionnee-localement">
+<span class="md-ellipsis">
+      
+        8. Merged (Fusionnée Localement)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-executing-en-execution">
+<span class="md-ellipsis">
+      
+        9. Executing (En Exécution)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-executed-executee">
+<span class="md-ellipsis">
+      
+        10. Executed (Exécutée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-updated-etat-mis-a-jour">
+<span class="md-ellipsis">
+      
+        11. Updated (État Mis à Jour)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-acknowledged-acknowledgee">
+<span class="md-ellipsis">
+      
+        12. Acknowledged (Acknowledgée)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#etats-derreur">
+<span class="md-ellipsis">
+      
+        États d'Erreur
+      
+    </span>
+</a>
+<nav aria-label="États d'Erreur" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#expired-expiree">
+<span class="md-ellipsis">
+      
+        Expired (Expirée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lost-perdue">
+<span class="md-ellipsis">
+      
+        Lost (Perdue)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#failed-echec">
+<span class="md-ellipsis">
+      
+        Failed (Échec)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metriques-typiques">
+<span class="md-ellipsis">
+      
+        Métriques Typiques
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-de-mise-a-jour-detat">
+<span class="md-ellipsis">
+      
+        Flux de Mise à Jour d'État
+      
+    </span>
+</a>
+<nav aria-label="Flux de Mise à Jour d'État" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication-du-flux_1">
+<span class="md-ellipsis">
+      
+        Explication du Flux
+      
+    </span>
+</a>
+<nav aria-label="Explication du Flux" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mise-a-jour-locale-client">
+<span class="md-ellipsis">
+      
+        Mise à Jour Locale (Client)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#synchronisation-serveur">
+<span class="md-ellipsis">
+      
+        Synchronisation Serveur
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interface-web">
+<span class="md-ellipsis">
+      
+        Interface Web
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-dusage">
+<span class="md-ellipsis">
+      
+        Cas d'Usage
+      
+    </span>
+</a>
+<nav aria-label="Cas d'Usage" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-1-detection-de-mouvement">
+<span class="md-ellipsis">
+      
+        Cas 1: Détection de Mouvement
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-2-commande-lumiere">
+<span class="md-ellipsis">
+      
+        Cas 2: Commande Lumière
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-3-lecture-compteur-linky">
+<span class="md-ellipsis">
+      
+        Cas 3: Lecture Compteur Linky
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metriques-de-performance">
+<span class="md-ellipsis">
+      
+        Métriques de Performance
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#points-critiques_1">
+<span class="md-ellipsis">
+      
+        Points Critiques
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#notes-generales">
+<span class="md-ellipsis">
+      
+        Notes Générales
+      
+    </span>
+</a>
+<nav aria-label="Notes Générales" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contraintes-critiques">
+<span class="md-ellipsis">
+      
+        Contraintes Critiques
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#outils-de-diagnostic">
+<span class="md-ellipsis">
+      
+        Outils de Diagnostic
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optimisations-possibles">
+<span class="md-ellipsis">
+      
+        Optimisations Possibles
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#references">
+<span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../troubleshooting/network-debugging/">
+<span class="md-ellipsis">
+    
+  
+    Dépannage
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<nav aria-label="Table des matières" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table des matières
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#table-des-matieres">
+<span class="md-ellipsis">
+      
+        Table des Matières
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-de-la-table-dechange">
+<span class="md-ellipsis">
+      
+        Flux de la Table d'Échange
+      
+    </span>
+</a>
+<nav aria-label="Flux de la Table d'Échange" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication-du-flux">
+<span class="md-ellipsis">
+      
+        Explication du Flux
+      
+    </span>
+</a>
+<nav aria-label="Explication du Flux" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-montant-client-serveur">
+<span class="md-ellipsis">
+      
+        Flux Montant (Client → Serveur)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-descendant-serveur-client">
+<span class="md-ellipsis">
+      
+        Flux Descendant (Serveur → Client)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#boucle-de-feedback">
+<span class="md-ellipsis">
+      
+        Boucle de Feedback
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#points-critiques">
+<span class="md-ellipsis">
+      
+        Points Critiques
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cycle-de-vie-dune-action">
+<span class="md-ellipsis">
+      
+        Cycle de Vie d'une Action
+      
+    </span>
+</a>
+<nav aria-label="Cycle de Vie d'une Action" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication-des-etats">
+<span class="md-ellipsis">
+      
+        Explication des États
+      
+    </span>
+</a>
+<nav aria-label="Explication des États" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#1-created-creation">
+<span class="md-ellipsis">
+      
+        1. Created (Création)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#2-queued-en-queue">
+<span class="md-ellipsis">
+      
+        2. Queued (En Queue)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#3-merging-fusion">
+<span class="md-ellipsis">
+      
+        3. Merging (Fusion)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#4-buffering-bufferisation">
+<span class="md-ellipsis">
+      
+        4. Buffering (Bufferisation)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#5-sent-envoyee">
+<span class="md-ellipsis">
+      
+        5. Sent (Envoyée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#6-received-recue">
+<span class="md-ellipsis">
+      
+        6. Received (Reçue)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#7-parsed-parsee">
+<span class="md-ellipsis">
+      
+        7. Parsed (Parsée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#8-merged-fusionnee-localement">
+<span class="md-ellipsis">
+      
+        8. Merged (Fusionnée Localement)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#9-executing-en-execution">
+<span class="md-ellipsis">
+      
+        9. Executing (En Exécution)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#10-executed-executee">
+<span class="md-ellipsis">
+      
+        10. Executed (Exécutée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#11-updated-etat-mis-a-jour">
+<span class="md-ellipsis">
+      
+        11. Updated (État Mis à Jour)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#12-acknowledged-acknowledgee">
+<span class="md-ellipsis">
+      
+        12. Acknowledged (Acknowledgée)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#etats-derreur">
+<span class="md-ellipsis">
+      
+        États d'Erreur
+      
+    </span>
+</a>
+<nav aria-label="États d'Erreur" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#expired-expiree">
+<span class="md-ellipsis">
+      
+        Expired (Expirée)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lost-perdue">
+<span class="md-ellipsis">
+      
+        Lost (Perdue)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#failed-echec">
+<span class="md-ellipsis">
+      
+        Failed (Échec)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metriques-typiques">
+<span class="md-ellipsis">
+      
+        Métriques Typiques
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#flux-de-mise-a-jour-detat">
+<span class="md-ellipsis">
+      
+        Flux de Mise à Jour d'État
+      
+    </span>
+</a>
+<nav aria-label="Flux de Mise à Jour d'État" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#explication-du-flux_1">
+<span class="md-ellipsis">
+      
+        Explication du Flux
+      
+    </span>
+</a>
+<nav aria-label="Explication du Flux" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mise-a-jour-locale-client">
+<span class="md-ellipsis">
+      
+        Mise à Jour Locale (Client)
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#synchronisation-serveur">
+<span class="md-ellipsis">
+      
+        Synchronisation Serveur
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#interface-web">
+<span class="md-ellipsis">
+      
+        Interface Web
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-dusage">
+<span class="md-ellipsis">
+      
+        Cas d'Usage
+      
+    </span>
+</a>
+<nav aria-label="Cas d'Usage" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-1-detection-de-mouvement">
+<span class="md-ellipsis">
+      
+        Cas 1: Détection de Mouvement
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-2-commande-lumiere">
+<span class="md-ellipsis">
+      
+        Cas 2: Commande Lumière
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#cas-3-lecture-compteur-linky">
+<span class="md-ellipsis">
+      
+        Cas 3: Lecture Compteur Linky
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#metriques-de-performance">
+<span class="md-ellipsis">
+      
+        Métriques de Performance
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#points-critiques_1">
+<span class="md-ellipsis">
+      
+        Points Critiques
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#notes-generales">
+<span class="md-ellipsis">
+      
+        Notes Générales
+      
+    </span>
+</a>
+<nav aria-label="Notes Générales" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#contraintes-critiques">
+<span class="md-ellipsis">
+      
+        Contraintes Critiques
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#outils-de-diagnostic">
+<span class="md-ellipsis">
+      
+        Outils de Diagnostic
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#optimisations-possibles">
+<span class="md-ellipsis">
+      
+        Optimisations Possibles
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#references">
+<span class="md-ellipsis">
+      
+        Références
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<h1 id="diagrammes-de-flux-de-donnees">Diagrammes de Flux de Données<a class="headerlink" href="#diagrammes-de-flux-de-donnees" title="Permanent link">¶</a></h1>
+<p>Ce document présente les diagrammes de flux de données pour le système client-essensys-legacy. Ces diagrammes illustrent comment les données circulent entre les différents composants du système, de leur création à leur consommation.</p>
+<h2 id="table-des-matieres">Table des Matières<a class="headerlink" href="#table-des-matieres" title="Permanent link">¶</a></h2>
+<ul>
+<li><a href="#flux-de-la-table-déchange">Flux de la Table d'Échange</a></li>
+<li><a href="#cycle-de-vie-dune-action">Cycle de Vie d'une Action</a></li>
+<li><a href="#flux-de-mise-à-jour-détat">Flux de Mise à Jour d'État</a></li>
+</ul>
+<hr/>
+<h2 id="flux-de-la-table-dechange">Flux de la Table d'Échange<a class="headerlink" href="#flux-de-la-table-dechange" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre comment les données de la table d'échange circulent entre le client embarqué et le serveur, et comment elles sont transformées à chaque étape.</p>
+<div class="mermaid">flowchart TB
+    subgraph Client["Client Embarqué BP_MQX_ETH"]
+        TE[Table d'Échange<br/>Indices 0-999]
+        TERead[Lecture État<br/>Indices 605-622]
+        TEWrite[Écriture Actions<br/>Merge Bitwise OR]
+        JSONBuild[Construction JSON<br/>Clés non-quotées]
+        JSONParse[Parsing JSON<br/>Parser simple]
+    end
+
+    subgraph Network["Réseau TCP/IP"]
+        TCPUp[TCP Upload<br/>POST mystatus]
+        TCPDown[TCP Download<br/>GET myactions<br/>UN SEUL PAQUET]
+    end
+
+    subgraph Server["Serveur Legacy"]
+        JSONNorm[Normalisation JSON<br/>Ajout quotes]
+        Store[Store État Client<br/>Historique 25 valeurs]
+        Queue[Queue Actions<br/>FIFO par client]
+        Merge[Merge Actions<br/>Bitwise OR]
+        Buffer[legacyResponseWriter<br/>Bufferisation complète]
+    end
+
+    subgraph External["Sources Externes"]
+        Admin[Interface Admin]
+        Auto[Automatisations]
+        Schedule[Programmations]
+    end
+
+    %% Flux montant (Client → Serveur)
+    TE --&gt;|Lecture périodique| TERead
+    TERead --&gt;|Valeurs actuelles| JSONBuild
+    JSONBuild --&gt;|{version:"1.0",ek:[...]}| TCPUp
+    TCPUp --&gt;|HTTP POST| JSONNorm
+    JSONNorm --&gt;|JSON valide| Store
+    Store --&gt;|État persisté| Store
+
+    %% Flux descendant (Serveur → Client)
+    Admin --&gt;|Injection| Queue
+    Auto --&gt;|Déclenchement| Queue
+    Schedule --&gt;|Programmation| Queue
+    Queue --&gt;|Actions pendantes| Merge
+    Merge --&gt;|Table complète 605-622| Buffer
+    Buffer --&gt;|Réponse complète| TCPDown
+    TCPDown --&gt;|HTTP Response| JSONParse
+    JSONParse --&gt;|Actions extraites| TEWrite
+    TEWrite --&gt;|Mise à jour| TE
+
+    %% Boucle de feedback
+    TE -.-&gt;|État mis à jour| TERead
+
+    style TE fill:#e1f5ff
+    style Store fill:#fff4e1
+    style Queue fill:#ffe1e1
+    style TCPDown fill:#ff9999,stroke:#ff0000,stroke-width:3px
+</div>
+<h3 id="explication-du-flux">Explication du Flux<a class="headerlink" href="#explication-du-flux" title="Permanent link">¶</a></h3>
+<h4 id="flux-montant-client-serveur">Flux Montant (Client → Serveur)<a class="headerlink" href="#flux-montant-client-serveur" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Lecture Table d'Échange</strong>:</li>
+<li>Main_task et autres tâches mettent à jour la table d'échange localement</li>
+<li>Ethernet_task lit périodiquement les indices 605-622</li>
+<li>
+<p>Fréquence: toutes les 1-2 secondes</p>
+</li>
+<li>
+<p><strong>Construction JSON</strong>:</p>
+</li>
+<li>Le client construit un JSON avec clés non-quotées (format legacy)</li>
+<li>Format: <code>{version:"1.0",ek:[{k:605,v:"0"},{k:606,v:"1"}]}</code></li>
+<li>
+<p>Le champ <code>_de67f</code> est toujours en premier et vaut "1"</p>
+</li>
+<li>
+<p><strong>Envoi TCP</strong>:</p>
+</li>
+<li>POST /api/mystatus avec le JSON malformé</li>
+<li>Headers: <code>Content-Type: application/json</code>, <code>Connection: close</code></li>
+<li>
+<p>Taille typique: 100-500 bytes</p>
+</li>
+<li>
+<p><strong>Normalisation Serveur</strong>:</p>
+</li>
+<li>Le serveur ajoute les quotes aux clés: <code>{"version":"1.0","ek":[...]}</code></li>
+<li>Parsing JSON standard après normalisation</li>
+<li>
+<p>Validation des indices et valeurs</p>
+</li>
+<li>
+<p><strong>Stockage État</strong>:</p>
+</li>
+<li>Mise à jour du store avec les nouvelles valeurs</li>
+<li>Timestamp de réception enregistré</li>
+<li>Historique des 25 dernières valeurs maintenu par index</li>
+<li>Détection des changements pour monitoring</li>
+</ol>
+<h4 id="flux-descendant-serveur-client">Flux Descendant (Serveur → Client)<a class="headerlink" href="#flux-descendant-serveur-client" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Sources d'Actions</strong>:</li>
+<li><strong>Interface Admin</strong>: Injection manuelle via POST /api/admin/inject</li>
+<li><strong>Automatisations</strong>: Règles déclenchées par événements (ex: détection mouvement)</li>
+<li>
+<p><strong>Programmations</strong>: Actions planifiées (ex: fermer volets à 20h)</p>
+</li>
+<li>
+<p><strong>Queue Actions</strong>:</p>
+</li>
+<li>Chaque client a sa propre queue FIFO</li>
+<li>Les actions sont ajoutées avec un GUID unique</li>
+<li>
+<p>Timeout: actions non-acknowledgées supprimées après 5 minutes</p>
+</li>
+<li>
+<p><strong>Merge Actions</strong>:</p>
+</li>
+<li>Si plusieurs actions pour le même client, merge avec bitwise OR</li>
+<li>Exemple: Action1 {621:"1"} + Action2 {621:"2"} = {621:"3"}</li>
+<li>Garantit qu'aucune commande n'est perdue</li>
+<li>
+<p>Génère la table complète (indices 605-622 + 590)</p>
+</li>
+<li>
+<p><strong>Bufferisation Complète</strong>:</p>
+</li>
+<li><strong>CRITIQUE</strong>: legacyResponseWriter bufferise toute la réponse</li>
+<li>Calcul du Content-Length exact</li>
+<li>Construction du JSON avec <code>_de67f</code> en premier</li>
+<li>
+<p>Envoi en UN SEUL paquet TCP (contrainte hardware)</p>
+</li>
+<li>
+<p><strong>Réception Client</strong>:</p>
+</li>
+<li>Le parser HTTP simple attend tout en un paquet</li>
+<li>Si plusieurs paquets → client se bloque</li>
+<li>Parsing JSON séquentiel</li>
+<li>
+<p>Extraction des actions</p>
+</li>
+<li>
+<p><strong>Mise à Jour Table</strong>:</p>
+</li>
+<li>Merge bitwise OR des actions dans la table d'échange</li>
+<li>Les indices non-mentionnés gardent leur valeur actuelle</li>
+<li>L'index 590 déclenche l'exécution du scénario</li>
+<li>Main_task détectera les changements au prochain cycle</li>
+</ol>
+<h4 id="boucle-de-feedback">Boucle de Feedback<a class="headerlink" href="#boucle-de-feedback" title="Permanent link">¶</a></h4>
+<ul>
+<li>L'état mis à jour dans la table d'échange sera envoyé au prochain mystatus</li>
+<li>Le serveur peut ainsi vérifier que l'action a été exécutée</li>
+<li>Délai typique: 1-2 secondes entre commande et confirmation</li>
+</ul>
+<h3 id="points-critiques">Points Critiques<a class="headerlink" href="#points-critiques" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Single-Packet TCP</strong>: Sans bufferisation complète, le client se bloque</li>
+<li><strong>JSON malformé</strong>: Le serveur doit normaliser avant parsing</li>
+<li><strong>Bitwise OR</strong>: Permet d'accumuler les commandes sans perte</li>
+<li><strong>Historique</strong>: Les 25 dernières valeurs permettent le debugging</li>
+<li><strong>Fréquence</strong>: Polling toutes les 1-2 secondes = latence faible</li>
+</ol>
+<hr/>
+<h2 id="cycle-de-vie-dune-action">Cycle de Vie d'une Action<a class="headerlink" href="#cycle-de-vie-dune-action" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre le cycle de vie complet d'une action, de sa création à son exécution et son acknowledgment.</p>
+<div class="mermaid">stateDiagram-v2
+    [*] --&gt; Created: Admin/Auto/Schedule
+
+    Created --&gt; Queued: Ajout à la queue
+    note right of Created
+        Génération GUID
+        Validation paramètres
+        Timestamp création
+    end note
+
+    Queued --&gt; Merging: Polling client
+    note right of Queued
+        Queue FIFO par client
+        Timeout 5 minutes
+        Priorité FIFO
+    end note
+
+    Merging --&gt; Buffering: Merge bitwise OR
+    note right of Merging
+        Combiner actions multiples
+        Table complète 605-622
+        Index 590 = "1"
+    end note
+
+    Buffering --&gt; Sent: legacyResponseWriter
+    note right of Buffering
+        Bufferisation complète
+        Content-Length calculé
+        _de67f en premier
+    end note
+
+    Sent --&gt; Received: TCP single-packet
+    note right of Sent
+        UN SEUL paquet TCP
+        Headers corrects
+        JSON valide
+    end note
+
+    Received --&gt; Parsed: Parser client
+    note right of Received
+        Parsing HTTP simple
+        Extraction JSON
+        Validation structure
+    end note
+
+    Parsed --&gt; Merged: Merge dans table
+    note right of Parsed
+        Bitwise OR local
+        Mise à jour indices
+        Trigger index 590
+    end note
+
+    Merged --&gt; Executing: Main_task détecte
+    note right of Merged
+        Lecture table d'échange
+        Détection changements
+        Dispatch aux modules
+    end note
+
+    Executing --&gt; Executed: Module exécute
+    note right of Executing
+        Commande hardware
+        GPIO/I2C/PWM
+        Confirmation hardware
+    end note
+
+    Executed --&gt; Updated: Mise à jour état
+    note right of Executed
+        Table d'échange mise à jour
+        Nouvel état persisté
+        Prêt pour mystatus
+    end note
+
+    Updated --&gt; Acknowledged: mystatus avec nouvel état
+    note right of Updated
+        Serveur compare état
+        Détection exécution
+        Marque action done
+    end note
+
+    Acknowledged --&gt; [*]: Action complète
+
+    Queued --&gt; Expired: Timeout 5 min
+    Expired --&gt; [*]: Action supprimée
+
+    Sent --&gt; Lost: Perte réseau
+    Lost --&gt; Queued: Retry
+
+    Executing --&gt; Failed: Erreur hardware
+    Failed --&gt; Updated: État erreur
+</div>
+<h3 id="explication-des-etats">Explication des États<a class="headerlink" href="#explication-des-etats" title="Permanent link">¶</a></h3>
+<h4 id="1-created-creation">1. Created (Création)<a class="headerlink" href="#1-created-creation" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Interface admin, automatisation, ou programmation</li>
+<li><strong>Actions</strong>:</li>
+<li>Génération d'un GUID unique (UUID v4)</li>
+<li>Validation des paramètres (indices 605-622, valeurs 0-255)</li>
+<li>Timestamp de création enregistré</li>
+<li>Identification du client cible</li>
+<li><strong>Durée</strong>: &lt; 10ms</li>
+</ul>
+<h4 id="2-queued-en-queue">2. Queued (En Queue)<a class="headerlink" href="#2-queued-en-queue" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Action validée et ajoutée à la queue du client</li>
+<li><strong>Actions</strong>:</li>
+<li>Insertion dans la queue FIFO du client</li>
+<li>Attente du prochain polling mystatus</li>
+<li>Surveillance du timeout (5 minutes)</li>
+<li><strong>Durée</strong>: 0-2 secondes (dépend du polling)</li>
+</ul>
+<h4 id="3-merging-fusion">3. Merging (Fusion)<a class="headerlink" href="#3-merging-fusion" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Client envoie POST /api/mystatus</li>
+<li><strong>Actions</strong>:</li>
+<li>Récupération de toutes les actions pendantes pour ce client</li>
+<li>Merge avec bitwise OR si plusieurs actions</li>
+<li>Construction de la table complète (indices 605-622)</li>
+<li>Ajout de l'index 590 = "1" (trigger)</li>
+<li><strong>Durée</strong>: &lt; 50ms</li>
+</ul>
+<h4 id="4-buffering-bufferisation">4. Buffering (Bufferisation)<a class="headerlink" href="#4-buffering-bufferisation" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Actions mergées, prêtes à envoyer</li>
+<li><strong>Actions</strong>:</li>
+<li>Construction du JSON avec <code>_de67f</code> en premier</li>
+<li>Bufferisation complète de la réponse HTTP</li>
+<li>Calcul du Content-Length exact</li>
+<li>Préparation des headers HTTP</li>
+<li><strong>Durée</strong>: &lt; 50ms</li>
+<li><strong>CRITIQUE</strong>: Sans cette étape, le client se bloque</li>
+</ul>
+<h4 id="5-sent-envoyee">5. Sent (Envoyée)<a class="headerlink" href="#5-sent-envoyee" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Réponse bufferisée complète</li>
+<li><strong>Actions</strong>:</li>
+<li>Envoi en UN SEUL paquet TCP</li>
+<li>Headers HTTP corrects</li>
+<li>JSON valide avec actions</li>
+<li><strong>Durée</strong>: &lt; 100ms (dépend du réseau)</li>
+</ul>
+<h4 id="6-received-recue">6. Received (Reçue)<a class="headerlink" href="#6-received-recue" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Paquet TCP reçu par le client</li>
+<li><strong>Actions</strong>:</li>
+<li>Réception du paquet complet</li>
+<li>Vérification des headers HTTP</li>
+<li>Extraction du body JSON</li>
+<li><strong>Durée</strong>: &lt; 10ms</li>
+</ul>
+<h4 id="7-parsed-parsee">7. Parsed (Parsée)<a class="headerlink" href="#7-parsed-parsee" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Réponse HTTP reçue</li>
+<li><strong>Actions</strong>:</li>
+<li>Parsing HTTP simple (code 201 = actions, 200 = vide)</li>
+<li>Parsing JSON séquentiel</li>
+<li>Extraction du champ <code>_de67f</code></li>
+<li>Extraction du tableau <code>actions</code></li>
+<li>Validation de la structure</li>
+<li><strong>Durée</strong>: &lt; 50ms</li>
+</ul>
+<h4 id="8-merged-fusionnee-localement">8. Merged (Fusionnée Localement)<a class="headerlink" href="#8-merged-fusionnee-localement" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Actions parsées avec succès</li>
+<li><strong>Actions</strong>:</li>
+<li>Merge bitwise OR dans la table d'échange locale</li>
+<li>Mise à jour des indices 605-622</li>
+<li>L'index 590 = "1" déclenche le scénario</li>
+<li>Les indices non-mentionnés gardent leur valeur</li>
+<li><strong>Durée</strong>: &lt; 10ms</li>
+</ul>
+<h4 id="9-executing-en-execution">9. Executing (En Exécution)<a class="headerlink" href="#9-executing-en-execution" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Main_task détecte les changements dans la table</li>
+<li><strong>Actions</strong>:</li>
+<li>Lecture de la table d'échange</li>
+<li>Détection des indices modifiés</li>
+<li>Dispatch aux modules concernés (Chauffage, Alarme, etc.)</li>
+<li>Appel des fonctions de contrôle hardware</li>
+<li><strong>Durée</strong>: 10-500ms (dépend de l'action)</li>
+</ul>
+<h4 id="10-executed-executee">10. Executed (Exécutée)<a class="headerlink" href="#10-executed-executee" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Module confirme l'exécution</li>
+<li><strong>Actions</strong>:</li>
+<li>Commande hardware effectuée (GPIO, I2C, PWM)</li>
+<li>Confirmation hardware reçue</li>
+<li>Logs d'exécution enregistrés</li>
+<li><strong>Durée</strong>: Variable (10ms-2s selon l'action)</li>
+</ul>
+<h4 id="11-updated-etat-mis-a-jour">11. Updated (État Mis à Jour)<a class="headerlink" href="#11-updated-etat-mis-a-jour" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Action exécutée avec succès</li>
+<li><strong>Actions</strong>:</li>
+<li>Mise à jour de la table d'échange avec le nouvel état</li>
+<li>Persistance de l'état</li>
+<li>Préparation pour le prochain mystatus</li>
+<li><strong>Durée</strong>: &lt; 10ms</li>
+</ul>
+<h4 id="12-acknowledged-acknowledgee">12. Acknowledged (Acknowledgée)<a class="headerlink" href="#12-acknowledged-acknowledgee" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Prochain mystatus avec nouvel état</li>
+<li><strong>Actions</strong>:</li>
+<li>Serveur reçoit l'état mis à jour</li>
+<li>Comparaison avec l'état attendu</li>
+<li>Marque l'action comme "done"</li>
+<li>Suppression de la queue</li>
+<li>Notification à l'interface web (optionnel)</li>
+<li><strong>Durée</strong>: &lt; 50ms</li>
+</ul>
+<h3 id="etats-derreur">États d'Erreur<a class="headerlink" href="#etats-derreur" title="Permanent link">¶</a></h3>
+<h4 id="expired-expiree">Expired (Expirée)<a class="headerlink" href="#expired-expiree" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Timeout de 5 minutes atteint</li>
+<li><strong>Actions</strong>:</li>
+<li>Suppression de la queue</li>
+<li>Log d'erreur</li>
+<li>Notification admin (optionnel)</li>
+<li><strong>Raison</strong>: Client déconnecté ou ne poll plus</li>
+</ul>
+<h4 id="lost-perdue">Lost (Perdue)<a class="headerlink" href="#lost-perdue" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Perte de connexion réseau</li>
+<li><strong>Actions</strong>:</li>
+<li>Retry automatique</li>
+<li>Remise en queue</li>
+<li>Compteur de tentatives</li>
+<li><strong>Limite</strong>: 3 tentatives maximum</li>
+</ul>
+<h4 id="failed-echec">Failed (Échec)<a class="headerlink" href="#failed-echec" title="Permanent link">¶</a></h4>
+<ul>
+<li><strong>Déclencheur</strong>: Erreur hardware lors de l'exécution</li>
+<li><strong>Actions</strong>:</li>
+<li>Mise à jour de l'état avec code d'erreur</li>
+<li>Log détaillé de l'erreur</li>
+<li>Notification au serveur via mystatus</li>
+<li><strong>Exemples</strong>: I2C timeout, GPIO erreur, capteur défaillant</li>
+</ul>
+<h3 id="metriques-typiques">Métriques Typiques<a class="headerlink" href="#metriques-typiques" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Métrique</th>
+<th>Valeur Typique</th>
+<th>Valeur Maximum</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Temps total (création → acknowledgment)</td>
+<td>2-4 secondes</td>
+<td>10 secondes</td>
+</tr>
+<tr>
+<td>Temps en queue</td>
+<td>0-2 secondes</td>
+<td>5 minutes (timeout)</td>
+</tr>
+<tr>
+<td>Temps d'exécution</td>
+<td>10-500ms</td>
+<td>2 secondes</td>
+</tr>
+<tr>
+<td>Taux de succès</td>
+<td>&gt; 99%</td>
+<td>-</td>
+</tr>
+<tr>
+<td>Taux de retry</td>
+<td>&lt; 1%</td>
+<td>-</td>
+</tr>
+</tbody>
+</table>
+<hr/>
+<h2 id="flux-de-mise-a-jour-detat">Flux de Mise à Jour d'État<a class="headerlink" href="#flux-de-mise-a-jour-detat" title="Permanent link">¶</a></h2>
+<p>Ce diagramme montre comment l'état du système est mis à jour et synchronisé entre le client et le serveur.</p>
+<div class="mermaid">flowchart LR
+    subgraph ClientSide["Côté Client"]
+        direction TB
+        HW[Hardware<br/>GPIO, I2C, ADC]
+        Modules[Modules<br/>Chauffage, Alarme, etc.]
+        TE[Table d'Échange<br/>Indices 0-999]
+        TEMonitor[Monitoring<br/>Détection changements]
+    end
+
+    subgraph Network["Réseau"]
+        direction TB
+        Upload[POST /api/mystatus<br/>Toutes les 1-2s]
+        Download[GET /api/myactions<br/>Après mystatus]
+    end
+
+    subgraph ServerSide["Côté Serveur"]
+        direction TB
+        Receive[Réception État]
+        Store[Store État<br/>Par client]
+        History[Historique<br/>25 valeurs/index]
+        Compare[Comparaison<br/>État attendu vs réel]
+        Monitor[Monitoring<br/>Alertes, logs]
+    end
+
+    subgraph WebUI["Interface Web"]
+        direction TB
+        Display[Affichage État<br/>Temps réel]
+        Charts[Graphiques<br/>Historique]
+        Alerts[Alertes<br/>Anomalies]
+    end
+
+    %% Flux de mise à jour local
+    HW --&gt;|Lectures capteurs| Modules
+    Modules --&gt;|Mise à jour| TE
+    TE --&gt;|Surveillance| TEMonitor
+
+    %% Flux vers serveur
+    TEMonitor --&gt;|État actuel| Upload
+    Upload --&gt;|JSON mystatus| Receive
+    Receive --&gt;|Parsing| Store
+    Store --&gt;|Archivage| History
+    Store --&gt;|Vérification| Compare
+    Compare --&gt;|Détection anomalies| Monitor
+
+    %% Flux vers interface web
+    Store --&gt;|État temps réel| Display
+    History --&gt;|Données historiques| Charts
+    Monitor --&gt;|Événements| Alerts
+
+    %% Flux de commandes (feedback loop)
+    Display -.-&gt;|Commandes admin| Download
+    Download -.-&gt;|Actions| TE
+
+    style TE fill:#e1f5ff
+    style Store fill:#fff4e1
+    style History fill:#e1ffe1
+    style Upload fill:#ffe1e1
+</div>
+<h3 id="explication-du-flux_1">Explication du Flux<a class="headerlink" href="#explication-du-flux_1" title="Permanent link">¶</a></h3>
+<h4 id="mise-a-jour-locale-client">Mise à Jour Locale (Client)<a class="headerlink" href="#mise-a-jour-locale-client" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Lectures Hardware</strong>:</li>
+<li><strong>GPIO</strong>: État des entrées (détecteurs, boutons)</li>
+<li><strong>I2C</strong>: État des boîtiers auxiliaires (lumières, volets)</li>
+<li><strong>ADC</strong>: Valeurs analogiques (détection fuites, température)</li>
+<li><strong>UART</strong>: Données TeleInfo (compteur Linky)</li>
+<li>
+<p>Fréquence: Variable selon le périphérique (10ms-1s)</p>
+</li>
+<li>
+<p><strong>Traitement Modules</strong>:</p>
+</li>
+<li>Chaque module traite les données de son domaine</li>
+<li><strong>Chauffage</strong>: Calcul consignes, gestion fil pilote</li>
+<li><strong>Alarme</strong>: Détection intrusion, gestion sirènes</li>
+<li><strong>Ecran</strong>: Interface utilisateur, affichage</li>
+<li><strong>Scenario</strong>: Exécution automatisations</li>
+<li>
+<p>Mise à jour de la table d'échange avec les nouvelles valeurs</p>
+</li>
+<li>
+<p><strong>Monitoring Local</strong>:</p>
+</li>
+<li>Main_task surveille les changements dans la table</li>
+<li>Détection des événements importants</li>
+<li>Déclenchement d'actions locales si nécessaire</li>
+<li>Préparation des données pour mystatus</li>
+</ol>
+<h4 id="synchronisation-serveur">Synchronisation Serveur<a class="headerlink" href="#synchronisation-serveur" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Envoi État</strong>:</li>
+<li>Ethernet_task lit les indices 605-622</li>
+<li>Construction du JSON mystatus</li>
+<li>Envoi toutes les 1-2 secondes</li>
+<li>
+<p>Format: <code>{version:"1.0",ek:[{k:605,v:"0"}]}</code></p>
+</li>
+<li>
+<p><strong>Réception Serveur</strong>:</p>
+</li>
+<li>Normalisation du JSON malformé</li>
+<li>Parsing et validation</li>
+<li>Extraction des paires (index, valeur)</li>
+<li>
+<p>Timestamp de réception</p>
+</li>
+<li>
+<p><strong>Stockage État</strong>:</p>
+</li>
+<li>Mise à jour du store avec les nouvelles valeurs</li>
+<li>Chaque client a son propre état</li>
+<li>État indexé par client ID (adresse MAC)</li>
+<li>
+<p>Accès rapide pour les requêtes</p>
+</li>
+<li>
+<p><strong>Historique</strong>:</p>
+</li>
+<li>Conservation des 25 dernières valeurs par index</li>
+<li>Timestamp pour chaque valeur</li>
+<li>Source de la valeur (client, serveur, admin)</li>
+<li>
+<p>Permet le debugging et l'analyse</p>
+</li>
+<li>
+<p><strong>Comparaison</strong>:</p>
+</li>
+<li>Vérification de l'état reçu vs état attendu</li>
+<li>Détection des actions exécutées</li>
+<li>Détection des anomalies (valeurs incohérentes)</li>
+<li>
+<p>Marque les actions comme "done" si état correct</p>
+</li>
+<li>
+<p><strong>Monitoring</strong>:</p>
+</li>
+<li>Détection des clients déconnectés (pas de mystatus depuis &gt; 10s)</li>
+<li>Détection des valeurs anormales (hors plage)</li>
+<li>Génération d'alertes</li>
+<li>Logs pour audit</li>
+</ol>
+<h4 id="interface-web">Interface Web<a class="headerlink" href="#interface-web" title="Permanent link">¶</a></h4>
+<ol>
+<li><strong>Affichage Temps Réel</strong>:</li>
+<li>WebSocket ou SSE pour push temps réel</li>
+<li>Affichage de l'état actuel de tous les clients</li>
+<li>Mise à jour automatique à chaque mystatus</li>
+<li>
+<p>Latence: &lt; 2 secondes</p>
+</li>
+<li>
+<p><strong>Graphiques Historiques</strong>:</p>
+</li>
+<li>Requête de l'historique via API REST</li>
+<li>Affichage des 25 dernières valeurs</li>
+<li>Graphiques de tendance (température, consommation)</li>
+<li>
+<p>Export CSV pour analyse</p>
+</li>
+<li>
+<p><strong>Alertes</strong>:</p>
+</li>
+<li>Notification des événements importants</li>
+<li>Alarme déclenchée</li>
+<li>Client déconnecté</li>
+<li>Valeur anormale détectée</li>
+<li>Notification push, email, SMS</li>
+</ol>
+<h3 id="cas-dusage">Cas d'Usage<a class="headerlink" href="#cas-dusage" title="Permanent link">¶</a></h3>
+<h4 id="cas-1-detection-de-mouvement">Cas 1: Détection de Mouvement<a class="headerlink" href="#cas-1-detection-de-mouvement" title="Permanent link">¶</a></h4>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-0-1" id="__codelineno-0-1" name="__codelineno-0-1"></a>T+0.0s: Détecteur PIR détecte mouvement
+<a href="#__codelineno-0-2" id="__codelineno-0-2" name="__codelineno-0-2"></a>T+0.0s: GPIO interrupt → Alarme module
+<a href="#__codelineno-0-3" id="__codelineno-0-3" name="__codelineno-0-3"></a>T+0.0s: Alarme module → Table d'échange (index 605 = 1)
+<a href="#__codelineno-0-4" id="__codelineno-0-4" name="__codelineno-0-4"></a>T+0.5s: Ethernet_task lit table → mystatus
+<a href="#__codelineno-0-5" id="__codelineno-0-5" name="__codelineno-0-5"></a>T+0.6s: Serveur reçoit mystatus → Store (index 605 = 1)
+<a href="#__codelineno-0-6" id="__codelineno-0-6" name="__codelineno-0-6"></a>T+0.6s: Serveur détecte changement → Monitoring
+<a href="#__codelineno-0-7" id="__codelineno-0-7" name="__codelineno-0-7"></a>T+0.6s: Monitoring → Alerte "Mouvement détecté"
+<a href="#__codelineno-0-8" id="__codelineno-0-8" name="__codelineno-0-8"></a>T+0.7s: WebSocket → Interface web
+<a href="#__codelineno-0-9" id="__codelineno-0-9" name="__codelineno-0-9"></a>T+0.7s: Interface web affiche alerte
+</code></pre></div>
+<p><strong>Latence totale</strong>: ~700ms</p>
+<h4 id="cas-2-commande-lumiere">Cas 2: Commande Lumière<a class="headerlink" href="#cas-2-commande-lumiere" title="Permanent link">¶</a></h4>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-1-1" id="__codelineno-1-1" name="__codelineno-1-1"></a>T+0.0s: Admin clique "Allumer salon" dans interface web
+<a href="#__codelineno-1-2" id="__codelineno-1-2" name="__codelineno-1-2"></a>T+0.0s: Interface web → POST /api/admin/inject
+<a href="#__codelineno-1-3" id="__codelineno-1-3" name="__codelineno-1-3"></a>T+0.1s: Serveur → Queue action (index 619 = 2)
+<a href="#__codelineno-1-4" id="__codelineno-1-4" name="__codelineno-1-4"></a>T+1.0s: Client → POST /api/mystatus (polling normal)
+<a href="#__codelineno-1-5" id="__codelineno-1-5" name="__codelineno-1-5"></a>T+1.1s: Serveur → GET /api/myactions (action dans réponse)
+<a href="#__codelineno-1-6" id="__codelineno-1-6" name="__codelineno-1-6"></a>T+1.2s: Client reçoit action → Table d'échange (index 619 = 2)
+<a href="#__codelineno-1-7" id="__codelineno-1-7" name="__codelineno-1-7"></a>T+1.3s: Main_task détecte changement → Module concerné
+<a href="#__codelineno-1-8" id="__codelineno-1-8" name="__codelineno-1-8"></a>T+1.4s: Module → I2C commande boîtier auxiliaire
+<a href="#__codelineno-1-9" id="__codelineno-1-9" name="__codelineno-1-9"></a>T+1.5s: Boîtier → Allume lumière salon
+<a href="#__codelineno-1-10" id="__codelineno-1-10" name="__codelineno-1-10"></a>T+1.5s: Boîtier → Confirmation I2C
+<a href="#__codelineno-1-11" id="__codelineno-1-11" name="__codelineno-1-11"></a>T+1.5s: Module → Table d'échange (état mis à jour)
+<a href="#__codelineno-1-12" id="__codelineno-1-12" name="__codelineno-1-12"></a>T+2.0s: Ethernet_task → POST /api/mystatus (nouvel état)
+<a href="#__codelineno-1-13" id="__codelineno-1-13" name="__codelineno-1-13"></a>T+2.1s: Serveur reçoit → Compare état → Action done
+<a href="#__codelineno-1-14" id="__codelineno-1-14" name="__codelineno-1-14"></a>T+2.1s: Serveur → WebSocket → Interface web
+<a href="#__codelineno-1-15" id="__codelineno-1-15" name="__codelineno-1-15"></a>T+2.1s: Interface web affiche "Lumière allumée ✓"
+</code></pre></div>
+<p><strong>Latence totale</strong>: ~2 secondes</p>
+<h4 id="cas-3-lecture-compteur-linky">Cas 3: Lecture Compteur Linky<a class="headerlink" href="#cas-3-lecture-compteur-linky" title="Permanent link">¶</a></h4>
+<div class="highlight"><pre><span></span><code><a href="#__codelineno-2-1" id="__codelineno-2-1" name="__codelineno-2-1"></a>T+0.0s: Compteur Linky envoie trame UART
+<a href="#__codelineno-2-2" id="__codelineno-2-2" name="__codelineno-2-2"></a>T+0.0s: TeleInfo_task reçoit trame
+<a href="#__codelineno-2-3" id="__codelineno-2-3" name="__codelineno-2-3"></a>T+0.1s: TeleInfo_task parse trame (puissance, index)
+<a href="#__codelineno-2-4" id="__codelineno-2-4" name="__codelineno-2-4"></a>T+0.1s: TeleInfo_task → Table d'échange (indices TeleInfo)
+<a href="#__codelineno-2-5" id="__codelineno-2-5" name="__codelineno-2-5"></a>T+1.0s: Ethernet_task → POST /api/mystatus
+<a href="#__codelineno-2-6" id="__codelineno-2-6" name="__codelineno-2-6"></a>T+1.1s: Serveur → Store (valeurs TeleInfo)
+<a href="#__codelineno-2-7" id="__codelineno-2-7" name="__codelineno-2-7"></a>T+1.1s: Serveur → Historique (conservation 25 valeurs)
+<a href="#__codelineno-2-8" id="__codelineno-2-8" name="__codelineno-2-8"></a>T+1.1s: Serveur → WebSocket → Interface web
+<a href="#__codelineno-2-9" id="__codelineno-2-9" name="__codelineno-2-9"></a>T+1.1s: Interface web → Graphique consommation mis à jour
+</code></pre></div>
+<p><strong>Fréquence</strong>: Toutes les 1-2 secondes (selon trame Linky)</p>
+<h3 id="metriques-de-performance">Métriques de Performance<a class="headerlink" href="#metriques-de-performance" title="Permanent link">¶</a></h3>
+<table>
+<thead>
+<tr>
+<th>Métrique</th>
+<th>Valeur Typique</th>
+<th>Objectif</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Latence mystatus (client → serveur)</td>
+<td>50-100ms</td>
+<td>&lt; 200ms</td>
+</tr>
+<tr>
+<td>Latence action (serveur → client)</td>
+<td>1-2s</td>
+<td>&lt; 3s</td>
+</tr>
+<tr>
+<td>Latence totale (commande → exécution)</td>
+<td>2-4s</td>
+<td>&lt; 5s</td>
+</tr>
+<tr>
+<td>Fréquence mystatus</td>
+<td>1-2s</td>
+<td>Configurable</td>
+</tr>
+<tr>
+<td>Taille historique</td>
+<td>25 valeurs</td>
+<td>Configurable</td>
+</tr>
+<tr>
+<td>Taux de perte de paquets</td>
+<td>&lt; 0.1%</td>
+<td>&lt; 1%</td>
+</tr>
+</tbody>
+</table>
+<h3 id="points-critiques_1">Points Critiques<a class="headerlink" href="#points-critiques_1" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Polling Continu</strong>: Le mystatus toutes les 1-2s assure une latence faible</li>
+<li><strong>Historique</strong>: Les 25 valeurs permettent le debugging et l'analyse</li>
+<li><strong>Comparaison État</strong>: Permet de détecter les actions exécutées sans acknowledge explicite</li>
+<li><strong>Monitoring</strong>: Détection proactive des anomalies et déconnexions</li>
+<li><strong>WebSocket</strong>: Push temps réel vers l'interface web pour UX réactive</li>
+</ol>
+<hr/>
+<h2 id="notes-generales">Notes Générales<a class="headerlink" href="#notes-generales" title="Permanent link">¶</a></h2>
+<h3 id="contraintes-critiques">Contraintes Critiques<a class="headerlink" href="#contraintes-critiques" title="Permanent link">¶</a></h3>
+<p>Tous ces flux doivent respecter:</p>
+<ol>
+<li><strong>Single-Packet TCP</strong>: Réponses myactions en un seul paquet</li>
+<li><strong>JSON malformé</strong>: Normalisation côté serveur</li>
+<li><strong>Bitwise OR</strong>: Merge des actions sans perte</li>
+<li><strong>Polling 1-2s</strong>: Fréquence fixe pour latence prévisible</li>
+<li><strong>Historique 25</strong>: Conservation limitée pour performance</li>
+</ol>
+<h3 id="outils-de-diagnostic">Outils de Diagnostic<a class="headerlink" href="#outils-de-diagnostic" title="Permanent link">¶</a></h3>
+<p>Pour observer ces flux:</p>
+<ul>
+<li><strong>tcpdump</strong>: Capturer les paquets mystatus/myactions</li>
+<li><strong>Wireshark</strong>: Analyser les flux TCP complets</li>
+<li><strong>Logs serveur</strong>: Tracer les mises à jour d'état</li>
+<li><strong>Interface web</strong>: Visualiser l'historique en temps réel</li>
+<li><strong>Debug UART</strong>: Observer les logs du client</li>
+</ul>
+<h3 id="optimisations-possibles">Optimisations Possibles<a class="headerlink" href="#optimisations-possibles" title="Permanent link">¶</a></h3>
+<ol>
+<li><strong>Compression</strong>: Compresser les réponses myactions (si client supporte)</li>
+<li><strong>Delta encoding</strong>: Envoyer seulement les changements dans mystatus</li>
+<li><strong>Batch actions</strong>: Grouper plusieurs actions en une seule</li>
+<li><strong>Cache serveur</strong>: Mettre en cache les réponses fréquentes</li>
+<li><strong>WebSocket bidirectionnel</strong>: Remplacer le polling (nécessite modification client)</li>
+</ol>
+<h3 id="references">Références<a class="headerlink" href="#references" title="Permanent link">¶</a></h3>
+<ul>
+<li><a href="../../protocol/http-legacy-protocol/">Protocole HTTP Legacy</a></li>
+<li><a href="../../protocol/tcp-single-packet/">Contrainte TCP Single-Packet</a></li>
+<li><a href="../../protocol/exchange-table/">Table d'Échange</a></li>
+<li><a href="../../server/api-endpoints/">API Endpoints</a></li>
+<li><a href="../sequence-diagrams/">Diagrammes de Séquence</a></li>
+<li><a href="../system-overview/">Architecture Système</a></li>
+</ul>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+<button class="md-top md-icon" data-md-component="top" hidden="" type="button">
+<svg viewbox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"></path></svg>
+  Retour en haut de la page
+</button>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+<div class="md-social">
+<a class="md-social__link" href="https://github.com/essensys-hub/client-essensys-legacy" rel="noopener" target="_blank" title="github.com">
+<svg viewbox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><!--! Font Awesome Free 7.1.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2025 Fonticons, Inc.--><path d="M173.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M252.8 8C114.1 8 8 113.3 8 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C436.2 457.8 504 362.9 504 252 504 113.3 391.5 8 252.8 8M105.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"></path></svg>
+</a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["navigation.tabs", "navigation.sections", "navigation.top", "navigation.tracking", "search.suggest", "search.highlight", "content.code.copy", "content.code.annotate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copi\u00e9 dans le presse-papier", "clipboard.copy": "Copier dans le presse-papier", "search.result.more.one": "1 de plus sur cette page", "search.result.more.other": "# de plus sur cette page", "search.result.none": "Aucun document trouv\u00e9", "search.result.one": "1 document trouv\u00e9", "search.result.other": "# documents trouv\u00e9s", "search.result.placeholder": "Taper pour d\u00e9marrer la recherche", "search.result.term.missing": "Non trouv\u00e9", "select.version": "S\u00e9lectionner la version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script type="module">import mermaid from "https://unpkg.com/mermaid@10.4.0/dist/mermaid.esm.min.mjs";
+mermaid.initialize({});</script></body>
+</html>
