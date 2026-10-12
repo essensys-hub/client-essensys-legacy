@@ -13,6 +13,8 @@
 #include "ba_i2c.h"
 #include "global.h"
 #include "crc.h"
+#include "ba_resil.h"
+#include "i2c_bounded.h"
 
 #define extern
 #include "ba.h"
@@ -56,17 +58,125 @@ Actions_BA Tb_Actions_Cde_BA[uc_NB_BOITIER_AUXILIAIRE];			// actions en cours po
 Actions_BA Tb_Actions_Ack_BA[uc_NB_BOITIER_AUXILIAIRE];			// actions acquittées pour chaque bornier
 
 
+//--------------------------------------------------------------------------
+// Feature i2c-surge-protection-2026-10-007 (Refs essensys-hub/essensys-board-SC944D#1)
+//
+// Tache BA reecrite autour de ba_resil (logique testee sur hote, NR-gcc-4 a 11) :
+//  - 5.4 : plus aucune commande "marquee acquittee" apres des echecs
+//    (099-37 : ba.c:202-209, 313-316) ; les forcages sont fusionnes dans un
+//    magasin par BA (dernier etat demande par sortie), les configurations et
+//    l'octet d'actions restent a emettre jusqu'a leur acquittement ; les
+//    commandes de volet expirent apres 5 min (signalees, jamais acquittees) ;
+//  - 5.5 : resynchronisation complete (configuration puis etats) au demarrage,
+//    au retour d'un BA a l'etat OK et sur le drapeau de redemarrage du
+//    6e octet (comm_stat) d'un BA 1.8 ;
+//  - 5.6 : etat OK / SUSPECT / ABSENT, interrogation de presence (trame
+//    ACTIONS inchangee) au moins toutes les 30 s, bits de l'index 12 mis a
+//    jour sans attendre une commande (codage inchange) ;
+//  - 5.2 / 5.7 : recuperation de bus (i2cb_poll) et cycle TE2 en dernier
+//    recours (bar_te2_step).
+// Aucune trame nouvelle sur le bus I2C ; protocole HTTP inchange.
+//--------------------------------------------------------------------------
+
+bar_ctx_t st_BA_Resil;		// etat de resilience (lu par la console Espion)
+
+#define ul_PERIODE_POLL_BUS_ms		50		// surveillance du bus au repos (< 100 ms)
+#define ul_EPOCH_MIN_VALIDE			1577836800UL	// 2020-01-01 : en dessous, heure non reglee
+
+// Horloge monotone en ms (rebouclage gere par ba_resil)
+static unsigned long ul_MaintenantMs(void)
+{
+	TIME_STRUCT l_st_Temps;
+	_time_get_elapsed(&l_st_Temps);
+	return (unsigned long)(l_st_Temps.SECONDS * 1000UL + l_st_Temps.MILLISECONDS);
+}
+
+// Heure murale (s depuis 1970) ou 0 si non reglee
+static unsigned long ul_EpochSecondes(void)
+{
+	TIME_STRUCT l_st_Temps;
+	_time_get(&l_st_Temps);
+	return (l_st_Temps.SECONDS >= ul_EPOCH_MIN_VALIDE) ? (unsigned long)l_st_Temps.SECONDS : 0UL;
+}
+
+// Ajoute le CRC en fin de trame ; retourne la longueur totale
+static unsigned short us_AjouterCRC(unsigned char *p_uc_Trame, unsigned short us_Longueur)
+{
+	unsigned short l_us_CRC;
+	l_us_CRC = us_CalculerCRCSurTrame(p_uc_Trame, us_Longueur);
+	p_uc_Trame[us_Longueur] = (l_us_CRC & 0xFF);
+	p_uc_Trame[us_Longueur+1] = ((l_us_CRC>>8) & 0xFF);
+	return (unsigned short)(us_Longueur + 2);
+}
+
+// Emet une trame complete (CRC compris) et met a jour l'etat de sante du BA
+static signed long sl_EnvoyerTrameBA(unsigned short us_BA, unsigned char *p_uc_Trame, unsigned short us_Longueur)
+{
+	signed long l_sl_result;
+	unsigned char l_uc_ReponseRecue;
+	unsigned char l_uc_CommStat;
+	unsigned char l_uc_Flags;
+
+	ul_EspionTacheBACompteurEmissionI2C[us_BA]++;
+	l_sl_result = sl_fct_write_polled(fd_BA_I2C, (uchar)us_BA, p_uc_Trame, us_Longueur, &l_uc_ReponseRecue, &l_uc_CommStat);
+	if(bar_on_exchange(&st_BA_Resil, us_BA, l_sl_result == I2C_OK, ul_MaintenantMs()) != 0)
+	{
+		vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"BA %i de retour -> resynchronisation\n", us_BA);
+	}
+	if(l_sl_result == I2C_OK)
+	{
+		vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission OK\n");
+		Tb_Com_BA[us_BA].o_Repete = 0;
+		l_uc_Flags = bar_on_comm_stat(&st_BA_Resil, us_BA, l_uc_CommStat);
+		if((l_uc_Flags & (BAR_COMM_STAT_RESTART | BAR_COMM_STAT_WDT)) != 0)
+		{
+			vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"BA %i signale un redemarrage (comm_stat 0x%X) -> resynchronisation\n", us_BA, l_uc_CommStat);
+		}
+	}
+	else
+	{
+		vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission PB %d\n", l_sl_result);
+		ul_EspionTacheBACompteurErreurI2C[us_BA]++;
+		if(Tb_Com_BA[us_BA].o_Repete < 0xFF)	Tb_Com_BA[us_BA].o_Repete++;	// espion uniquement
+	}
+	return l_sl_result;
+}
+
+// Prepare une trame de configuration (8 ou 16 octets de Tb_Echange) ; retourne 1 si un changement est detecte
+static unsigned char uc_PreparerTrameConf(unsigned char *p_uc_Trame, unsigned short us_Debut, unsigned short us_Nb)
+{
+	unsigned short l_us_k;
+	unsigned short l_us_j = 1;
+	unsigned char l_uc_Change = 0;
+
+	for(l_us_k = us_Debut; l_us_k < us_Debut + us_Nb; l_us_k++)
+	{
+		if(Tb_Echange[l_us_k] != uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf])
+		{
+			l_uc_Change = 1;
+			uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf] = Tb_Echange[l_us_k];
+		}
+		p_uc_Trame[l_us_j++] = uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf];
+	}
+	return l_uc_Change;
+}
+
 void Boitiers_task(uint_32 dummy)
 {
 	signed long l_sl_param;
 	_queue_id l_BA_qid;
-	unsigned short l_us_i, l_us_j, l_us_k, l_us_l;
+	unsigned short l_us_i, l_us_j;
 	unsigned char l_uc_buffer[uc_I2C_BUFFER_SIZE];
-	signed long l_sl_result;
-	unsigned char l_uc_ReponseRecue;	// xxx a tester apres chaque requete -> regarder ce que ba peut renvoyer la dedans
+	unsigned char l_uc_Donnees[8];
 	static COMMANDE_MESSAGE_PTR	s_msg_ptr = NULL;
 	unsigned char l_uc_Compteur;
-	unsigned short l_us_CRC;
+	unsigned short l_us_Longueur;
+	unsigned long l_ul_Maintenant;
+	unsigned long l_ul_DernierPollBus = 0;
+	unsigned char l_uc_Expires;
+	unsigned char l_uc_EmisCeTour[uc_NB_BOITIER_AUXILIAIRE];
+	bar_te2_action_t l_e_ActionTE2;
+	bar_te2_why_t l_e_RaisonTE2Precedente = BAR_TE2_WHY_NONE;
 	
 
 	uc_EspionTacheBAEtat = 1;
@@ -74,6 +184,19 @@ void Boitiers_task(uint_32 dummy)
 	
 	// I2C transaction lock 
 	_lwsem_create(&lock_I2C, 1);	// xxx tester retour
+
+	// Pilote I2C a attentes bornees : HAL (horloge, PAS0/PAS1) du MCF52259
+	i2cb_init_mcf5225();
+
+	// Etat de resilience ; etat persistant du cycle TE2 relu en FLASH
+	bar_init(&st_BA_Resil);
+	if(uc_TE2_NVValide != 0)
+	{
+		if(bar_te2_load(&st_BA_Resil, uc_TE2_NV) == 0)
+		{
+			vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"TE2 : enregistrement FLASH invalide -> J58 declare ouvert, aucun cycle\n");
+		}
+	}
 
 	// Open the I2C driver          
 	fd_BA_I2C = fopen(I2C_DEVICE_POLLED, NULL);
@@ -121,14 +244,12 @@ void Boitiers_task(uint_32 dummy)
 		_task_block ();
 	}	
 
-	// Init des données à partir de la table d'échange
-	// Recopie les valeurs de la table d'échange dans le tableau utilisé par la gestion du dialogue avec les BA
+	// Init des donnees a partir de la table d'echange
 	uc_EspionTacheBAEtat = 6;
 	for(l_us_i=0, l_us_j=Variateurs_PDV_Conf; l_us_j < Scenario ; l_us_i++, l_us_j++)
 	{
 		uc_Tb_Borniers_Data[l_us_i] = Tb_Echange[l_us_j];
 	}
-	// Init des variables
 	for(l_us_i=0; l_us_i < uc_NB_BOITIER_AUXILIAIRE ; l_us_i++)
 	{
 		Tb_Com_BA[l_us_i].b_Forcage = 0;
@@ -142,19 +263,89 @@ void Boitiers_task(uint_32 dummy)
 		Tb_Actions_Ack_BA[l_us_i].Octet = 0;
 	}
 
-	// tache de fond permanente
-	// Assure l'envoi / réémission des valeurs aux BA en cas de changement de valeur
 	uc_EspionTacheBAEtat = 7;
 	vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"START\n");
 	
 	for (;;)
 	{
 		ul_EspionTacheBACompteurActivite++;
-		//_time_delay(100);//zzz
-		
-		// Emission des actions
+		l_ul_Maintenant = ul_MaintenantMs();
+		for(l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)	l_uc_EmisCeTour[l_us_i] = 0;
+
+		// 1. Forcages recus de la tache principale -> dernier etat demande par sortie
+		uc_EspionTacheBAEtat = 9;
+		while((s_msg_ptr = _msgq_poll(l_BA_qid)) != NULL)
+		{
+			ul_EspionTachePrincipaleNbMessagesBARecus++;
+			l_us_i = s_msg_ptr->DATA[0];
+			if(l_us_i < uc_NB_BOITIER_AUXILIAIRE)
+			{
+				for(l_uc_Compteur = 0; l_uc_Compteur < 8; l_uc_Compteur++)	l_uc_Donnees[l_uc_Compteur] = s_msg_ptr->DATA[1 + l_uc_Compteur];
+				bar_cmd_merge(&st_BA_Resil, l_us_i, l_uc_Donnees, l_ul_Maintenant);
+				Tb_Com_BA[l_us_i].b_Forcage = 1;
+			}
+			_msg_free(s_msg_ptr);
+			s_msg_ptr = NULL;
+		}
+
+		// 2. Expirations (volets) et resynchronisations
+		uc_EspionTacheBAEtat = 10;
+		for(l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)
+		{
+			l_uc_Expires = bar_cmd_expire(&st_BA_Resil, l_us_i, l_ul_Maintenant);
+			if(l_uc_Expires != 0)
+			{
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"BA %i : commande(s) de volet EXPIREE(S) (masque 0x%X), non appliquee(s)\n", l_us_i, l_uc_Expires);
+			}
+			if(bar_take_resync(&st_BA_Resil, l_us_i, l_ul_Maintenant) != 0)
+			{
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"BA %i : resynchronisation (configuration puis etats)\n", l_us_i);
+				Tb_Com_BA[l_us_i].b_Conf = 1;
+				Tb_Com_BA[l_us_i].b_Extinction = 1;
+				Tb_Com_BA[l_us_i].b_TpsAction = 1;
+				Tb_Com_BA[l_us_i].b_Action = 1;
+			}
+		}
+
+		// 3. Configuration (modes variateurs, temps d'extinction, temps des volets)
+		//    avant les etats ; jamais abandonnee avant acquittement
+		uc_EspionTacheBAEtat = 11;
+		for(l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)
+		{
+			if(uc_PreparerTrameConf(l_uc_buffer, Variateurs_PDV_Conf + (l_us_i <<3), 8) != 0)	Tb_Com_BA[l_us_i].b_Conf = 1;
+			if(Tb_Com_BA[l_us_i].b_Conf == 1 && bar_may_send(&st_BA_Resil, l_us_i, ul_MaintenantMs()) != 0)
+			{
+				l_uc_buffer[0] = uc_TRAME_BA_CONF_SORTIES;
+				l_us_Longueur = us_AjouterCRC(l_uc_buffer, 9);
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi configuration des sorties au boitier %i (%i)\n", l_us_i, Tb_Com_BA[l_us_i].o_Repete);
+				l_uc_EmisCeTour[l_us_i] = 1;
+				if(sl_EnvoyerTrameBA(l_us_i, l_uc_buffer, l_us_Longueur) == I2C_OK)	Tb_Com_BA[l_us_i].b_Conf = 0;
+			}
+
+			if(uc_PreparerTrameConf(l_uc_buffer, Lampes_PDV_Temps + (l_us_i <<4), 16) != 0)	Tb_Com_BA[l_us_i].b_Extinction = 1;
+			if(Tb_Com_BA[l_us_i].b_Extinction == 1 && bar_may_send(&st_BA_Resil, l_us_i, ul_MaintenantMs()) != 0)
+			{
+				l_uc_buffer[0] = uc_TRAME_BA_TPS_EXTINCTION;
+				l_us_Longueur = us_AjouterCRC(l_uc_buffer, 17);
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi reglage des temps d extinction au boitier %i (%i)\n", l_us_i, Tb_Com_BA[l_us_i].o_Repete);
+				l_uc_EmisCeTour[l_us_i] = 1;
+				if(sl_EnvoyerTrameBA(l_us_i, l_uc_buffer, l_us_Longueur) == I2C_OK)	Tb_Com_BA[l_us_i].b_Extinction = 0;
+			}
+
+			if(uc_PreparerTrameConf(l_uc_buffer, Volets_PDV_Temps + (l_us_i <<3), 8) != 0)	Tb_Com_BA[l_us_i].b_TpsAction = 1;
+			if(Tb_Com_BA[l_us_i].b_TpsAction == 1 && bar_may_send(&st_BA_Resil, l_us_i, ul_MaintenantMs()) != 0)
+			{
+				l_uc_buffer[0] = uc_TRAME_BA_TPS_ACTION;
+				l_us_Longueur = us_AjouterCRC(l_uc_buffer, 9);
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi reglage des temps d action au boitier %i (%i)\n", l_us_i, Tb_Com_BA[l_us_i].o_Repete);
+				l_uc_EmisCeTour[l_us_i] = 1;
+				if(sl_EnvoyerTrameBA(l_us_i, l_uc_buffer, l_us_Longueur) == I2C_OK)	Tb_Com_BA[l_us_i].b_TpsAction = 0;
+			}
+		}
+
+		// 4. Octet d'actions (secouru, blocage volets, allumage force)
 		uc_EspionTacheBAEtat = 8;
-		for (l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)	// boucle sur tous les boitiers
+		for (l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)
 		{
 			Tb_Actions_Cde_BA[l_us_i].b.Secouru = 0;
 			if(st_EchangeStatus.uc_Secouru != 0 || uc_FlagResetBP != 0)		// mode secouru => informer les boitiers pour qu'ils fassent leur sauvegarde
@@ -167,381 +358,123 @@ void Boitiers_task(uint_32 dummy)
 			{
 				Tb_Actions_Cde_BA[l_us_i].b.ForceAllumage = 0;
 			}
+			if(Tb_Actions_Cde_BA[l_us_i].Octet != Tb_Actions_Ack_BA[l_us_i].Octet)	Tb_Com_BA[l_us_i].b_Action = 1;
 
-			if (Tb_Actions_Cde_BA[l_us_i].Octet != Tb_Actions_Ack_BA[l_us_i].Octet)	// Envoi si valeur différente que celle précédemment envoyée
+			if(Tb_Com_BA[l_us_i].b_Action == 1 && bar_may_send(&st_BA_Resil, l_us_i, ul_MaintenantMs()) != 0)
 			{
-				// au moins 1 action à faire
-				Tb_Com_BA[l_us_i].b_Action = 1;
-				l_uc_buffer[0] = uc_TRAME_BA_ACTIONS;							// Code de la trame
-				l_uc_buffer[1] = Tb_Actions_Cde_BA[l_us_i].Octet;				// Data
-				//				l_uc_buffer[2] = us_CalculerCRCSurTrame(l_uc_buffer, 1);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, 2);	// Checksum
-				//				printf("xxx %d\n", l_uc_buffer[2]);
-				l_us_CRC = us_CalculerCRCSurTrame(l_uc_buffer, 2);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, 2);	// Checksum
-				l_uc_buffer[2] = (l_us_CRC & 0xFF);
-				l_uc_buffer[3] = ((l_us_CRC>>8) & 0xFF);
-				//				printf("xxx %d\n", l_uc_buffer[2]);
-								
-				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi action au boitier %i (%i) -> %d.%d.%d.%d\n", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[0], l_uc_buffer[1], l_uc_buffer[2], l_uc_buffer[3]);//zzz rajouter trame
-				ul_EspionTacheBACompteurEmissionI2C[l_us_i]++;
-
-				l_sl_result = sl_fct_write_polled(fd_BA_I2C, (uchar) (l_us_i), l_uc_buffer, 4, &l_uc_ReponseRecue);
-				if(l_sl_result == I2C_OK)
+				l_uc_buffer[0] = uc_TRAME_BA_ACTIONS;
+				l_uc_buffer[1] = Tb_Actions_Cde_BA[l_us_i].Octet;
+				l_us_Longueur = us_AjouterCRC(l_uc_buffer, 2);
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi action au boitier %i (%i) -> %d\n", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[1]);
+				l_uc_EmisCeTour[l_us_i] = 1;
+				if(sl_EnvoyerTrameBA(l_us_i, l_uc_buffer, l_us_Longueur) == I2C_OK)
 				{
-					// trame transmise et acquittée : pas de répétition nécessaire
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission OK\n");
-					Tb_Actions_Ack_BA[l_us_i].Octet = Tb_Actions_Cde_BA[l_us_i].Octet;	
+					Tb_Actions_Ack_BA[l_us_i].Octet = l_uc_buffer[1];
 					Tb_Com_BA[l_us_i].b_Action = 0;
-					Tb_Com_BA[l_us_i].o_Repete = 0;		// raz compteur de repetitions
-				}
-				else
-				{
-					// erreurs => répétition
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission PB %d\n", l_sl_result);
-					ul_EspionTacheBACompteurErreurI2C[l_us_i]++;
-					Tb_Com_BA[l_us_i].o_Repete++;		// compteur de repetitions
-					if(Tb_Com_BA[l_us_i].o_Repete > uc_I2C_NB_REPETE)
-					{
-						// lorsque le nombre max de répétition est atteint, acquitte la demande pour arrêter les répétitions
-						// trame en erreur : arrêt répétition
-						Tb_Actions_Ack_BA[l_us_i].Octet = Tb_Actions_Cde_BA[l_us_i].Octet;
-						Tb_Com_BA[l_us_i].b_Action = 0;
-						Tb_Com_BA[l_us_i].o_Repete = uc_I2C_NB_REPETE+1;		// pour éviter les débordements
-					}
 				}
 			}
 		}
-		
-		// Gestion forcage
-		uc_EspionTacheBAEtat = 9;
-		if(s_msg_ptr == NULL)
-		{
-			// pas de message en attente de traitement (prise en compte des répétitions)
-			// regarde si un message dans la pile
-			s_msg_ptr = _msgq_poll(l_BA_qid);
-			if(s_msg_ptr != NULL)
-			{
-				ul_EspionTachePrincipaleNbMessagesBARecus++;
-			}
-		}
-		uc_EspionTacheBAEtat = 10;
-		if(s_msg_ptr != NULL)
-		{
-			uc_EspionTacheBAEtat = 201;
-			// message reçu
-			l_us_i = s_msg_ptr->DATA[0];
-			Tb_Com_BA[l_us_i].b_Forcage = 1;
-			uc_EspionTacheBAEtat = 202;
-			// au moins 1 forçage à faire
-			l_uc_buffer[0] = uc_TRAME_BA_FORCAGE_SORTIES;		// Code de la trame
-			for(l_us_j=1; l_us_j < 9; l_us_j++)
-			{
-				l_uc_buffer[l_us_j] = s_msg_ptr->DATA[l_us_j];
-			}
-			uc_EspionTacheBAEtat = 203;
-//			l_uc_buffer[9] = us_CalculerCRCSurTrame(l_uc_buffer, 7);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, 9);
-//			printf("xxx %d\n", l_uc_buffer[9]);
-//			l_uc_buffer[9] = us_CalculerCRCSurTrame(l_uc_buffer, 8);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, 9);
-//			printf("xxx %d\n", l_uc_buffer[9]);
-			l_us_CRC = us_CalculerCRCSurTrame(l_uc_buffer, 9);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, 9);
-			l_uc_buffer[9] = (l_us_CRC & 0xFF);
-			l_uc_buffer[10] = ((l_us_CRC>>8) & 0xFF);
-//			printf("xxx %d\n", l_uc_buffer[9]);
 
-			uc_EspionTacheBAEtat = 204;
-
-			vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : Forçage sorties -> BA %i (%i) -> %d", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[0]);
-			for(l_uc_Compteur = 1 ; l_uc_Compteur < 11; l_uc_Compteur++)
-			{
-				vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,".%d", l_uc_buffer[l_uc_Compteur]);
-			}
-			vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,"\n");
-			ul_EspionTacheBACompteurEmissionI2C[l_us_i]++;
-
-			uc_EspionTacheBAEtat = 205;
-			l_sl_result = sl_fct_write_polled(fd_BA_I2C, (uchar) (l_us_i), l_uc_buffer, (l_us_j+2), &l_uc_ReponseRecue);
-			uc_EspionTacheBAEtat = 206;
-			if(l_sl_result == I2C_OK)
-			{
-				uc_EspionTacheBAEtat = 207;
-				// trame transmise et acquittée : pas de répétition nécessaire
-				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission OK\n");
-				Tb_Com_BA[l_us_i].b_Forcage = 0;		// trame transmise et acquittée : pas de répétition nécessaire
-				Tb_Com_BA[l_us_i].o_Repete = 0;		// raz compteur de repetitions
-				uc_EspionTacheBAEtat = 208;
-				// libère message sur réception réponse OK
-				_msg_free(s_msg_ptr);
-				uc_EspionTacheBAEtat = 209;
-				s_msg_ptr = NULL;
-			}
-			else
-			{
-				uc_EspionTacheBAEtat = 210;
-				// erreurs => répétition
-				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission PB %d\n", l_sl_result);
-				ul_EspionTacheBACompteurErreurI2C[l_us_i]++;
-				uc_EspionTacheBAEtat = 211;
-				Tb_Com_BA[l_us_i].o_Repete++;		// compteur de repetitions
-				if(Tb_Com_BA[l_us_i].o_Repete > uc_I2C_NB_REPETE)
-				{
-					uc_EspionTacheBAEtat = 212;
-					// lorsque le nombre max de répétition est atteint, acquitte la demande pour arrêter les répétitions
-					// trame en erreur : arrêt répétition
-					Tb_Com_BA[l_us_i].b_Forcage = 0;
-					//libère message 
-					uc_EspionTacheBAEtat = 213;
-					_msg_free(s_msg_ptr);
-					uc_EspionTacheBAEtat = 214;
-					s_msg_ptr = NULL;
-					Tb_Com_BA[l_us_i].o_Repete = uc_I2C_NB_REPETE+1;		// pour éviter les débordements
-					uc_EspionTacheBAEtat = 215;
-				}
-				uc_EspionTacheBAEtat = 216;
-			}
-		}
-		
-		// Surveille si configuration des sorties à envoyer
-		uc_EspionTacheBAEtat = 11;
-		for(l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)			// boucle sur tous les boitiers
-		//l_us_i = uc_BOITIER_PIECES_EAU;	//zzz
-		{
-			l_us_j = 1;		// pointeur dans la trame
-			l_us_k = Variateurs_PDV_Conf + (l_us_i <<3);	// 8 max par boitier
-		
-			for (l_us_l=0; l_us_l<8; l_us_l++, l_us_k++)		// 8 transmis
-			{
-				// test et prépare la trame en même temps
-				if(Tb_Echange[l_us_k] != uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf])
-				{
-					Tb_Com_BA[l_us_i].b_Conf = 1;
-					uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf] = Tb_Echange[l_us_k];
-				}
-				l_uc_buffer[l_us_j++] = uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf];
-			}
-		
-			if(Tb_Com_BA[l_us_i].b_Conf == 1)
-			{
-				// au moins 1 configuration des sorties à envoyer
-				l_uc_buffer[0] = uc_TRAME_BA_CONF_SORTIES;		//code de la trame
-				l_us_CRC = us_CalculerCRCSurTrame(l_uc_buffer, l_us_j);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, l_us_j);
-				l_uc_buffer[l_us_j] = (l_us_CRC & 0xFF);
-				l_uc_buffer[l_us_j+1] = ((l_us_CRC>>8) & 0xFF);
-		
-				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi configuration des sorties au boitier %i (%i) -> %d", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[0]);
-				for(l_uc_Compteur = 1 ; l_uc_Compteur < 10; l_uc_Compteur++)
-				{
-					vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,".%d", l_uc_buffer[l_uc_Compteur]);
-				}
-				vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,"\n");
-				ul_EspionTacheBACompteurEmissionI2C[l_us_i]++;
-				
-				l_sl_result = sl_fct_write_polled(fd_BA_I2C, (uchar) (l_us_i), l_uc_buffer, (l_us_j+2), &l_uc_ReponseRecue);
-				if(l_sl_result == I2C_OK)
-				{
-					// trame transmise et acquittée : pas de répétition nécessaire
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission OK\n");
-					Tb_Com_BA[l_us_i].b_Conf = 0;		// trame transmise et acquittée : pas de répétition nécessaire
-					Tb_Com_BA[l_us_i].o_Repete = 0;		// raz compteur de repetitions
-				}
-				else
-				{
-					// erreurs => répétition
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission PB %d\n", l_sl_result);
-					ul_EspionTacheBACompteurErreurI2C[l_us_i]++;
-					Tb_Com_BA[l_us_i].o_Repete++;		// compteur de repetitions
-					if(Tb_Com_BA[l_us_i].o_Repete > uc_I2C_NB_REPETE)
-					{
-						// lorsque le nombre max de répétition est atteint, acquitte la demande pour arrêter les répétitions
-						Tb_Com_BA[l_us_i].b_Conf = 0;
-						Tb_Com_BA[l_us_i].o_Repete = uc_I2C_NB_REPETE+1;		// pour éviter les débordements
-					}
-				}
-			}
-		}
-		
-		// boitier après boitier
-		// surveille si réglage des temps d'extinction à envoyer
+		// 5. Forcage des sorties : dernier etat demande, conserve jusqu'a acquittement
 		uc_EspionTacheBAEtat = 12;
-		for (l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)			// boucle sur tous les boitiers
-		//l_us_i = uc_BOITIER_PIECES_EAU;	//zzz
+		for(l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)
 		{
-			l_us_j = 1;		// pointeur dans la trame
-			l_us_k = Lampes_PDV_Temps + (l_us_i <<4);	// 16 max par boitier
-		
-			for (l_us_l = 0; l_us_l<16; l_us_l++, l_us_k++)			// 16 max par boitier 
+			if(bar_cmd_pending(&st_BA_Resil, l_us_i) != 0 && bar_may_send(&st_BA_Resil, l_us_i, ul_MaintenantMs()) != 0)
 			{
-				// test et prépare la trame en même temps
-				if(Tb_Echange[l_us_k] != uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf])
-				{
-					Tb_Com_BA[l_us_i].b_Extinction = 1;
-					uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf] = Tb_Echange[l_us_k];
-				}
-				l_uc_buffer[l_us_j++] = uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf];
-			}
-		
-			//Tb_Com_BA[l_us_i].b_Extinction = 1;//zzz
-			if (Tb_Com_BA[l_us_i].b_Extinction == 1)
-			{
-				// au moins 1 réglage des temps d'extinction à envoyer
-				l_uc_buffer[0] = uc_TRAME_BA_TPS_EXTINCTION;		//code de la trame
-				l_us_CRC = us_CalculerCRCSurTrame(l_uc_buffer, l_us_j);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, l_us_j);
-				l_uc_buffer[l_us_j] = (l_us_CRC & 0xFF);
-				l_uc_buffer[l_us_j+1] = ((l_us_CRC>>8) & 0xFF); 
-		
-				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi reglage des temps d extinction au boitier %i (%i) -> %d", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[0]);
-				for(l_uc_Compteur = 1 ; l_uc_Compteur < 18; l_uc_Compteur++)
+				l_uc_buffer[0] = uc_TRAME_BA_FORCAGE_SORTIES;
+				(void)bar_cmd_build(&st_BA_Resil, l_us_i, &l_uc_buffer[1]);
+				l_us_Longueur = us_AjouterCRC(l_uc_buffer, 9);
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : Forçage sorties -> BA %i (%i) -> %d", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[0]);
+				for(l_uc_Compteur = 1 ; l_uc_Compteur < 11; l_uc_Compteur++)
 				{
 					vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,".%d", l_uc_buffer[l_uc_Compteur]);
 				}
 				vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,"\n");
-				ul_EspionTacheBACompteurEmissionI2C[l_us_i]++;
-				
-				l_sl_result = sl_fct_write_polled(fd_BA_I2C, (uchar) (l_us_i), l_uc_buffer, (l_us_j+2), &l_uc_ReponseRecue);
-				if(l_sl_result == I2C_OK)
+				l_uc_EmisCeTour[l_us_i] = 1;
+				if(sl_EnvoyerTrameBA(l_us_i, l_uc_buffer, l_us_Longueur) == I2C_OK)
 				{
-					// trame transmise et acquittée : pas de répétition nécessaire
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission OK\n");
-					Tb_Com_BA[l_us_i].b_Extinction = 0;	// trame transmise et acquittée : pas de répétition nécessaire
-					Tb_Com_BA[l_us_i].o_Repete = 0;		// raz compteur de repetitions
-				}
-				else
-				{
-					// erreurs => répétition
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission PB %d\n", l_sl_result);
-					ul_EspionTacheBACompteurErreurI2C[l_us_i]++;
-					Tb_Com_BA[l_us_i].o_Repete++;		// compteur de repetitions
-					if (Tb_Com_BA[l_us_i].o_Repete > uc_I2C_NB_REPETE)
-					{
-						// lorsque le nombre max de répétition est atteint, acquitte la demande pour arrêter les répétitions
-						Tb_Com_BA[l_us_i].b_Extinction = 0;	// trame en erreur : arrêt répétition 
-						Tb_Com_BA[l_us_i].o_Repete = uc_I2C_NB_REPETE+1;		// pour éviter les débordements
-					}
+					bar_cmd_acked(&st_BA_Resil, l_us_i);
+					if(bar_cmd_pending(&st_BA_Resil, l_us_i) == 0)	Tb_Com_BA[l_us_i].b_Forcage = 0;
 				}
 			}
 		}
-		
-		// boitier après boitier
-		// surveille si réglage des temps d'action à envoyer
+
+		// 6. Interrogation de presence (trame ACTIONS courante, sans effet sur le BA)
 		uc_EspionTacheBAEtat = 13;
-		for (l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)			// boucle sur tous les boitiers
-		//l_us_i = uc_BOITIER_PIECES_EAU;	//zzz
+		for(l_us_i=0; l_us_i<uc_NB_BOITIER_AUXILIAIRE; l_us_i++)
 		{
-			l_us_j = 1;		// pointeur dans la trame
-			l_us_k = Volets_PDV_Temps + (l_us_i <<3);	// 8 max par boitier
-		
-			for (l_us_l = 0; l_us_l<8; l_us_l++, l_us_k++)		// 8 transmis
+			l_ul_Maintenant = ul_MaintenantMs();
+			if(l_uc_EmisCeTour[l_us_i] == 0 && bar_presence_due(&st_BA_Resil, l_us_i, l_ul_Maintenant) != 0
+			   && bar_may_send(&st_BA_Resil, l_us_i, l_ul_Maintenant) != 0)
 			{
-				// test et prépare la trame en même temps
-				if (Tb_Echange[l_us_k] != uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf])
-				{
-					Tb_Com_BA[l_us_i].b_TpsAction = 1;
-					uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf] = Tb_Echange[l_us_k];
-				}
-				l_uc_buffer[l_us_j++] = uc_Tb_Borniers_Data[l_us_k - Variateurs_PDV_Conf];
-			}
-		
-			//Tb_Com_BA[l_us_i].b_TpsAction = 1;	//zzz
-			if (Tb_Com_BA[l_us_i].b_TpsAction == 1)
-			{
-				// au moins 1 réglage des temps d'extinction à envoyer
-				l_uc_buffer[0] = uc_TRAME_BA_TPS_ACTION;		//code de la trame
-				l_us_CRC = us_CalculerCRCSurTrame(l_uc_buffer, l_us_j);	//uc_fct_Calcul_CheckSum_I2C(l_uc_buffer, l_us_j);
-				l_uc_buffer[l_us_j] = (l_us_CRC & 0xFF);
-				l_uc_buffer[l_us_j+1] = ((l_us_CRC>>8) & 0xFF); 
-		
-				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : envoi reglage reglage des temps d action au boitier %i (%i) -> %d", l_us_i, Tb_Com_BA[l_us_i].o_Repete, l_uc_buffer[0]);
-				for(l_uc_Compteur = 1 ; l_uc_Compteur < 10; l_uc_Compteur++)
-				{
-					vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,".%d", l_uc_buffer[l_uc_Compteur]);
-				}
-				vd_EspionRS_PrintfSansHorodatage(uc_ESPION_TACHE_BA_ACTIVITE,"\n");
-				ul_EspionTacheBACompteurEmissionI2C[l_us_i]++;
-				
-				l_sl_result = sl_fct_write_polled(fd_BA_I2C, (uchar) (l_us_i), l_uc_buffer, (l_us_j+2), &l_uc_ReponseRecue);
-				if(l_sl_result == I2C_OK)
-				{
-					// trame transmise et acquittée : pas de répétition nécessaire
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission OK\n");
-					Tb_Com_BA[l_us_i].b_TpsAction = 0;	// trame transmise et acquittée : pas de répétition nécessaire
-					Tb_Com_BA[l_us_i].o_Repete = 0;		// raz compteur de repetitions
-				}
-				else
-				{
-					// erreurs => répétition
-					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA emission PB %d\n", l_sl_result);
-					ul_EspionTacheBACompteurErreurI2C[l_us_i]++;
-					Tb_Com_BA[l_us_i].o_Repete++;		// compteur de repetitions
-					if (Tb_Com_BA[l_us_i].o_Repete > uc_I2C_NB_REPETE)
-					{
-						// lorsque le nombre max de répétition est atteint, acquitte la demande pour arrêter les répétitions
-						Tb_Com_BA[l_us_i].b_TpsAction = 0;	// trame en erreur : arrêt répétition 
-						Tb_Com_BA[l_us_i].o_Repete = uc_I2C_NB_REPETE+1;		// pour éviter les débordements
-					}
-				}
+				l_uc_buffer[0] = uc_TRAME_BA_ACTIONS;
+				l_uc_buffer[1] = Tb_Actions_Ack_BA[l_us_i].Octet;
+				l_us_Longueur = us_AjouterCRC(l_uc_buffer, 2);
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"BA : interrogation de presence BA %i\n", l_us_i);
+				(void)sl_EnvoyerTrameBA(l_us_i, l_uc_buffer, l_us_Longueur);
 			}
 		}
 
-		// surveillance de la communication
+		// 7. Surveillance du bus au repos et recuperation (<= 1 tentative / s)
 		uc_EspionTacheBAEtat = 14;
-		if (Tb_Com_BA[0].o_Repete > uc_I2C_NB_REPETE_AV_ERREUR)
+		l_ul_Maintenant = ul_MaintenantMs();
+		if((unsigned long)(l_ul_Maintenant - l_ul_DernierPollBus) >= ul_PERIODE_POLL_BUS_ms)
 		{
-			// considéré en erreur au bout de x trames émises sans réception correct du OK
-			st_EchangeStatus.uc_Defboitier1 = 1;
-		}
-		else
-		{
-			st_EchangeStatus.uc_Defboitier1 = 0;
-		}
-		if (Tb_Com_BA[1].o_Repete > uc_I2C_NB_REPETE_AV_ERREUR)
-		{
-			// considéré en erreur au bout de x trames émises sans réception correct du OK
-			st_EchangeStatus.uc_Defboitier2 = 1;
-		}
-		else
-		{
-			st_EchangeStatus.uc_Defboitier2 = 0;
-		}
-		if (Tb_Com_BA[2].o_Repete > uc_I2C_NB_REPETE_AV_ERREUR)
-		{
-			// considéré en erreur au bout de x trames émises sans réception correct du OK
-			st_EchangeStatus.uc_Defboitier3 = 1;
-		}
-		else
-		{
-			st_EchangeStatus.uc_Defboitier3 = 0;
+			l_ul_DernierPollBus = l_ul_Maintenant;
+			_lwsem_wait(&lock_I2C);
+			switch(i2cb_poll(l_ul_Maintenant))
+			{
+				case I2CB_REC_RELEASED:
+					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"Bus I2C : recuperation reussie\n");
+				break;
+				case I2CB_REC_STILL_STUCK:
+					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"Bus I2C : ligne toujours basse apres recuperation\n");
+				break;
+				default:
+				break;
+			}
+			_lwsem_post(&lock_I2C);
+
+			// 8. Cycle TE2 en dernier recours
+			l_e_ActionTE2 = bar_te2_step(&st_BA_Resil, l_ul_Maintenant, ul_EpochSecondes(),
+			                             i2cb_bus_blocked(), i2cb_blocked_since_ms(),
+			                             st_EchangeStatus.uc_Secouru != 0);
+			if(l_e_ActionTE2 == BAR_TE2_CUT_START)
+			{
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"TE2 : bus bloque depuis plus de 60 s -> coupure +15VSP des BA (cycle %d, date %lu)\n",
+				                   st_BA_Resil.te2.total_cycles, bar_te2_last_cycle_epoch(&st_BA_Resil));
+				lwgpio_set_value(&IO_DOUT_15VSP_AlimBA, LWGPIO_VALUE_LOW);
+			}
+			else if(l_e_ActionTE2 == BAR_TE2_CUT_END)
+			{
+				vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"TE2 : retablissement +15VSP -> resynchronisation de tous les BA\n");
+				lwgpio_set_value(&IO_DOUT_15VSP_AlimBA, LWGPIO_VALUE_HIGH);
+			}
+			if(st_BA_Resil.te2.why != l_e_RaisonTE2Precedente)
+			{
+				l_e_RaisonTE2Precedente = st_BA_Resil.te2.why;
+				if(l_e_RaisonTE2Precedente != BAR_TE2_WHY_NONE)
+				{
+					vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"TE2 : bus bloque, aucun cycle (raison %d, voir console : resilience BA)\n", l_e_RaisonTE2Precedente);
+				}
+			}
+			if(st_BA_Resil.te2.nv_dirty != 0)
+			{
+				bar_te2_save(&st_BA_Resil, uc_TE2_NV);
+				st_BA_Resil.te2.nv_dirty = 0;
+				uc_DemandeSauvegardeTE2 = 1;		// ecriture FLASH par la tache principale
+			}
 		}
 
+		// 9. Index 12 (comm_faults) : codage inchange, bit positionne quand le BA est ABSENT
 		uc_EspionTacheBAEtat = 15;
+		st_EchangeStatus.uc_Defboitier1 = (bar_health(&st_BA_Resil, 0) == BAR_ABSENT) ? 1 : 0;
+		st_EchangeStatus.uc_Defboitier2 = (bar_health(&st_BA_Resil, 1) == BAR_ABSENT) ? 1 : 0;
+		st_EchangeStatus.uc_Defboitier3 = (bar_health(&st_BA_Resil, 2) == BAR_ABSENT) ? 1 : 0;
+
 		_sched_yield();		// passe la main à la tache suivante
 		uc_EspionTacheBAEtat = 16;
 	}	   // fin boucle tache de fond permanente
-
-	vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"STOP\n");
-	
-	// close the message queue
-	uc_EspionTacheBAEtat = 17;
-	if(_msgq_close(l_BA_qid) == FALSE)
-	{
-		DETECTION_ERREUR_TACHE_BA_CLOSE_MESSAGE_QUEUE;
-		vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"Close queue\n");
-	}
-	
-	// Close the driver 
-	uc_EspionTacheBAEtat = 18;
-	l_sl_result = (int_32)fclose(fd_BA_I2C);
-	if(l_sl_result) 
-	{
-		DETECTION_ERREUR_TACHE_BA_CLOSE_I2C;
-		vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ERREUR,"Erreur close I2C %d\n", l_sl_result);
-	}
-
-	// Free transation lock
-	uc_EspionTacheBAEtat = 19;
-	_lwsem_destroy (&lock_I2C);
-
-	vd_EspionRS_Printf(uc_ESPION_TACHE_BA_ACTIVITE,"END\n");
-	uc_EspionTacheBAEtat = 20;
-	_task_block();
-	uc_EspionTacheBAEtat = 21;
 } 
 
 // L'applicatif va forcer l'état des sorties selon les cas

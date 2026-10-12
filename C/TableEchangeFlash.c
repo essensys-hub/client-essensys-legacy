@@ -32,6 +32,16 @@
 #define ul_FLASH_REL_SOFT_CRC		0x00000
 #define ul_FLASH_REL_SOFT_CRC_SIZE	0x02
 
+// Feature i2c-surge-protection-2026-10-007 (Refs essensys-hub/essensys-board-SC944D#1)
+// Etat persistant du cycle TE2 (dates des 3 derniers cycles, suspension, J58)
+// range dans la fin du secteur de configuration, jusqu'ici remplie de 0.
+// Le CRC couvre tout le secteur : un BP 099-37 relit donc toujours sa table ;
+// s'il resauve le secteur, l'enregistrement redevient nul et le firmware
+// modifie revient a l'etat prudent (J58 declare ouvert, aucun cycle).
+#define ul_FLASH_REL_TE2			0x0F00
+typedef char tc_VerifPlaceTE2[((ul_FLASH_REL_SOFT_CRC_SIZE + Nb_Tbb_Donnees) <= ul_FLASH_REL_TE2) ? 1 : -1];
+typedef char tc_VerifFinTE2[((ul_FLASH_REL_TE2 + uc_TE2_NV_TAILLE) <= ul_FLASH_CONFIG_LENGTH) ? 1 : -1];
+
 
 //xxx reprendre printf
 //xxx verif taille table echange < secteur
@@ -83,6 +93,14 @@ void vd_TableEchangeLireEnFlash(void)
 	{
 		vd_EspionRS_Printf(uc_ESPION_TACHE_PRINCIPALE_ACTIVITE,"Table échange initialisée avec valeurs lues en FLASH !!!\n");
 		
+		// Etat persistant du cycle TE2 (valide par sa propre signature dans ba_resil)
+		l_p_uc_Pointeur = (unsigned char *)(ul_FLASH_CONFIG_ADRESSE+ul_FLASH_REL_TE2);
+		for(l_us_Compteur = 0;l_us_Compteur < uc_TE2_NV_TAILLE;l_us_Compteur++)
+		{
+			uc_TE2_NV[l_us_Compteur] = l_p_uc_Pointeur[l_us_Compteur];
+		}
+		uc_TE2_NVValide = 1;
+
 		l_p_uc_Pointeur = (unsigned char *)(ul_FLASH_CONFIG_ADRESSE+ul_FLASH_REL_SOFT_CRC_SIZE);
 		for(l_us_Compteur = 0;l_us_Compteur < Nb_Tbb_Donnees;l_us_Compteur++)
 		{
@@ -161,10 +179,15 @@ void vd_TableEchangeSaveEnFLash(void)
 					}
 				}
 				
-				// Complète la fin du secteur par des 0
-				l_uc_Valeur = 0;
+				// Complète la fin du secteur par des 0 (sauf l'enregistrement TE2)
 				for(l_us_Compteur = Nb_Tbb_Donnees;l_us_Compteur < (ul_FLASH_CONFIG_LENGTH-ul_FLASH_REL_SOFT_CRC_SIZE);l_us_Compteur++)	//xxx verifier les max des boucles de ce fichier !!!
 				{
+					l_uc_Valeur = 0;
+					if((ul_FLASH_REL_SOFT_CRC_SIZE + l_us_Compteur) >= ul_FLASH_REL_TE2 &&
+					   (ul_FLASH_REL_SOFT_CRC_SIZE + l_us_Compteur) < (ul_FLASH_REL_TE2 + uc_TE2_NV_TAILLE))
+					{
+						l_uc_Valeur = uc_TE2_NV[(ul_FLASH_REL_SOFT_CRC_SIZE + l_us_Compteur) - ul_FLASH_REL_TE2];
+					}
 					fseek(flash_file, (long)(ul_FLASH_CONFIG_ADRESSE+ul_FLASH_REL_SOFT_CRC_SIZE + l_us_Compteur), IO_SEEK_SET);	//xxx check retour
 					l_l_CodeRetour = write(flash_file, &l_uc_Valeur, 1);
 					if(l_l_CodeRetour != 1)

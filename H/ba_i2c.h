@@ -4,5 +4,6 @@ extern signed long sl_fct_write_polled(MQX_FILE_PTR fd,		// [IN] The file pointe
 		unsigned char uc_BANumber,							// [IN] BA number (it's not then slave number on i2c...)
 		unsigned char *p_uc_buffer,							// [IN] The array of characters are to be written in slave
 		unsigned short us_n,								// [IN] Number of bytes in that buffer
-		unsigned char *p_uc_Answer							// [OUT] Value received in answer from I2C slave
+		unsigned char *p_uc_Answer,							// [OUT] Value received in answer from I2C slave
+		unsigned char *p_uc_CommStat						// [OUT] 6e octet (comm_stat BA 1.8)
 		);

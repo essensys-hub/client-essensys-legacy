@@ -28,6 +28,7 @@ extern void vd_EspionRS_RAZ_ErreursDialogueBA(void);
 extern void vd_EspionRS_Afficher_ErreursTacheBA(unsigned char uc_AffichageForce);
 extern void vd_EspionRS_RAZ_ErreursTacheBA(void);
 extern void vd_EspionRS_Afficher_ActiviteTacheBA(void);
+extern void vd_EspionRS_Afficher_ResilienceBA(void);	// feature i2c-surge-protection-2026-10-007
 extern void vd_EspionRS_RAZ_ActiviteTacheBA(void);
 extern void vd_EspionRS_Afficher_ActiviteI2C(void);
 extern void vd_EspionRS_RAZ_ActiviteI2C(void);
