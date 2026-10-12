@@ -499,6 +499,16 @@
 	#define	uc_I2C_NB_REPETE_AV_ERREUR	5		// nombre de répétitions avant signalement de l'erreur
 	#define	uc_I2C_NB_REPETE			20		// nombre de répétitions avant acquittement de la demande (la trame sera envoyée uniquement sur un nouveau changement d'état)
 
+	// Feature i2c-surge-protection-2026-10-007 (Refs essensys-hub/essensys-board-SC944D#1)
+	// - plus aucune commande n'est "acquittee" apres uc_I2C_NB_REPETE echecs :
+	//   elle reste en attente (ba_resil) ; uc_I2C_NB_REPETE ne sert plus qu'aux espions
+	// - reponse lue sur 6 octets : le 6e est le comm_stat d'un BA 1.8 (0x55 sur un BA 1.7)
+	#define uc_I2C_NB_OCTETS_REPONSE	6
+	#define uc_TE2_NV_TAILLE			24		// = BAR_TE2_NV_SIZE (ba_resil.h)
+	extern unsigned char uc_TE2_NV[uc_TE2_NV_TAILLE];	// enregistrement persistant du cycle TE2
+	extern unsigned char uc_TE2_NVValide;				// 1 si lu en FLASH au demarrage
+	extern unsigned char uc_DemandeSauvegardeTE2;		// 1 : la tache principale doit sauver en FLASH
+
 	// Erreur d'accès au boitier auxiliaire (retour fonction sl_fct_write_polled)
 	// Mettre valeurs différentes des erreur I2C
 	enum
@@ -895,6 +905,7 @@
 	extern unsigned long ul_EspionTacheBACompteurEmissionI2C[uc_NB_BOITIER_AUXILIAIRE];
 	extern unsigned long ul_EspionTacheBACompteurErreurI2C[uc_NB_BOITIER_AUXILIAIRE];
 	extern unsigned long ul_EspionTacheBANbBlocageI2C;
+	extern unsigned long ul_EspionTacheBANbEchecsFermetureI2C;	// fclose refuses (5.3)
 	extern unsigned char uc_NbEssaisReinitMax;
 	extern unsigned char uc_NbLoupesReinit;
 

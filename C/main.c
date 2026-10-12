@@ -266,6 +266,15 @@ void Main_task(uint_32 initial_data)
 				uc_EspionTachePrincipaleEtat = 23;
 				vd_SurveillanceAlimentations();
 				vd_GestionCoupureAlimentation();
+
+				// Feature i2c-surge-protection-2026-10-007 : etat du cycle TE2
+				// (compteur, dates, suspension, J58) conserve en FLASH
+				if(uc_DemandeSauvegardeTE2 != 0)
+				{
+					uc_DemandeSauvegardeTE2 = 0;
+					vd_EspionRS_Printf(uc_ESPION_TACHE_PRINCIPALE_ACTIVITE,"TE2 : sauvegarde de l'etat du cycle en FLASH\n");
+					vd_TableEchangeSaveEnFLash();
+				}
 				
 				if(uc_CompteurDesactivationEspionAuto_sec < uc_TEMPO_DESACTIVATION_AUTO_sec)	uc_CompteurDesactivationEspionAuto_sec++;
 				if(uc_CompteurEspionAIN_sec < uc_TEMPO_ESPION_AIN_sec)							uc_CompteurEspionAIN_sec++;

@@ -20,6 +20,11 @@
 
 #define extern
 #include "EspionRS.h"
+#include "ba_resil.h"
+#include "i2c_bounded.h"
+
+// Feature i2c-surge-protection-2026-10-007 : etat de resilience (ba.c)
+extern bar_ctx_t st_BA_Resil;
 #undef extern
 
 //extern unsigned short us_SimulTeleinfoCompteur;//xxx
@@ -626,6 +631,10 @@ void vd_EspionRS(void)
 				printf("1. MEMORISER TABLE ECHANGE EN FLASH\n");
 				printf("2. DESACTIVER EMISSION BP VERS ECRAN\n");
 				printf("3. ACTIVER EMISSION BP VERS ECRAN\n");
+				printf("4. AFFICHER RESILIENCE BA (sante, commandes, bus, TE2)\n");
+				printf("5. RAZ SUSPENSION DES CYCLES TE2\n");
+				printf("6. DECLARER J58 FERME (cycles TE2 autorises)\n");
+				printf("7. DECLARER J58 OUVERT (aucun cycle TE2)\n");
 			break;
 		}
 	}
@@ -1036,7 +1045,62 @@ void vd_GestionMenuActions(unsigned char uc_Caractere)
 			uc_BloquerEmissionVersEcran = 0;
 			printf("Activation émission BP Vers ECRAN\n\n");
 		break;
+		// Feature i2c-surge-protection-2026-10-007 (Refs essensys-hub/essensys-board-SC944D#1)
+		case '4':
+			vd_EspionRS_Afficher_ResilienceBA();
+		break;
+		case '5':
+			bar_te2_manual_reset(&st_BA_Resil);
+			printf("TE2 : suspension levee (le compteur 24 h est conserve)\n\n");
+		break;
+		case '6':
+			bar_te2_set_j58_open(&st_BA_Resil, 0);
+			printf("TE2 : J58 declare FERME -> cycle possible en dernier recours\n\n");
+		break;
+		case '7':
+			bar_te2_set_j58_open(&st_BA_Resil, 1);
+			printf("TE2 : J58 declare OUVERT -> aucun cycle\n\n");
+		break;
 	}
+}
+
+// Feature i2c-surge-protection-2026-10-007 : console de diagnostic
+// (etat de chaque BA, commandes en attente / expirees, recuperations de bus,
+// cycles d'alimentation, defauts simultanes de tous les BA)
+void vd_EspionRS_Afficher_ResilienceBA(void)
+{
+	static const char * const s_tpc_Sante[] = { "OK", "SUSPECT", "ABSENT" };
+	static const char * const s_tpc_Raison[] = { "-", "J58 ouvert", "suspendu (cycle sans effet)", "moins d'1 h depuis le dernier cycle",
+	                                             "3 cycles sur 24 h", "heure inconnue", "mode secouru", "attente effet du cycle" };
+	const i2cb_stats_t *l_pst_Stats = i2cb_stats();
+	const bar_ba_t *l_pst_BA;
+	unsigned char l_uc_Compteur;
+
+	printf("---- RESILIENCE BA ----\n");
+	for(l_uc_Compteur = 0; l_uc_Compteur < BAR_NB_BA; l_uc_Compteur++)
+	{
+		l_pst_BA = &st_BA_Resil.ba[l_uc_Compteur];
+		printf("BA 0x%X : %s (echecs %d) resync %d redemarrages %d\n", 0x11 + l_uc_Compteur,
+		       s_tpc_Sante[l_pst_BA->health], l_pst_BA->fails, l_pst_BA->resyncs, l_pst_BA->restarts_reported);
+		printf("  en attente (non acquitte) : allume 0x%04X eteint 0x%04X var+ 0x%02X var- 0x%02X ouvre 0x%02X ferme 0x%02X\n",
+		       l_pst_BA->simple_on, l_pst_BA->simple_off, l_pst_BA->var_on, l_pst_BA->var_off, l_pst_BA->volet_up, l_pst_BA->volet_down);
+		printf("  commandes expirees : %d (dernier masque 0x%02X)\n", l_pst_BA->expired, l_pst_BA->last_expired_mask);
+	}
+	printf("Index 12 (bits BA) : 0x%02X\n", bar_idx12_bits(&st_BA_Resil));
+	printf("Defauts simultanes de tous les BA : %d\n", st_BA_Resil.all_down_events);
+	printf("Bus : bloque %d, recuperations %d (reussies %d, impulsions %d)\n", i2cb_bus_blocked(),
+	       l_pst_Stats->recoveries, l_pst_Stats->recoveries_ok, l_pst_Stats->recovery_clocks);
+	printf("Bus : depassements adresse %d/%d octet %d flush %d stop %d transaction %d, attente max %d us (borne %d us)\n",
+	       l_pst_Stats->timeouts[I2CB_SITE_TX_ADDR], l_pst_Stats->timeouts[I2CB_SITE_RX_ADDR], l_pst_Stats->timeouts[I2CB_SITE_RXTX_BYTE],
+	       l_pst_Stats->timeouts[I2CB_SITE_FLUSH], l_pst_Stats->timeouts[I2CB_SITE_STOP_IDLE], l_pst_Stats->txn_timeouts,
+	       l_pst_Stats->max_wait_us, i2cb_wait_max_us());
+	printf("Reinit canal I2C : fclose refuses %d\n", ul_EspionTacheBANbEchecsFermetureI2C);
+	printf("TE2 : cycles %d (dernier : %lu s epoch, %d sur 24 h), J58 %s, suspendu %d, blocages signales %d, raison : %s\n",
+	       st_BA_Resil.te2.total_cycles, bar_te2_last_cycle_epoch(&st_BA_Resil),
+	       bar_te2_cycles_in_window(&st_BA_Resil, bar_te2_last_cycle_epoch(&st_BA_Resil)),
+	       st_BA_Resil.te2.j58_open ? "OUVERT" : "FERME", st_BA_Resil.te2.suspended,
+	       st_BA_Resil.te2.blocked_reports, s_tpc_Raison[st_BA_Resil.te2.why]);
+	printf("\n");
 }
 
 void vd_EspionRS_Afficher_ErreursTacheEcran(unsigned char uc_AffichageForce)
@@ -1225,6 +1289,7 @@ void vd_EspionRS_Afficher_ActiviteTacheBA(void)
 	printf("ul_EspionTacheBANbBlocageI2C : %d\n", ul_EspionTacheBANbBlocageI2C);
 	printf("uc_NbEssaisReinitMax : %d\n", uc_NbEssaisReinitMax);
 	printf("uc_NbLoupesReinit : %d\n", uc_NbLoupesReinit);
+	vd_EspionRS_Afficher_ResilienceBA();	// feature i2c-surge-protection-2026-10-007
 			
 	for(l_uc_Compteur = 0;l_uc_Compteur < uc_NB_BOITIER_AUXILIAIRE; l_uc_Compteur++)
 	{
